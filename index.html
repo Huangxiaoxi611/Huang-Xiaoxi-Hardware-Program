@@ -1,333 +1,2786 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>景区 AI 伴游硬件用户故事</title>
-    <style>
-      :root {
-        color-scheme: light;
-        --bg: #f7f8fa;
-        --card: #ffffff;
-        --text: #1f2937;
-        --muted: #6b7280;
-        --border: #e5e7eb;
-        --accent: #2563eb;
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <meta name="description" content="黄小西文旅智能陪伴玩偶 — 贵州文旅官方专属 AI 智能陪伴 IP 玩偶完整商业落地方案" />
+  <!-- nav-layout-v3: 左侧可点击目录 + 收起展开 -->
+  <title>黄小西文旅智能陪伴玩偶 · 商业落地方案汇报</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --accent: #0ea5e9;
+      --accent-deep: #0284c7;
+      --accent-soft: #e0f2fe;
+      --accent-pale: #f0f9ff;
+      --blue-primary: #0c4a6e;
+      --blue-mid: #38bdf8;
+      --blue-light: #f0f9ff;
+      --highlight: #06b6d4;
+      --highlight-soft: #cffafe;
+      --ink: #334155;
+      --ink-muted: #64748b;
+      --ink-soft: #94a3b8;
+      --surface: #f8fafc;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --shadow: 0 4px 20px rgba(14, 165, 233, 0.07);
+      --shadow-lg: 0 12px 40px rgba(14, 165, 233, 0.1);
+      --radius: 12px;
+      --radius-lg: 20px;
+      --sidebar-width-expanded: 188px;
+      --sidebar-width-collapsed: 48px;
+      --sidebar-width: var(--sidebar-width-expanded);
+      --header-h: 64px;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    body.sidebar-collapsed {
+      --sidebar-width: var(--sidebar-width-collapsed);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: calc(var(--header-h) + 24px);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
       }
-      * { box-sizing: border-box; }
-      body {
+    }
+
+    body {
+      margin: 0;
+      font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+      font-size: 16px;
+      line-height: 1.75;
+      color: var(--ink);
+      background: var(--surface);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 背景纹样 */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.5;
+      background-image:
+        radial-gradient(circle at 15% 20%, #bae6fd 0%, transparent 45%),
+        radial-gradient(circle at 85% 80%, #e0f2fe 0%, transparent 50%);
+    }
+
+    /* 顶栏：左侧 aside 与目录同宽联动缩放 */
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--header-h);
+      z-index: 110;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 1px 0 rgba(0,0,0,0.04);
+    }
+
+    .site-header__grid {
+      display: flex;
+      align-items: stretch;
+      width: 100%;
+      height: 100%;
+    }
+
+    .site-header__aside {
+      flex: 0 0 var(--sidebar-width);
+      width: var(--sidebar-width);
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 0 12px;
+      border-right: 1px solid var(--border);
+      overflow: hidden;
+      transition: flex-basis 0.28s var(--ease), width 0.28s var(--ease);
+    }
+
+    body.sidebar-collapsed .site-header__aside {
+      justify-content: flex-start;
+      padding-left: 6px;
+      padding-right: 2px;
+    }
+
+    .site-header__main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      gap: 16px;
+      transition: padding 0.28s var(--ease);
+    }
+
+    .site-header__brand {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
+      min-width: 0;
+      width: 100%;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .site-header__emblem {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #7dd3fc, var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-family: "Noto Serif SC", serif;
+      font-weight: 700;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .site-header__title {
+      font-family: "Noto Serif SC", serif;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 1.25;
+      letter-spacing: 0.02em;
+      color: var(--blue-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      transition: opacity 0.22s var(--ease), max-width 0.28s var(--ease), margin 0.28s var(--ease);
+      max-width: 20em;
+    }
+
+    body.sidebar-collapsed .site-header__title {
+      opacity: 0;
+      max-width: 0;
+      margin: 0;
+      pointer-events: none;
+    }
+
+    .site-header__actions {
+      display: flex;
+      flex-shrink: 0;
+      gap: 8px;
+      margin-left: auto;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      min-width: 44px;
+      padding: 0 16px;
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s var(--ease), color 0.2s var(--ease), transform 0.15s var(--ease);
+    }
+
+    .btn:focus-visible {
+      outline: 2px solid var(--blue-mid);
+      outline-offset: 2px;
+    }
+
+    .btn--ghost {
+      background: transparent;
+      color: var(--blue-primary);
+    }
+
+    .btn--ghost:hover { background: var(--blue-light); }
+
+    .btn--primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn--primary:hover { background: var(--accent-deep); }
+
+    /* 布局：左侧固定目录 + 主区 margin 留白（避免 grid+fixed 错位） */
+    .layout {
+      position: relative;
+      z-index: 1;
+      margin-left: var(--sidebar-width);
+      width: auto;
+      min-height: calc(100vh - var(--header-h));
+      padding-top: var(--header-h);
+      transition: margin-left 0.28s var(--ease);
+    }
+
+    .side-nav {
+      position: fixed;
+      top: var(--header-h);
+      left: 0;
+      bottom: 0;
+      width: var(--sidebar-width);
+      z-index: 90;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border-right: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(10px);
+      transition: width 0.28s var(--ease);
+    }
+
+    .side-nav__toolbar {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 8px;
+      padding: 12px 12px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .side-nav__toolbar .side-nav__collapse {
+      margin-left: auto;
+    }
+
+    .side-nav__title {
+      margin: 0;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--blue-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      transition: opacity 0.2s var(--ease);
+    }
+
+    .side-nav__collapse {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--card);
+      color: var(--blue-primary);
+      cursor: pointer;
+      transition: background 0.2s var(--ease), border-color 0.2s;
+    }
+
+    .side-nav__collapse:hover {
+      background: var(--accent-soft);
+      border-color: #7dd3fc;
+    }
+
+    .side-nav__collapse:focus-visible {
+      outline: 2px solid var(--blue-mid);
+      outline-offset: 2px;
+    }
+
+    .side-nav__collapse svg {
+      transition: transform 0.28s var(--ease);
+    }
+
+    body.sidebar-collapsed .side-nav__collapse svg {
+      transform: rotate(180deg);
+    }
+
+    body.sidebar-collapsed .side-nav__title {
+      opacity: 0;
+      width: 0;
+      overflow: hidden;
+    }
+
+    body.sidebar-collapsed .side-nav__toolbar {
+      justify-content: center;
+      padding: 12px 8px;
+    }
+
+    .side-nav__list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 12px 20px;
+    }
+
+    .side-nav__list a {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 10px;
+      margin-bottom: 2px;
+      font-size: 12px;
+      color: var(--ink-muted);
+      text-decoration: none;
+      border-radius: 8px;
+      border-left: 3px solid transparent;
+      transition: background 0.2s var(--ease), color 0.2s var(--ease), padding 0.28s var(--ease);
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .side-nav__list a:hover {
+      background: var(--accent-soft);
+      color: var(--accent-deep);
+    }
+
+    .side-nav__list a.is-active {
+      background: var(--accent-soft);
+      color: var(--accent-deep);
+      border-left-color: var(--accent);
+      font-weight: 600;
+    }
+
+    .side-nav__list a .nav-index {
+      flex-shrink: 0;
+      min-width: 1.2em;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    body.sidebar-collapsed .side-nav__list a .nav-label {
+      opacity: 0;
+      width: 0;
+      overflow: hidden;
+    }
+
+    body.sidebar-collapsed .side-nav__list a {
+      justify-content: center;
+      padding: 10px 8px;
+    }
+
+    body.sidebar-collapsed .side-nav__list a .nav-index {
+      min-width: auto;
+    }
+
+    .section__title-link,
+    .section__title--anchor {
+      color: inherit;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .section__title-link:hover,
+    .section__title--anchor:hover {
+      color: var(--accent-deep);
+    }
+
+    .section__title--anchor:focus-visible {
+      outline: 2px solid var(--blue-mid);
+      outline-offset: 4px;
+      border-radius: 4px;
+    }
+
+    main {
+      min-width: 0;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      transition: max-width 0.28s var(--ease);
+    }
+
+    body.sidebar-collapsed main {
+      max-width: 1320px;
+    }
+
+    /* 桌面端不用全屏遮罩 */
+    .nav-overlay {
+      display: none;
+      pointer-events: none;
+    }
+
+    /* 封面 — 公文式居中标题 */
+    .hero {
+      position: relative;
+      padding: 28px 32px 26px;
+      margin: 16px 20px 22px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: linear-gradient(145deg, #f0f9ff 0%, #e0f2fe 42%, #bae6fd 100%);
+      color: var(--blue-primary);
+      border: 1px solid #bae6fd;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .hero__inner {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      opacity: 0.5;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      bottom: -40%;
+      right: -10%;
+      width: 60%;
+      height: 80%;
+      background: radial-gradient(ellipse, rgba(56, 189, 248, 0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero__kicker {
+      margin: 0 0 10px;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      color: var(--accent-deep);
+    }
+
+    .hero__title {
+      margin: 0;
+      font-family: "Noto Serif SC", serif;
+      font-size: clamp(24px, 3.2vw, 34px);
+      font-weight: 700;
+      line-height: 1.35;
+      letter-spacing: 0.06em;
+      color: var(--blue-primary);
+    }
+
+    .hero__lead {
+      margin: 12px auto 0;
+      max-width: 580px;
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--ink-muted);
+      text-align: center;
+    }
+
+    .hero__lead strong {
+      font-weight: 600;
+      color: var(--blue-primary);
+    }
+
+    .hero__stats {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 16px;
+    }
+
+    .stat-card {
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid rgba(186, 230, 253, 0.9);
+      border-radius: var(--radius);
+      backdrop-filter: blur(8px);
+    }
+
+    .stat-card__value {
+      font-family: "Noto Serif SC", serif;
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--accent-deep);
+    }
+
+    .stat-card__value small {
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .stat-card__label {
+      margin-top: 6px;
+      font-size: 13px;
+      opacity: 0.85;
+    }
+
+    .hero__meta {
+      position: relative;
+      z-index: 1;
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px solid #bae6fd;
+      font-size: 13px;
+      color: var(--ink-muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    /* 章节 */
+    .section {
+      margin: 0 24px 48px;
+      scroll-margin-top: calc(var(--header-h) + 24px);
+    }
+
+    .section__head {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .section__num {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "Noto Serif SC", serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, #7dd3fc, var(--accent));
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(14, 165, 233, 0.25);
+    }
+
+    .section__title {
+      margin: 0;
+      font-family: "Noto Serif SC", serif;
+      font-size: clamp(22px, 3vw, 28px);
+      font-weight: 700;
+      color: var(--blue-primary);
+      line-height: 1.35;
+    }
+
+    .section__lead {
+      margin: 8px 0 0;
+      font-size: 15px;
+      color: var(--ink-muted);
+      max-width: 720px;
+    }
+
+    /* 第三节：产品能力分组 */
+    .section-group {
+      margin: 0 24px 48px;
+    }
+
+    .section-group[id] {
+      scroll-margin-top: calc(var(--header-h) + 24px);
+    }
+
+    .section-group__head {
+      margin-bottom: 32px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .section.subsection {
+      margin: 0 0 44px;
+      scroll-margin-top: calc(var(--header-h) + 24px);
+    }
+
+    .section.subsection:last-child {
+      margin-bottom: 0;
+    }
+
+    .section__num--sub {
+      width: auto;
+      min-width: 52px;
+      padding: 0 10px;
+      font-size: 13px;
+      font-family: "Noto Sans SC", sans-serif;
+      border-radius: 8px;
+    }
+
+    .side-nav__list a.nav-sub {
+      padding-left: 14px;
+      font-size: 11px;
+    }
+
+    .side-nav__list a.nav-sub .nav-index {
+      color: var(--ink-muted);
+      font-weight: 600;
+    }
+
+    /* 用户故事能力关系网 */
+    .cap-network {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      padding: 18px 20px 22px;
+    }
+
+    .cap-network__legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 18px;
+      margin-bottom: 14px;
+      font-size: 12px;
+      color: var(--ink-muted);
+    }
+
+    .cap-network__legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .cap-network__dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .cap-network__dot--func { background: var(--blue-primary); }
+    .cap-network__dot--hw { background: #0284c7; }
+    .cap-network__dot--sw { background: #059669; }
+    .cap-network__dot--mp { background: #d97706; }
+    .cap-network__dot--admin { background: #7c3aed; }
+
+    /* 左右结构 + 连线 */
+    .cap-network__diagram {
+      display: grid;
+      grid-template-columns: minmax(140px, 22%) 40px minmax(0, 1fr);
+      gap: 0;
+      align-items: stretch;
+      margin-bottom: 20px;
+      padding-bottom: 18px;
+      border-bottom: 2px dashed var(--border);
+      min-height: 280px;
+    }
+
+    .cap-network__left {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-right: 4px;
+    }
+
+    .cap-network__hub {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 8px;
+      font-family: "Noto Serif SC", serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      text-align: center;
+      line-height: 1.35;
+      background: linear-gradient(135deg, var(--blue-primary), var(--accent));
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+    }
+
+    .cap-story-group {
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #fafcff;
+    }
+
+    .cap-story-group__head {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--blue-primary);
+    }
+
+    .cap-story-group__head span {
+      flex-shrink: 0;
+      padding: 1px 6px;
+      font-size: 10px;
+      color: #fff;
+      background: linear-gradient(135deg, #7dd3fc, var(--accent));
+      border-radius: 3px;
+    }
+
+    .cap-story-group ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .cap-story-group li {
+      font-size: 11px;
+      line-height: 1.45;
+      color: var(--ink-muted);
+      padding: 2px 0;
+      border-bottom: 1px dashed rgba(0,0,0,0.06);
+    }
+
+    .cap-story-group li:last-child { border-bottom: none; }
+
+    .cap-network__lines {
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      position: relative;
+    }
+
+    .cap-network__svg {
+      width: 100%;
+      height: 100%;
+      min-height: 260px;
+      display: block;
+    }
+
+    .cap-network__svg path {
+      fill: none;
+      stroke: #7dd3fc;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .cap-network__right {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      justify-content: space-between;
+    }
+
+    .cap-network__pool {
+      flex: 1;
+      padding: 10px 12px 10px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #fff;
+      position: relative;
+      min-height: 0;
+    }
+
+    .cap-network__pool::before {
+      content: "";
+      position: absolute;
+      left: -6px;
+      top: 50%;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid #fff;
+      box-shadow: 0 0 0 1px #7dd3fc;
+      transform: translate(-50%, -50%);
+    }
+
+    .cap-network__pool-title {
+      margin: 0 0 8px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+
+    .cap-network__pool--hw .cap-network__pool-title { color: #0284c7; }
+    .cap-network__pool--sw .cap-network__pool-title { color: #059669; }
+    .cap-network__pool--mp .cap-network__pool-title { color: #d97706; }
+    .cap-network__pool--admin .cap-network__pool-title { color: #7c3aed; }
+
+    .cap-network__pool-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .cap-net-kw {
+      display: inline-block;
+      padding: 2px 7px;
+      font-size: 10px;
+      font-weight: 500;
+      border-radius: 4px;
+      line-height: 1.35;
+    }
+
+    .cap-net-kw--hw { background: #e0f2fe; color: #0369a1; }
+    .cap-net-kw--sw { background: #d1fae5; color: #047857; }
+    .cap-net-kw--mp { background: #ffedd5; color: #c2410c; }
+    .cap-net-kw--admin { background: #ede9fe; color: #6d28d9; }
+    .cap-net-kw--empty {
+      background: transparent;
+      color: var(--ink-muted);
+      opacity: 0.45;
+      padding: 0 4px;
+    }
+
+    /* 紧凑对照表 */
+    .cap-matrix-heading {
+      margin: 0 0 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--blue-primary);
+    }
+
+    .cap-matrix-wrap {
+      max-height: min(42vh, 420px);
+      overflow: auto;
+      overscroll-behavior: contain;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    .cap-matrix {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    .cap-matrix thead th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      padding: 8px 10px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      color: #fff;
+      background: var(--blue-primary);
+      white-space: nowrap;
+    }
+
+    .cap-matrix tbody td {
+      padding: 6px 10px;
+      vertical-align: middle;
+      border-bottom: 1px solid var(--border);
+      line-height: 1.4;
+    }
+
+    .cap-matrix tbody tr:hover td {
+      background: rgba(224, 242, 254, 0.35);
+    }
+
+    .cap-matrix td.col-func {
+      font-weight: 600;
+      color: var(--blue-primary);
+      white-space: nowrap;
+      background: rgba(240, 249, 255, 0.45);
+      width: 1%;
+    }
+
+    .cap-matrix .cap-net-kw { margin: 1px 2px 1px 0; }
+
+    @media (max-width: 768px) {
+      .cap-network__diagram {
+        grid-template-columns: 1fr;
+        min-height: 0;
+      }
+      .cap-network__lines { display: none; }
+      .cap-network__pool::before { display: none; }
+      .cap-network__right { gap: 10px; }
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      box-shadow: var(--shadow);
+    }
+
+    .card + .card { margin-top: 16px; }
+
+    /* 定位高亮 */
+    .positioning {
+      padding: 32px;
+      background: linear-gradient(90deg, var(--accent-pale) 0%, #fff 50%);
+      border-left: 4px solid var(--accent);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .positioning p {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.9;
+    }
+
+    .positioning strong {
+      color: var(--accent-deep);
+      font-weight: 600;
+    }
+
+    /* 产品形象 — 是什么、长什么样 */
+    .product-identity {
+      margin-bottom: 24px;
+      padding: 28px 32px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+    }
+
+    .product-identity__lead {
+      margin: 0 0 20px;
+      font-size: 16px;
+      line-height: 1.85;
+      color: var(--ink);
+    }
+
+    .product-identity__lead strong {
+      color: var(--blue-primary);
+    }
+
+    .product-identity__sub {
+      margin: 0 0 12px;
+      font-family: "Noto Serif SC", serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--blue-primary);
+    }
+
+    .product-face-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .product-face-card {
+      padding: 14px 16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, var(--accent-pale), #fff);
+    }
+
+    .product-face-card h4 {
+      margin: 0 0 6px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--accent-deep);
+    }
+
+    .product-face-card p {
+      margin: 0;
+      font-size: 12px;
+      color: var(--ink-muted);
+      line-height: 1.6;
+    }
+
+    .product-spec-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px 20px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .product-spec-grid li {
+      font-size: 13px;
+      color: var(--ink-muted);
+      line-height: 1.65;
+      padding-left: 14px;
+      position: relative;
+    }
+
+    .product-spec-grid li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.55em;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .product-spec-grid strong {
+      color: var(--blue-primary);
+      font-weight: 600;
+    }
+
+    @media (max-width: 720px) {
+      .product-face-grid {
+        grid-template-columns: 1fr;
+      }
+      .product-spec-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .tag {
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      background: var(--blue-light);
+      color: var(--blue-primary);
+      border-radius: 100px;
+    }
+
+    .tag--gold {
+      background: var(--highlight-soft);
+      color: var(--highlight);
+    }
+
+    /* 场景卡片 */
+    .scene-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .scene-card {
+      padding: 28px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+    }
+
+    .scene-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .scene-card__icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 16px;
+      padding: 12px;
+      border-radius: 12px;
+      background: var(--blue-light);
+      color: var(--blue-primary);
+    }
+
+    .scene-card__icon svg { width: 100%; height: 100%; }
+
+    .scene-card h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--blue-primary);
+    }
+
+    .scene-card__pain {
+      font-size: 13px;
+      color: var(--accent-deep);
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+
+    .scene-card p {
+      margin: 0;
+      font-size: 14px;
+      color: var(--ink-muted);
+      line-height: 1.7;
+    }
+
+    .scene-card--highlight {
+      border-color: #7dd3fc;
+      background: linear-gradient(180deg, var(--accent-pale) 0%, #fff 45%);
+    }
+
+    .scene-card--highlight .scene-card__icon {
+      background: var(--accent-soft);
+      color: var(--accent-deep);
+    }
+
+    /* 用户故事 — 顺序图文 */
+    .user-stories {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .user-story {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: visible;
+      box-shadow: var(--shadow);
+    }
+
+    .user-story--featured {
+      border-color: #7dd3fc;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .user-story__title {
+      margin: 0;
+      padding: 20px 28px;
+      font-family: "Noto Serif SC", serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--blue-primary);
+      background: linear-gradient(90deg, var(--accent-pale), #fff);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .user-story__title span {
+      display: inline-block;
+      margin-right: 10px;
+      font-family: "Noto Sans SC", sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(135deg, #7dd3fc, var(--accent));
+      padding: 2px 10px;
+      border-radius: 4px;
+      vertical-align: middle;
+    }
+
+    .user-story__body {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+      gap: 0;
+      align-items: stretch;
+      overflow: hidden;
+      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    }
+
+    .user-story__figure {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .user-story__content {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    /* 02 / 04：左文右图，文字 2/3、图片 1/3（列宽与列位置一致） */
+    .user-story__body--reverse {
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    }
+
+    .user-story__body--reverse .user-story__figure {
+      grid-column: 2;
+    }
+
+    .user-story__body--reverse .user-story__content {
+      grid-column: 1;
+      justify-content: flex-start;
+      padding-top: 28px;
+      padding-bottom: 28px;
+    }
+
+    .user-story__figure,
+    .user-story__content {
+      min-width: 0;
+    }
+
+    .user-story__figure {
+      margin: 0;
+      min-height: 200px;
+      background: var(--accent-pale);
+      overflow: hidden;
+    }
+
+    .user-story__figure img {
+      width: 100%;
+      height: 100%;
+      min-height: 200px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .user-story__content {
+      padding: 24px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 12px;
+      overflow: visible;
+    }
+
+    .user-story__pain {
+      margin: 0;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent-deep);
+      background: var(--accent-soft);
+      border-radius: 8px;
+      border-left: 3px solid var(--accent);
+      flex-shrink: 0;
+    }
+
+    .user-story__desc {
+      margin: 0;
+      font-size: 15px;
+      color: var(--ink-muted);
+      line-height: 1.9;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+    }
+
+    .user-story__desc strong {
+      color: var(--blue-primary);
+      font-weight: 600;
+    }
+
+    .user-story__desc--scene {
+      color: var(--ink);
+      font-size: 14px;
+    }
+
+    @media (max-width: 560px) {
+      .user-story__body,
+      .user-story__body--reverse {
+        grid-template-columns: 1fr;
+      }
+      .user-story__figure,
+      .user-story__body--reverse .user-story__figure {
+        grid-column: 1;
+        min-height: 160px;
+      }
+      .user-story__content,
+      .user-story__body--reverse .user-story__content {
+        grid-column: 1;
+      }
+      /* 小屏优先读文字，图片置底 */
+      .user-story__body--reverse .user-story__content {
+        order: 1;
+      }
+      .user-story__body--reverse .user-story__figure {
+        order: 2;
+      }
+      .user-story__figure img {
+        min-height: 160px;
+      }
+      .user-story__content {
+        padding: 20px 22px;
+      }
+    }
+
+    /* 表格 */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      background: var(--card);
+    }
+
+    th, td {
+      padding: 14px 18px;
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      background: linear-gradient(180deg, #e0f2fe, #bae6fd);
+      color: var(--blue-primary);
+      font-weight: 600;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    tr:nth-child(even) td { background: var(--accent-pale); }
+
+    td:first-child {
+      font-weight: 600;
+      color: var(--blue-primary);
+      white-space: nowrap;
+    }
+
+    /* 三栏价值 — 始终横排 */
+    .value-trio {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .value-trio__item {
+      padding: 28px 20px;
+      text-align: center;
+      color: var(--blue-primary);
+      border-radius: var(--radius);
+      border: 1px solid #bae6fd;
+      box-shadow: var(--shadow);
+    }
+
+    .value-trio__item:nth-child(1) { background: #f0f9ff; }
+    .value-trio__item:nth-child(2) { background: #e0f2fe; }
+    .value-trio__item:nth-child(3) { background: #bae6fd; }
+
+    .value-trio__item h4 {
+      margin: 0 0 8px;
+      font-family: "Noto Serif SC", serif;
+      font-size: 18px;
+    }
+
+    .value-trio__item p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--ink-muted);
+      line-height: 1.6;
+    }
+
+    /* 营销 / 盈利 */
+    .pillar-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .pillar {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 20px;
+      padding: 24px 28px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      align-items: start;
+      transition: border-color 0.2s;
+    }
+
+    .pillar:hover { border-color: var(--accent); }
+
+    .pillar__index {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      color: #fff;
+      background: linear-gradient(135deg, #7dd3fc, var(--accent));
+      border-radius: 8px;
+    }
+
+    .pillar h4 {
+      margin: 0 0 6px;
+      font-size: 16px;
+      color: var(--blue-primary);
+    }
+
+    .pillar p, .pillar ul {
+      margin: 0;
+      font-size: 14px;
+      color: var(--ink-muted);
+    }
+
+    .pillar ul { padding-left: 1.2em; margin-top: 8px; }
+
+    /* 营销推广 — 一屏五栏要点 */
+    #marketing {
+      margin-bottom: 40px;
+    }
+
+    #marketing .section__head {
+      margin-bottom: 16px;
+    }
+
+    .marketing-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .marketing-card {
+      display: flex;
+      flex-direction: column;
+      padding: 14px 14px 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      min-height: 0;
+    }
+
+    .marketing-card--featured {
+      border-color: #7dd3fc;
+      background: linear-gradient(180deg, var(--accent-pale) 0%, var(--card) 48%);
+    }
+
+    .marketing-card__head {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .marketing-card__num {
+      flex-shrink: 0;
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, #7dd3fc, var(--accent));
+      border-radius: 6px;
+    }
+
+    .marketing-card h4 {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--blue-primary);
+      line-height: 1.35;
+    }
+
+    .marketing-card__key {
+      margin: 0 0 10px;
+      padding: 6px 8px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent-deep);
+      background: var(--accent-soft);
+      border-radius: 6px;
+      line-height: 1.4;
+    }
+
+    .marketing-card__points {
+      margin: 0;
+      padding-left: 1.15em;
+      font-size: 12px;
+      color: var(--ink-muted);
+      line-height: 1.55;
+      flex: 1;
+    }
+
+    .marketing-card__points li + li {
+      margin-top: 5px;
+    }
+
+    @media (max-width: 1100px) {
+      .marketing-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      .marketing-card:nth-child(4) {
+        grid-column: span 1;
+      }
+      .marketing-card:nth-child(5) {
+        grid-column: span 2;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .marketing-grid {
+        grid-template-columns: 1fr;
+      }
+      .marketing-card:nth-child(5) {
+        grid-column: auto;
+      }
+    }
+
+  /* 试点时间线 */
+    .timeline {
+      position: relative;
+      padding-left: 32px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 11px;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: linear-gradient(180deg, var(--accent), #bae6fd);
+    }
+
+    .timeline__item {
+      position: relative;
+      margin-bottom: 24px;
+      padding: 20px 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .timeline__item::before {
+      content: "";
+      position: absolute;
+      left: -27px;
+      top: 24px;
+      width: 12px;
+      height: 12px;
+      background: var(--accent);
+      border: 3px solid #fff;
+      border-radius: 50%;
+      box-shadow: 0 0 0 2px var(--accent);
+    }
+
+    .timeline__item h4 {
+      margin: 0 0 8px;
+      font-size: 16px;
+      color: var(--blue-primary);
+    }
+
+    .timeline__item p {
+      margin: 0;
+      font-size: 14px;
+      color: var(--ink-muted);
+    }
+
+    /* 竞争优势 */
+    .advantage-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .advantage {
+      padding: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      border-top: 3px solid var(--accent);
+    }
+
+    .advantage h4 {
+      margin: 0 0 8px;
+      font-size: 15px;
+      color: var(--accent-deep);
+    }
+
+    .advantage p {
+      margin: 0;
+      font-size: 14px;
+      color: var(--ink-muted);
+      line-height: 1.75;
+    }
+
+    .advantage p strong {
+      color: var(--blue-primary);
+      font-weight: 600;
+    }
+
+    /* 支撑 CTA */
+    .support-cta {
+      padding: 40px;
+      text-align: center;
+      background: linear-gradient(135deg, #f0f9ff, #bae6fd);
+      border: 1px solid #7dd3fc;
+      border-radius: var(--radius-lg);
+      color: var(--blue-primary);
+    }
+
+    .support-cta h3 {
+      margin: 0 0 20px;
+      font-family: "Noto Serif SC", serif;
+      font-size: 22px;
+    }
+
+    .support-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      text-align: left;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .support-list li {
+      padding: 16px 20px;
+      background: rgba(255, 255, 255, 0.75);
+      border: 1px solid #bae6fd;
+      border-radius: var(--radius);
+      list-style: none;
+      font-size: 14px;
+    }
+
+    .support-list strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--accent-deep);
+    }
+
+    /* 待确认占位 */
+    .placeholder-note {
+      margin-top: 16px;
+      padding: 14px 18px;
+      font-size: 13px;
+      color: var(--accent-deep);
+      background: var(--accent-pale);
+      border: 1px dashed #7dd3fc;
+      border-radius: 8px;
+    }
+
+    .placeholder-note::before {
+      content: "待补充 · ";
+      font-weight: 700;
+    }
+
+    footer {
+      margin: 48px 24px 32px;
+      padding: 24px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--ink-soft);
+      border-top: 1px solid var(--border);
+    }
+
+    /* 入场动画（无 JS 时内容仍可见，避免整页空白） */
+    .reveal {
+      opacity: 1;
+      transform: none;
+    }
+
+    html.js-enabled .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+    }
+
+    html.js-enabled .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* 移动端 */
+    .nav-toggle {
+      display: none;
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 101;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      box-shadow: var(--shadow-lg);
+      cursor: pointer;
+    }
+
+    .nav-toggle:focus-visible {
+      outline: 2px solid var(--blue-mid);
+      outline-offset: 2px;
+    }
+
+    /* 桌面端：目录始终贴左固定显示 */
+    @media (min-width: 901px) {
+      .side-nav {
+        display: flex !important;
+        transform: none !important;
+        visibility: visible !important;
+      }
+
+      .layout {
+        margin-left: var(--sidebar-width) !important;
+      }
+
+      .nav-toggle {
+        display: none !important;
+      }
+    }
+
+    @media (max-width: 900px) {
+      body.sidebar-collapsed { --sidebar-width: 0px; }
+
+      .site-header__aside {
+        flex: 0 0 auto;
+        width: auto;
+        border-right: none;
+        padding: 0 12px 0 16px;
+      }
+
+      body.sidebar-collapsed .site-header__title {
+        opacity: 1;
+        max-width: 12em;
         margin: 0;
-        background: var(--bg);
-        color: var(--text);
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-        line-height: 1.75;
+        pointer-events: auto;
       }
-      .container {
-        max-width: 980px;
-        margin: 36px auto;
-        padding: 0 20px;
+
+      .site-header__main {
+        padding: 0 16px 0 0;
       }
-      .card {
-        background: var(--card);
-        border: 1px solid var(--border);
-        border-radius: 14px;
-        padding: 28px 32px;
-        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+
+      .layout {
+        margin-left: 0;
       }
-      h1, h2, h3, h4 { line-height: 1.35; margin-top: 1.4em; margin-bottom: 0.6em; }
-      h1 { margin-top: 0; font-size: 2rem; }
-      h2 { font-size: 1.45rem; border-bottom: 1px solid var(--border); padding-bottom: 0.3em; }
-      h3 { font-size: 1.15rem; }
-      p { margin: 0.8em 0; }
-      blockquote {
-        margin: 0.9em 0;
-        padding: 0.4em 1em;
-        border-left: 4px solid var(--accent);
-        color: #374151;
-        background: #eff6ff;
-        border-radius: 0 8px 8px 0;
+
+      .side-nav {
+        top: 0;
+        width: min(280px, 85vw) !important;
+        z-index: 200;
+        transform: translateX(-100%);
+        transition: transform 0.3s var(--ease);
+        padding-top: 0;
+        box-shadow: var(--shadow-lg);
       }
-      ul { padding-left: 1.3em; }
-      hr { border: none; border-top: 1px dashed var(--border); margin: 1.6em 0; }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 1em 0;
-        overflow: hidden;
-        border-radius: 10px;
+
+      .side-nav.is-open {
+        transform: translateX(0);
       }
-      th, td {
-        border: 1px solid var(--border);
+
+      body.sidebar-collapsed .side-nav__title,
+      body.sidebar-collapsed .side-nav__list a .nav-label {
+        opacity: 1;
+        width: auto;
+      }
+
+      body.sidebar-collapsed .side-nav__list a {
+        justify-content: flex-start;
         padding: 10px 12px;
-        text-align: left;
-        vertical-align: top;
       }
-      th { background: #f3f4f6; }
-      code {
-        background: #f3f4f6;
-        border: 1px solid var(--border);
-        border-radius: 6px;
-        padding: 0.1em 0.35em;
-        font-size: 0.92em;
+
+      .nav-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 199;
+        background: rgba(15, 23, 42, 0.35);
       }
-      .footer {
-        margin-top: 18px;
-        color: var(--muted);
-        font-size: 13px;
+
+      .nav-overlay.is-open {
+        display: block;
+        pointer-events: auto;
       }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <article class="card" id="content">正在加载文档...</article>
-      <div class="footer">自动生成自 Markdown 内容</div>
+
+      .nav-toggle { display: flex; align-items: center; justify-content: center; }
+
+      main { max-width: none; }
+
+      .hero { margin: 12px; padding: 24px 20px 22px; }
+      .hero__lead { font-size: 13px; }
+
+      .section { margin: 0 16px 40px; }
+
+      .value-trio {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .value-trio__item {
+        padding: 18px 12px;
+      }
+
+      .value-trio__item h4 { font-size: 15px; }
+      .value-trio__item p { font-size: 12px; }
+
+      .site-header__actions .btn--ghost { display: none; }
+    }
+
+    @media print {
+      .site-header, .side-nav, .nav-toggle, .nav-overlay, .btn { display: none !important; }
+      .layout { margin-left: 0; padding-top: 0; }
+      .hero { break-after: page; color: #000; background: #f5f5f5; }
+      .hero::before, .hero::after { display: none; }
+      .section { break-inside: avoid; }
+      .cap-matrix-wrap { max-height: none; overflow: visible; }
+      .cap-matrix thead th { position: static; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header" role="banner">
+    <div class="site-header__grid">
+      <div class="site-header__aside">
+        <a href="#top" class="site-header__brand">
+          <div class="site-header__emblem" aria-hidden="true">黄</div>
+          <span class="site-header__title">黄小西文旅智能陪伴玩偶</span>
+        </a>
+      </div>
+      <div class="site-header__main">
+        <div class="site-header__actions">
+          <button type="button" class="btn btn--ghost" onclick="window.print()" aria-label="打印本方案">打印</button>
+          <a href="#support" class="btn btn--primary">落地支撑</a>
+        </div>
+      </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script id="md-source" type="text/plain">
-# 景区 AI 伴游硬件用户故事
-
-## 1. 购买场景：把“黄小西”带回家的贵州旅行伴游
-
-李女士一家三口第一次来贵州，准备游览黄果树、梵净山和周边景区。他们对贵州山水、民族文化、美食和非遗都很感兴趣，但不熟悉景区路线，也不想为了几天行程反复下载 App、注册账号、查攻略、切换地图。
-
-在高铁站、机场文旅展位或景区入口，李女士看到一款带有“黄小西”IP 形象的 AI 伴游硬件。它可以是苗风智能骨传导耳机、胸牌、挂脖设备、眼镜或玩偶形态。陈列区写着：
-
-> “买一个黄小西带着走。听贵州故事，问景区路线，拍照识景，离开景区后还能继续听贵州。”
-
-李女士选择购买一台适合亲子家庭的黄小西伴游设备。开机后完成设备激活，设备绑定购买订单和设备 ID，黄小西用 30 秒完成新手引导：
-
-> “你好，我是黄小西。你可以问我景点怎么走、这里有什么故事、附近哪里有洗手间，也可以让我帮你识别眼前的风景。今天我陪你游贵州。”
-
-从这一刻开始，这台设备不只是一次性导览器，而是游客购买后可持续使用的贵州旅行入口。
-
-## 2. 入园场景：从“看风景”变成“懂风景”
-
-一家人进入景区后，设备根据当前位置和景区 POI 判断他们接近核心景点。距离观景点约 100 米时，黄小西主动提醒：
-
-> “前方约 100 米就是黄果树大瀑布观景台。这里是贵州最有代表性的自然景观之一。我可以边走边给你讲它的形成原因和相关故事。”
-
-孩子马上问：
-
-> “黄小西，为什么这里会有这么大的瀑布？”
-
-黄小西用孩子听得懂的语言解释水系、地貌和瀑布形成原因；李女士继续问苗族文化、附近美食、游览顺序和拍照点位时，黄小西切换为成人旅行助手的表达方式。
-
-在这个场景里，游客不再只是听固定讲解，而是可以围绕当前位置连续追问。黄小西需要理解“这里”“刚才那个景点”“这个瀑布”等指代，并保留最近多轮上下文，让讲解从单向播报变成陪伴式对话。
-
-## 3. 路线场景：少看手机，直接问黄小西怎么走
-
-游览途中，李女士问：
-
-> “黄小西，最近的洗手间怎么走？”
-
-设备采集语音、当前位置、方向、网络状态和设备形态，并把这些信息上传给云端。云端识别出游客要找“洗手间”，匹配最近 POI，结合景区路网生成路线。黄小西播报：
-
-> “从你现在的位置向前走约 80 米，到石桥后右转，再沿主路走 50 米，右手边就是洗手间。我会在转弯处提醒你。”
-
-如果一家人走偏，设备继续上报位置变化，云端判断偏航后重新规划路线：
-
-> “你现在偏离了刚才的路线，可以从前方岔路左转回到主路。”
-
-如果定位不稳定，黄小西降级为地标化指引：
-
-> “我现在定位不太稳定。你可以先往游客中心方向走，看到蓝色指示牌后向右。”
-
-这条链路背后的技术逻辑是：硬件负责听清楚、知道自己在哪、把状态报上来、把结果播出去；云端负责听懂意图、匹配 POI、计算路线、判断偏航并生成适合语音播报的指引。
-
-## 4. 识景和 AR 场景：让景点变成可互动内容
-
-到达标志性景点后，孩子按下拍照键，对准眼前的瀑布、古建筑或民族文化展示区拍照。设备压缩图片，并附带位置、时间、设备 ID 和设备形态上传。黄小西识别后播报：
-
-> “我识别到你拍的是黄果树大瀑布观景区。这个角度能看到瀑布主体和水雾景观，我可以给你讲一个和这里有关的故事。”
-
-如果设备是眼镜或带屏胸牌，黄小西还可以展示景点标签、路线箭头、历史复原、民族文化动效或 AR 内容入口。游客拍下的照片和 AR 内容，可以通过订单号、取件码或可选账号绑定取回。
-
-这个场景让黄小西从“讲解设备”升级为“内容互动入口”。年轻游客获得拍照打卡和社交传播点，亲子家庭获得故事化互动，景区获得景点热度、拍照点位和内容消费数据。
-
-## 5. 弱网场景：有网完整体验，弱网不崩，断网有底线
-
-贵州景区常见山地、峡谷、瀑布、溶洞和人流密集区域，网络不稳定是高概率事件。李女士走到信号较弱的区域时，黄小西不会直接失效，而是提醒：
-
-> “当前网络较弱，我先根据本地缓存为你提供核心讲解和基础方向提示。网络恢复后，我会继续更新路线和内容。”
-
-离线状态下，设备仍能播放多语言欢迎语、核心景点讲解、基础设施 POI 和固定路线提示。实时天气、实时客流、在线识景和复杂交通建议需要联网时，黄小西会明确告知：
-
-> “这个问题需要联网确认。我现在可以先给你基础建议，网络恢复后再补充实时信息。”
-
-这个场景要求设备具备本地缓存、离线唤醒、基础 POI、基础路线和断网提示能力。核心体验不能完全依赖游客手机，也不能因为短时弱网让游客觉得设备不可用。
-
-## 6. 非景区使用场景：买走之后，黄小西仍然可用
-
-游览结束后，李女士把黄小西带回酒店、带上返程高铁，也可以带回外地继续使用。孩子回程路上继续问：
-
-> “黄小西，今天我们去过哪些地方？”
-
-黄小西可以根据当天会话和内容包，继续讲今天游览过的景点故事，也可以推荐下一站贵州行程：
-
-> “你今天去了黄果树大瀑布和陡坡塘。下次如果还想看贵州山水，可以去梵净山；如果想了解民族文化，可以去西江千户苗寨。”
-
-第二天在贵阳市区，李女士问：
-
-> “黄小西，今天不进景区，想吃贵州特色美食，怎么安排？”
-
-黄小西可以回答贵州旅游问题，推荐美食、非遗体验、城市散步路线、交通衔接和伴手礼。回到全国其他城市后，黄小西仍然可以作为贵州旅行助手和闲聊陪伴继续使用：
-
-> “下次来贵州适合什么时候？”  
-> “贵州有哪些适合带孩子去的地方？”  
-> “给我讲一个苗族银饰的故事。”  
-> “陪我聊聊今天旅行里最好玩的地方。”
-
-硬件能力从景区延伸到贵州全域，再延伸到游客离开贵州后的持续触达：
-
-- 游客获得可带走的贵州文旅 IP 硬件和持续内容服务。
-- 景区获得硬件销售收入、内容触达数据和二次到访线索。
-- 文旅局获得一个可覆盖贵州全域、并能在全国范围持续传播贵州内容的智能入口。
-- 运营方可以围绕能力升级、内容包、AR 内容、多景区权益、流量服务和售后服务设计持续收入。
-
-这台设备可以从“一次旅行中的导览工具”，延展为“贵州全域旅行助手”“可闲聊的黄小西陪伴终端”和“可持续升级的文旅内容入口”。
-
-## 7. 长尾收益场景：能力持续升级，收益持续发生
-
-李女士一家回到外地后，黄小西没有变成闲置设备。它可以继续回答贵州旅游问题、讲贵州故事、做下一次行程规划，也可以通过云端升级不断获得新能力。
-
-第一次使用时，黄小西主要解决景区讲解、路线指引和识景问题；后续能力升级后，可以增加更多贵州全域服务：
-
-- 新增景区内容包，如梵净山、西江千户苗寨、荔波小七孔、青岩古镇等。
-- 新增节庆和专题内容，如苗年、侗族大歌、村超、村 BA、非遗体验路线。
-- 新增亲子、年轻人、银发团、外国游客等不同人群的讲解风格。
-- 新增 AR 内容、拍照玩法、任务打卡和纪念内容。
-- 新增闲聊陪伴、旅行回忆、贵州知识问答和下次行程推荐。
-
-长尾收益来自四个方向：
-
-- **内容长尾：** 持续更新贵州景区、非遗、美食、节庆、路线和故事内容。
-- **景区长尾：** 从单个景区扩展到多景区、多城市、多线路。
-- **用户长尾：** 一次购买后，可覆盖游客本人、亲子家庭成员和后续同行人。
-- **能力长尾：** 通过云端模型、内容库、语音、识景、AR 和闲聊能力持续升级，让已售设备继续变强。
-- **商业长尾：** 后续可探索内容包、AR 包、多景区权益、流量服务、能力升级包、联名硬件和文创售后。
-
-## 8. 租赁补充场景
-
-对于不愿直接购买的游客，景区可提供租赁版本。游客在入口通过柜台、自助机或线上渠道支付押金和租金，领取设备后完成临时会话绑定和语言初始化。游览结束后，游客归还设备，运营人员检查状态、清理数据、消毒、充电，并将设备重新放回可租库存。
-
-租赁适合旺季快速验证游客热度、使用频次、租赁转化率、单台日均收入、设备损耗率和现场运维压力；购买适合验证 IP 硬件、文创售卖、持续内容服务和长尾收益。
-
----
-
-## 附件：
-
-### A. 核心使用场景
-
-- **购买激活：** 游客在机场、高铁站、景区入口或文创店购买黄小西设备，完成激活、内容预置和新手引导。
-- **语音伴游：** 游客通过唤醒词、按键或触控发起问答，覆盖景点讲解、贵州文化、美食、交通、住宿、购物和旅行建议。
-- **路线指引：** 支持主动问路、接近景点提醒、偏航纠正、定位不稳定时的地标化指引。
-- **拍照识景和 AR：** 支持拍照识别景点、生成讲解、触发 AR 内容或照片取回。
-- **弱网离线：** 核心讲解、欢迎语、基础 POI 和基础路线本地缓存，弱网降级可用。
-- **非景区延展：** 购买设备离开景区后，仍可在贵州全域和全国其他地方回答贵州旅游问题、闲聊陪伴、规划下一次行程，并作为后续内容入口。
-
-### B. 技术方案逻辑
-
-| 环节   | 硬件侧                | 云端侧                     |
-| ---- | ------------------ | ----------------------- |
-| 语音问答 | 采集语音、降噪、唤醒、播放 TTS  | ASR、意图识别、LLM 问答、内容安全    |
-| 路线指引 | 上报位置、方向、电量、网络、缓存状态 | POI 匹配、路线规划、偏航判断、播报生成   |
-| 主动提醒 | 基于位置触发或上报位置变化      | 判断触发范围、景点优先级、是否重复播报     |
-| 拍照识景 | 拍照、压缩、上传图片和位置信息    | 景点识别、置信度判断、讲解生成、AR 内容匹配 |
-| 弱网离线 | 本地缓存内容包、基础路线、离线唤醒  | 网络恢复后同步状态、更新内容、补充实时信息   |
-| 运营管理 | 设备 ID、激活、绑定、状态上报   | 订单、设备档案、内容版本、数据看板、售后管理  |
-
-### C. 商业闭环
-
-| 阶段    | 收益或验证点                            |
-| ----- | --------------------------------- |
-| 购买    | 硬件销售收入、IP 文创收入、设备激活数据             |
-| 使用    | 问答、讲解、导航、识景、AR 的真实体验数据            |
-| 非景区使用 | 贵州旅游问答、闲聊陪伴、行程回顾、后续景区推荐           |
-| 复用    | 贵州全域使用、多景区内容包、家庭成员复用、全国范围持续触达     |
-| 运营    | 设备状态、内容热度、景点热度、游客问题沉淀             |
-| 升级    | 通过内容库、模型、语音、识景、AR 和闲聊能力升级提升已售设备价值 |
-| 迭代    | 通过旺季数据判断硬件形态、价格、内容、升级包和运维模型       |
-
-### D. 项目组实施方向
-
-项目从 0-1 到落地，需要按“先定义体验闭环，再确定软硬件分工，再做样机联调，最后进入小规模投放验证”的方式推进。
-
-#### D.1 从 0-1 到落地的工作内容
-
-| 阶段        | 项目组重点工作                                   | 主要交付物              |
-| --------- | ----------------------------------------- | ------------------ |
-| 0：方向定义    | 明确目标用户、购买主场景、租赁补充场景、核心体验和商业闭环             | 用户故事、汇报版方案、核心场景清单  |
-| 1：需求拆解    | 拆解 AI 能力、硬件形态、联网、定位、音频、识景、AR、离线、运营和隐私要求   | PRD、硬件能力清单、接口字段草案  |
-| 2：厂商选型    | 对比骨传导耳机、胸牌、挂脖、眼镜、玩偶等形态，评估成本、交期、开放能力和量产风险  | 厂商评估表、样机清单、报价和风险表  |
-| 3：软件侧内容准备 | 建设景区讲解、贵州全域问答、美食非遗、路线 POI、多语言内容和离线内容包     | 内容库、问答集、POI 数据、离线包 |
-| 4：样机联调    | 打通语音采集、ASR、LLM、TTS、定位上报、路线指引、识景、AR、设备状态回传 | 样机 Demo、联调记录、问题清单  |
-| 5：运营闭环    | 设计购买激活、租赁归还、设备绑定、照片取回、内容升级、售后和数据看板        | 运营 SOP、后台需求、售后流程   |
-| 6：小规模投放   | 在试点景区进行真实游客测试，验证体验、购买、租赁、续航、弱网、损耗和收入      | 试点数据报告、商业测算、迭代建议   |
-
-#### D.2 项目组需要统筹的能力
-
-- **产品统筹：** 确定购买主线、租赁补充、核心体验优先级和阶段范围，避免硬件形态过多导致落地分散。
-- **内容统筹：** 建设贵州文旅知识、景区讲解、路线 POI、非遗美食、亲子故事、多语言表达和持续更新机制。
-- **技术统筹：** 定义硬件与云端接口、设备状态字段、数据安全边界、弱网降级策略和联调验收标准。
-- **商务统筹：** 推进硬件厂商报价、样机、交期、认证、量产能力、售后责任和持续服务费用确认。
-- **运营统筹：** 设计购买激活、设备绑定、租赁归还、消毒充电、库存状态、故障处理和游客售后闭环。
-- **数据统筹：** 建立购买转化、租赁转化、问答使用、路线完成、识景成功、离线可用、复购续费和长尾触达指标。
-
-#### D.3 软件方需提供的能力
-
-| 能力         | 说明                                           |
-| ---------- | -------------------------------------------- |
-| AI 智能体能力   | 支持贵州旅游问答、景区讲解、闲聊陪伴、路线意图识别、多轮对话和内容安全          |
-| 多语言能力      | 支持中文优先，并按客源裁剪英文、韩语等上线语言，覆盖 ASR、TTS 和内容表达     |
-| 路线和 POI 服务 | 支持景区内 POI 匹配、路线规划、接近提醒、偏航判断和地标化指引            |
-| 识景和 AR 服务  | 支持图片识别、置信度判断、讲解生成、AR 内容 ID 返回和照片/内容取回        |
-| 内容管理能力     | 支持景区内容包、贵州全域知识、离线包、多语言版本、AR 元数据和内容审核         |
-| 设备运营后台     | 支持设备档案、激活绑定、订单状态、在线状态、电量、位置、故障、缓存版本和数据看板     |
-| 升级和长尾服务    | 支持内容包更新、模型能力升级、闲聊能力增强、多景区权益和后续付费服务配置         |
-| 数据和安全      | 支持设备 ID、临时会话、位置、语音、图片、订单和账号绑定的最小必要采集、脱敏和授权管理 |
-
-#### D.4 硬件方需提供的能力
-
-| 能力      | 说明                                                 |
-| ------- | -------------------------------------------------- |
-| 设备形态与结构 | 提供适合购买和景区使用的骨传导耳机、胸牌、挂脖、眼镜或玩偶方案，兼顾佩戴、外观、消毒和耐用      |
-| 音频采集与播放 | 支持户外拾音、降噪、回声消除、本地唤醒、清晰播报、音量控制和连续对话                 |
-| 联网能力    | 支持独立 4G/Cat.1/eSIM 或 WiFi/蓝牙/热点等联网路径，并提供弱网、断网和恢复策略 |
-| 定位与状态上报 | 支持 GPS/北斗或其他定位方式，上报经纬度、精度、方向、电量、网络、缓存、故障和设备状态      |
-| 拍照和展示   | 如形态支持，提供摄像头、拍照触发、图片压缩、拍照反馈、屏幕/AR 展示或内容入口           |
-| 离线缓存    | 支持欢迎语、核心景点讲解、基础 POI、基础路线和离线唤醒，网络恢复后可更新内容包          |
-| 电源和可靠性  | 满足 6-8 小时典型游览续航，支持低电提醒、集中充电、过充保护、防泼溅、防摔和高频使用       |
-| 接口开放    | 提供设备控制、音频上传、TTS 播放、位置上报、状态上报、内容下发、固件升级和日志导出接口      |
-| 量产和售后   | 提供样机、报价、交期、认证计划、量产能力、质保策略、维修换新和备件方案                |
-
-#### D.5 联调和验收交付物
-
-- **样机演示：** 至少完成购买激活、语音问答、景点讲解、路线指引、弱网提示和设备状态上报。
-- **接口文档：** 明确设备 ID、会话 ID、位置、网络、电量、缓存、故障、语音、图片和播放控制字段。
-- **内容包验证：** 完成核心景点讲解、欢迎语、基础 POI、基础路线和离线提示的下发与播放。
-- **运营验证：** 完成购买激活、租赁补充、归还清理、消毒充电、库存状态和故障处理流程。
-- **数据看板：** 能看到设备激活、在线状态、使用次数、问答次数、路线请求、识景次数、离线次数和收入数据。
-- **投放评估：** 输出试点景区体验反馈、硬件问题、AI 问题、运营问题、成本收入和下一阶段迭代建议。
-
-### E. 重点验证指标
-
-- **购买转化率：** 到访游客中购买设备或购买套装的比例。
-- **租赁转化率：** 到访游客中租赁设备的比例。
-- **激活成功率：** 购买或租赁后成功完成开机引导和首次交互的比例。
-- **路线指引完成率：** 游客发起问路后成功到达目的地的比例。
-- **识景成功率：** 拍照识别结果准确且游客认可的比例。
-- **AR 互动率：** 可展示设备中触发 AR 内容的比例。
-- **离线可用成功率：** 弱网/断网下核心讲解和基础路线可用的比例。
-- **单台收入：** 设备售卖收入、租赁收入和后续内容收入的合计。
-- **复购和续费：** 内容包、AR 包、多景区权益、能力升级包或联名硬件的后续购买情况。
-- **长尾触达：** 非景区场景下设备继续被唤醒、继续问答、继续播放内容和继续闲聊的次数。
-    </script>
-    <script>
-      marked.setOptions({ gfm: true, breaks: true });
-      const md = document.getElementById("md-source").textContent.trim();
-      document.getElementById("content").innerHTML = marked.parse(md);
-    </script>
-  </body>
+  </header>
+
+  <div class="nav-overlay" id="navOverlay" aria-hidden="true"></div>
+
+  <nav class="side-nav" id="sideNav" aria-label="章节导航">
+    <div class="side-nav__toolbar">
+      <p class="side-nav__title">目录</p>
+      <button type="button" class="side-nav__collapse" id="navCollapseBtn" aria-label="收起目录" aria-expanded="true" title="收起/展开目录">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+    </div>
+    <div class="side-nav__list" id="sideNavList">
+        <a href="#top" data-target="top"><span class="nav-index">封面</span><span class="nav-label">方案封面</span></a>
+        <a href="#positioning" data-target="positioning"><span class="nav-index">一</span><span class="nav-label">产品定位</span></a>
+        <a href="#scenes" data-target="scenes"><span class="nav-index">二</span><span class="nav-label">用户故事</span></a>
+        <a href="#capabilities" data-target="capabilities"><span class="nav-index">三</span><span class="nav-label">产品能力与技术</span></a>
+        <a href="#story-requirements" class="nav-sub" data-target="story-requirements"><span class="nav-index">3.0</span><span class="nav-label">故事能力对应</span></a>
+        <a href="#hardware" class="nav-sub" data-target="hardware"><span class="nav-index">3.1</span><span class="nav-label">硬件规格</span></a>
+        <a href="#software" class="nav-sub" data-target="software"><span class="nav-index">3.2</span><span class="nav-label">软件功能</span></a>
+        <a href="#miniprogram" class="nav-sub" data-target="miniprogram"><span class="nav-index">3.3</span><span class="nav-label">小程序 MVP</span></a>
+        <a href="#admin" class="nav-sub" data-target="admin"><span class="nav-index">3.4</span><span class="nav-label">运营后台</span></a>
+        <a href="#marketing" data-target="marketing"><span class="nav-index">四</span><span class="nav-label">营销推广</span></a>
+        <a href="#profit" data-target="profit"><span class="nav-index">五</span><span class="nav-label">盈利模式</span></a>
+        <a href="#pilot" data-target="pilot"><span class="nav-index">六</span><span class="nav-label">试点方案</span></a>
+        <a href="#budget" data-target="budget"><span class="nav-index">七</span><span class="nav-label">预算收益</span></a>
+        <a href="#advantage" data-target="advantage"><span class="nav-index">八</span><span class="nav-label">核心优势</span></a>
+      <a href="#support" data-target="support"><span class="nav-index">九</span><span class="nav-label">落地支撑</span></a>
+    </div>
+  </nav>
+
+  <div class="layout">
+    <main id="main">
+      <!-- 封面 -->
+      <section class="hero reveal" id="top">
+        <div class="hero__inner">
+          <p class="hero__kicker">贵州文旅官方专属 IP</p>
+          <h1 class="hero__title">黄小西文旅智能陪伴玩偶</h1>
+          <p class="hero__lead">
+            依托景区蓝牙信标定位、离线 AI 语音交互、情感化硬件震动灯光反馈，打造「<strong>景区智能导览 + 民族文化沉浸 + 旅行记忆居家陪伴</strong>」三位一体文旅消费产品。
+          </p>
+        </div>
+      </section>
+
+      <!-- 一、定位 -->
+      <section class="section reveal" id="positioning">
+        <header class="section__head">
+          <span class="section__num" aria-hidden="true">一</span>
+          <div>
+            <h2 class="section__title">项目核心产品定位</h2>
+            <p class="section__lead">贵州文旅官方专属 AI 智能陪伴 IP · 苗族少女潮玩形象，实现旅游消费向长期品牌曝光转化</p>
+          </div>
+        </header>
+
+        <div class="product-identity reveal">
+          <p class="product-identity__lead">
+            <strong>黄小西是什么？</strong>贵州文旅官方专属 AI 智能陪伴 IP 玩偶，形态上为「<strong>潮玩外壳 + 苗族服饰外观 + 内置 AI 机芯</strong>」，既可<strong>吊挂随身</strong>，也可<strong>桌面摆放</strong>——不是静态文创摆件，而是能听、能说、有灯光与震动反馈的旅行伙伴。
+          </p>
+
+          <h3 class="product-identity__sub">长什么样 · 脸版形象（三选一方向）</h3>
+          <p style="margin:0 0 12px; font-size:13px; color:var(--ink-muted);">脸版设计共三个候选方向，均围绕苗族少女潮玩气质，情绪反馈各有侧重：</p>
+          <div class="product-face-grid">
+            <div class="product-face-card">
+              <h4>温暖少女</h4>
+              <p>安静注视、轻轻回应，让人觉得舒服；情绪是<strong>轻轻的善意</strong>，主打安全亲和。</p>
+            </div>
+            <div class="product-face-card">
+              <h4>灵动少女</h4>
+              <p>好奇机灵、有反应感；情绪是<strong>接住用户的话、有回应</strong>，适合导览互动。</p>
+            </div>
+            <div class="product-face-card">
+              <h4>元气傲娇少女</h4>
+              <p>带苗族生命力的古怪灵动；傲娇是<strong>可爱地不服气</strong>，不是冷淡或生气。</p>
+            </div>
+          </div>
+
+          <h3 class="product-identity__sub">长什么样 · 外观与结构要点</h3>
+          <ul class="product-spec-grid">
+            <li><strong>整体造型</strong>：苗族少女潮玩风，头脸搪胶 + 刺绣服装 + 银饰头饰</li>
+            <li><strong>头脸材质</strong>：搪胶 PVC / 软质 PVC，五官立体、适合潮玩陈列</li>
+            <li><strong>身体结构</strong>：ABS/PC 硬壳躯干，内置 AI 机芯空腔（主板、电池、喇叭、麦克风等）</li>
+            <li><strong>民族服饰</strong>：布料刺绣或印花，银饰头饰为电镀 ABS 轻量化</li>
+            <li><strong>交互隐藏</strong>：麦克风可藏于头饰/耳饰/胸前银饰纹理；出声孔可于胸前或背部</li>
+            <li><strong>使用形态</strong>：顶部隐藏承重吊环（骨架承重）；背部检修盖与 Type-C 充电口</li>
+          </ul>
+        </div>
+
+        <div class="value-trio reveal">
+          <div class="value-trio__item">
+            <h4>景区智能导览</h4>
+            <p>实用导游，解决找路难、踩坑多、游玩低效</p>
+          </div>
+          <div class="value-trio__item">
+            <h4>民族文化沉浸</h4>
+            <p>非遗民俗深度体验，从观光打卡升级文化记忆</p>
+          </div>
+          <div class="value-trio__item">
+            <h4>居家长效陪伴</h4>
+            <p>离园后旅行记忆复盘，情感纪念品持续传播</p>
+          </div>
+        </div>
+
+        <div class="positioning reveal" style="margin-top: 24px;">
+          <p>
+            <strong>黄小西</strong>为贵州文旅官方专属 AI 智能陪伴 IP 玩偶。产品区别于普通文创摆件、普通智能玩具：
+            <strong>景区内是实用导游，旅行后是情感纪念品、居家陪伴好物</strong>，实现一次性旅游消费转化为长期文旅品牌曝光，构建可商业化、可复制、可持续运营的贵州文旅 IP 落地载体。
+          </p>
+          <div class="tag-row">
+            <span class="tag">蓝牙信标精准定位</span>
+            <span class="tag">离线 AI 语音交互</span>
+            <span class="tag">震动灯光情感反馈</span>
+            <span class="tag tag--gold">GB 6675 玩具安全标准</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 二、用户故事 -->
+      <section class="section reveal" id="scenes">
+        <header class="section__head">
+          <span class="section__num">二</span>
+          <div>
+            <h2 class="section__title">用户故事</h2>
+            <p class="section__lead">以真实人物与场景为主线，还原四大核心落地故事中黄小西如何介入、化解困境并留下记忆</p>
+          </div>
+        </header>
+
+        <div class="user-stories">
+          <article class="user-story reveal">
+            <h3 class="user-story__title"><span>01</span>景区便民刚需服务</h3>
+            <div class="user-story__body">
+              <figure class="user-story__figure">
+                <img
+                  src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=900&q=80"
+                  alt="游客在景区查看路线指引，象征智能导览与便民出行"
+                  width="900"
+                  height="560"
+                  loading="lazy"
+                />
+              </figure>
+              <div class="user-story__content">
+                <p class="user-story__pain">故事背景：自由行最怕「手机没电、找路难、踩坑多、人流拥堵」</p>
+                <p class="user-story__desc user-story__desc--scene">暑假，大学生小林独自来到黄果树。瀑布气势磅礴，可人潮也把栈道挤得水泄不通。她跟着网红攻略走，却在岔路口犯了难——指示牌密密麻麻，手机导航又时好时坏。走到下午，电量只剩 12%，想找个卫生间和能歇脚的地方，问了几位路人，得到的答案各不相同。</p>
+                <p class="user-story__desc">她抱着刚买的<strong>黄小西</strong>轻声说：「小西，我现在在哪？附近有没有卫生间和充电宝？」几乎不用掏手机，玩偶便依托景区蓝牙信标<strong>精准定位</strong>，用温柔声线告诉她：前方 80 米有休息区，左转 120 米有认证充电宝；并提醒主游览线当前拥堵，建议改走侧线观景，省力又少排队。</p>
+                <p class="user-story__desc">傍晚在青岩古镇，石板路蜿蜒，小林再次唤醒黄小西问「怎么逛最省力」。玩偶结合实时人流，为她规划了一条避堵动线，还顺带介绍了古镇里的地道小吃和开放时间。一天下来，她没再为找路和踩坑焦虑，真正把心思放在了风景上——这正是景区便民刚需服务场景要解决的：<strong>让自由行高效、省心、玩得值</strong>。</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="user-story reveal">
+            <h3 class="user-story__title"><span>02</span>沉浸式民族文化体验</h3>
+            <div class="user-story__body user-story__body--reverse">
+              <figure class="user-story__figure">
+                <img
+                  src="https://images.unsplash.com/photo-1547981609-fda67a0cc981?w=900&q=80"
+                  alt="贵州侗寨苗寨建筑与民族文化风貌"
+                  width="900"
+                  height="560"
+                  loading="lazy"
+                />
+              </figure>
+              <div class="user-story__content">
+                <p class="user-story__pain">故事背景：许多游客「只拍照、不走心」，逛完侗寨苗寨却记不住文化</p>
+                <p class="user-story__desc user-story__desc--scene">来自上海的周阿姨和老伴第一次走进黔东南侗寨。鼓楼、吊脚楼、风雨桥，她举着手机拍了一整圈，转头却问老伴：「刚才那个表演叫什么？苗绣和侗绣有什么区别？」老伴摇摇头。导游团的讲解声远远传来，听不真切；他们想深入了解，又不知从何问起。</p>
+                <p class="user-story__desc">女儿临行前给他们买了<strong>黄小西</strong>。周阿姨在鼓楼前轻轻拍了拍玩偶，问：「给我讲讲这里的非遗故事吧。」黄小西双眼灯光柔和亮起，娓娓道来：侗族大歌为何被列入非遗、当地节庆习俗、山水间的传说，还有今晚寨子里哪场演出值得一看、附近哪家酸汤鱼最地道。</p>
+                <p class="user-story__desc">返程高铁上，周阿姨翻着手机里的照片，却能清晰讲出每一段建筑背后的故事。她说：「以前旅游像赶集，这次终于像读了一本书。」黄小西把<strong>「观光打卡」升级为「深度文化体验」</strong>，让贵州非遗、民俗、美食与演出不再只是镜头里的背景，而成为旅客心里带得走的专属记忆。</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="user-story reveal">
+            <h3 class="user-story__title"><span>03</span>亲子游玩互动</h3>
+            <div class="user-story__body">
+              <figure class="user-story__figure">
+                <img
+                  src="https://images.unsplash.com/photo-1515488042361-f3982e43e148?w=900&q=80"
+                  alt="亲子家庭在户外景区快乐互动"
+                  width="900"
+                  height="560"
+                  loading="lazy"
+                />
+              </figure>
+              <div class="user-story__content">
+                <p class="user-story__pain">故事背景：亲子出游常陷「孩子闹、家长累、人人刷手机」的困局</p>
+                <p class="user-story__desc user-story__desc--scene">五一假期，张女士带着 6 岁的儿子浩浩去荔波小七孔。车程两个多小时，浩浩已刷完半集动画片；到了景区，他对栈道旁的古树、碧潭兴致缺缺，只嚷着「没意思、要回家」。张女士一边哄，一边担心他磕碰哭闹，自己也没心思欣赏山水。</p>
+                <p class="user-story__desc">入园时，浩浩一眼看中了柜台上的<strong>黄小西</strong>——「妈妈，它眼睛会亮！」绑定后，玩偶成了他的游伴：在古桥边玩<strong>自然探索小游戏</strong>，答对「这棵树活了多少年」赢得夸奖；经过溶洞时，黄小西讲起儿童专属的贵州山水传说，浩浩听得入神，再也不吵着要手机。</p>
+                <p class="user-story__desc">午后浩浩跑累了，不小心把玩偶摔在地上。黄小西没有责备，而是轻轻震动、灯光转暖，用温柔语音说「没关系，我们一起歇一歇」——<strong>磕碰安抚、心跳震动、情绪灯光</strong>让孩子情绪很快平复。张女士终于能放慢脚步看风景，浩浩也在问答与故事里不知不觉完成了<strong>文旅启蒙</strong>。这正是亲子场景的价值：<strong>轻松遛娃，也让贵州的人文自然住进孩子心里</strong>。</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="user-story user-story--featured reveal">
+            <h3 class="user-story__title"><span>04</span>离园居家长期陪伴</h3>
+            <div class="user-story__body user-story__body--reverse">
+              <figure class="user-story__figure">
+                <img
+                  src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=900&q=80"
+                  alt="温馨居家场景，象征旅行后的长效陪伴"
+                  width="900"
+                  height="560"
+                  loading="lazy"
+                />
+              </figure>
+              <div class="user-story__content">
+                <p class="user-story__pain">故事背景：多数景区纪念品离园即闲置——黄小西要打破这一宿命</p>
+                <p class="user-story__desc user-story__desc--scene">浩浩一家结束贵州之行回到杭州。行李箱里的明信片上了墙，冰箱贴上了贴，唯独景区买的玩偶，第一周还被抱着睡，第二周就被塞进了柜子角落。张女士感慨：「钱花了，孩子的新鲜劲一过，就只剩占地方。」</p>
+                <p class="user-story__desc">黄小西不一样。它<strong>离园后不失效、不闲置</strong>：无需联网也能离线运行。夜里浩浩睡不着，抱着黄小西说「小西，陪我睡觉」——玩偶发出轻柔的<strong>心跳助眠震动</strong>，双眼灯光缓缓呼吸，房间安静下来。周末，浩浩又喊：「回忆贵州旅行！」黄小西便讲起他们在小七孔走过的桥、答过的谜题，像一本会说话的<strong>旅行记忆相册</strong>。</p>
+                <p class="user-story__desc">张女士把这段对话录成短视频发到朋友圈，评论区满是「哪里买的？我们也想去贵州」。一次性景区消费，就这样变成了家里的<strong>长期陪伴载体</strong>——孩子记得贵州，家长愿意分享，贵州文旅的形象在客厅里、在社交平台上持续生长。这正是项目最核心的差异化壁垒：<strong>景区里是导游，回家后是伙伴；有温度、有记忆，才有口碑与二次传播</strong>。</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+
+      <!-- 三、产品能力与技术实现 -->
+      <div id="capabilities" class="section-group">
+        <header class="section-group__head reveal">
+          <div class="section__head" style="margin-bottom:0;">
+            <span class="section__num">三</span>
+            <div>
+              <h2 class="section__title">产品能力与技术实现</h2>
+              <p class="section__lead">从用户故事出发，明确每项体验所需的硬件、整机软件、小程序与运营后台能力，并给出可对接落地的技术规格与功能清单</p>
+            </div>
+          </div>
+        </header>
+
+        <section class="section subsection reveal" id="story-requirements">
+          <header class="section__head">
+            <span class="section__num section__num--sub">3.0</span>
+            <div>
+              <h2 class="section__title">用户故事与能力对应</h2>
+              <p class="section__lead">基于用户故事串联功能-硬件-软件-小程序-后台的能力</p>
+            </div>
+          </header>
+          <div class="cap-network reveal">
+            <div class="cap-network__legend">
+              <span><i class="cap-network__dot cap-network__dot--func"></i>故事功能</span>
+              <span><i class="cap-network__dot cap-network__dot--hw"></i>硬件</span>
+              <span><i class="cap-network__dot cap-network__dot--sw"></i>整机软件</span>
+              <span><i class="cap-network__dot cap-network__dot--mp"></i>小程序</span>
+              <span><i class="cap-network__dot cap-network__dot--admin"></i>运营后台</span>
+            </div>
+            <div class="cap-network__diagram">
+              <aside class="cap-network__left">
+                <div class="cap-network__hub">用户故事</div>
+                <div class="cap-story-group">
+                  <div class="cap-story-group__head"><span>01</span>便民刚需</div>
+                  <ul>
+                    <li>语音唤醒问询</li>
+                    <li>蓝牙精准定位</li>
+                    <li>便民设施查询</li>
+                    <li>避堵省力动线</li>
+                  </ul>
+                </div>
+                <div class="cap-story-group">
+                  <div class="cap-story-group__head"><span>02</span>文化体验</div>
+                  <ul>
+                    <li>拍打触发讲解</li>
+                    <li>非遗深度讲解</li>
+                    <li>演出美食推荐</li>
+                    <li>无网完整可用</li>
+                  </ul>
+                </div>
+                <div class="cap-story-group">
+                  <div class="cap-story-group__head"><span>03</span>亲子互动</div>
+                  <ul>
+                    <li>探索小游戏</li>
+                    <li>儿童专属故事</li>
+                    <li>拍打撒娇</li>
+                    <li>磕碰安抚</li>
+                  </ul>
+                </div>
+                <div class="cap-story-group">
+                  <div class="cap-story-group__head"><span>04</span>离园陪伴</div>
+                  <ul>
+                    <li>离园离线使用</li>
+                    <li>心跳助眠</li>
+                    <li>回忆贵州旅行</li>
+                    <li>口碑种草传播</li>
+                    <li>保值与迭代</li>
+                  </ul>
+                </div>
+              </aside>
+              <div class="cap-network__lines" aria-hidden="true">
+                <svg class="cap-network__svg" viewBox="0 0 48 280" preserveAspectRatio="none">
+                  <path d="M0,140 H20 V42 H48" />
+                  <path d="M0,140 H20 V98 H48" />
+                  <path d="M0,140 H20 V154 H48" />
+                  <path d="M0,140 H20 V238 H48" />
+                </svg>
+              </div>
+              <div class="cap-network__right">
+                <div class="cap-network__pool cap-network__pool--hw">
+                  <h4 class="cap-network__pool-title">硬件能力</h4>
+                  <div class="cap-network__pool-chips">
+                    <span class="cap-net-kw cap-net-kw--hw">双麦收音</span>
+                    <span class="cap-net-kw cap-net-kw--hw">触摸按键</span>
+                    <span class="cap-net-kw cap-net-kw--hw">扬声器</span>
+                    <span class="cap-net-kw cap-net-kw--hw">蓝牙信标</span>
+                    <span class="cap-net-kw cap-net-kw--hw">拍打感应</span>
+                    <span class="cap-net-kw cap-net-kw--hw">RGB 灯光</span>
+                    <span class="cap-net-kw cap-net-kw--hw">震动马达</span>
+                    <span class="cap-net-kw cap-net-kw--hw">ESP32</span>
+                    <span class="cap-net-kw cap-net-kw--hw">电池续航</span>
+                    <span class="cap-net-kw cap-net-kw--hw">OTA</span>
+                    <span class="cap-net-kw cap-net-kw--hw">防震</span>
+                    <span class="cap-net-kw cap-net-kw--hw">本地存储</span>
+                  </div>
+                </div>
+                <div class="cap-network__pool cap-network__pool--sw">
+                  <h4 class="cap-network__pool-title">整机软件</h4>
+                  <div class="cap-network__pool-chips">
+                    <span class="cap-net-kw cap-net-kw--sw">景区智能导览</span>
+                    <span class="cap-net-kw cap-net-kw--sw">便民生活服务</span>
+                    <span class="cap-net-kw cap-net-kw--sw">非遗内容库</span>
+                    <span class="cap-net-kw cap-net-kw--sw">亲子互动</span>
+                    <span class="cap-net-kw cap-net-kw--sw">情感 AI</span>
+                    <span class="cap-net-kw cap-net-kw--sw">离线智能更新</span>
+                    <span class="cap-net-kw cap-net-kw--sw">旅行记忆</span>
+                  </div>
+                </div>
+                <div class="cap-network__pool cap-network__pool--mp">
+                  <h4 class="cap-network__pool-title">小程序端</h4>
+                  <div class="cap-network__pool-chips">
+                    <span class="cap-net-kw cap-net-kw--mp">设备蓝牙管理</span>
+                    <span class="cap-net-kw cap-net-kw--mp">优惠推送</span>
+                    <span class="cap-net-kw cap-net-kw--mp">灯光自定义</span>
+                    <span class="cap-net-kw cap-net-kw--mp">家长管控</span>
+                    <span class="cap-net-kw cap-net-kw--mp">语音风格</span>
+                    <span class="cap-net-kw cap-net-kw--mp">震动调节</span>
+                    <span class="cap-net-kw cap-net-kw--mp">记忆相册</span>
+                    <span class="cap-net-kw cap-net-kw--mp">社交分享</span>
+                    <span class="cap-net-kw cap-net-kw--mp">售后自助</span>
+                    <span class="cap-net-kw cap-net-kw--mp">在线检测</span>
+                  </div>
+                </div>
+                <div class="cap-network__pool cap-network__pool--admin">
+                  <h4 class="cap-network__pool-title">运营后台</h4>
+                  <div class="cap-network__pool-chips">
+                    <span class="cap-net-kw cap-net-kw--admin">状态监控告警</span>
+                    <span class="cap-net-kw cap-net-kw--admin">大数据运营</span>
+                    <span class="cap-net-kw cap-net-kw--admin">远程升级</span>
+                    <span class="cap-net-kw cap-net-kw--admin">运营分析</span>
+                    <span class="cap-net-kw cap-net-kw--admin">设备台账</span>
+                    <span class="cap-net-kw cap-net-kw--admin">设备告警</span>
+                    <span class="cap-net-kw cap-net-kw--admin">安全风控</span>
+                    <span class="cap-net-kw cap-net-kw--admin">裂变分析</span>
+                    <span class="cap-net-kw cap-net-kw--admin">使用统计</span>
+                    <span class="cap-net-kw cap-net-kw--admin">批量升级</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <p class="cap-matrix-heading">功能与能力对照（关键词）</p>
+            <div class="cap-matrix-wrap">
+              <table class="cap-matrix">
+                <thead>
+                  <tr>
+                    <th>故事功能</th>
+                    <th>硬件</th>
+                    <th>软件</th>
+                    <th>小程序</th>
+                    <th>后台</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td class="col-func">语音唤醒问询</td><td><span class="cap-net-kw cap-net-kw--hw">双麦收音</span><span class="cap-net-kw cap-net-kw--hw">触摸</span><span class="cap-net-kw cap-net-kw--hw">扬声器</span></td><td><span class="cap-net-kw cap-net-kw--sw">景区导览</span></td><td><span class="cap-net-kw cap-net-kw--mp">蓝牙管理</span></td><td><span class="cap-net-kw cap-net-kw--admin">监控告警</span></td></tr>
+                  <tr><td class="col-func">蓝牙精准定位</td><td><span class="cap-net-kw cap-net-kw--hw">蓝牙信标</span></td><td><span class="cap-net-kw cap-net-kw--sw">便民</span><span class="cap-net-kw cap-net-kw--sw">导览</span></td><td><span class="cap-net-kw cap-net-kw--empty">—</span></td><td><span class="cap-net-kw cap-net-kw--admin">大数据</span></td></tr>
+                  <tr><td class="col-func">便民设施查询</td><td><span class="cap-net-kw cap-net-kw--hw">扬声器</span></td><td><span class="cap-net-kw cap-net-kw--sw">便民生活</span></td><td><span class="cap-net-kw cap-net-kw--mp">优惠推送</span></td><td><span class="cap-net-kw cap-net-kw--admin">远程升级</span></td></tr>
+                  <tr><td class="col-func">避堵省力动线</td><td><span class="cap-net-kw cap-net-kw--empty">—</span></td><td><span class="cap-net-kw cap-net-kw--sw">景区导览</span></td><td><span class="cap-net-kw cap-net-kw--empty">—</span></td><td><span class="cap-net-kw cap-net-kw--admin">运营分析</span></td></tr>
+                  <tr><td class="col-func">拍打触发讲解</td><td><span class="cap-net-kw cap-net-kw--hw">拍打</span><span class="cap-net-kw cap-net-kw--hw">RGB</span></td><td><span class="cap-net-kw cap-net-kw--sw">情感AI</span><span class="cap-net-kw cap-net-kw--sw">非遗</span></td><td><span class="cap-net-kw cap-net-kw--mp">灯光</span></td><td><span class="cap-net-kw cap-net-kw--empty">—</span></td></tr>
+                  <tr><td class="col-func">非遗深度讲解</td><td><span class="cap-net-kw cap-net-kw--hw">扬声器</span><span class="cap-net-kw cap-net-kw--hw">存储</span></td><td><span class="cap-net-kw cap-net-kw--sw">非遗库</span></td><td><span class="cap-net-kw cap-net-kw--empty">—</span></td><td><span class="cap-net-kw cap-net-kw--admin">远程升级</span><span class="cap-net-kw cap-net-kw--admin">统计</span></td></tr>
+                  <tr><td class="col-func">演出美食推荐</td><td><span class="cap-net-kw cap-net-kw--hw">扬声器</span></td><td><span class="cap-net-kw cap-net-kw--sw">非遗</span><span class="cap-net-kw cap-net-kw--sw">便民</span></td><td><span class="cap-net-kw cap-net-kw--mp">优惠</span></td><td><span class="cap-net-kw cap-net-kw--admin">大数据</span></td></tr>
+                  <tr><td class="col-func">无网完整可用</td><td><span class="cap-net-kw cap-net-kw--hw">ESP32</span></td><td><span class="cap-net-kw cap-net-kw--sw">离线更新</span></td><td><span class="cap-net-kw cap-net-kw--empty">—</span></td><td><span class="cap-net-kw cap-net-kw--admin">批量升级</span></td></tr>
+                  <tr><td class="col-func">探索小游戏</td><td><span class="cap-net-kw cap-net-kw--hw">扬声器</span><span class="cap-net-kw cap-net-kw--hw">触摸</span></td><td><span class="cap-net-kw cap-net-kw--sw">亲子互动</span></td><td><span class="cap-net-kw cap-net-kw--mp">家长管控</span></td><td><span class="cap-net-kw cap-net-kw--admin">大数据</span></td></tr>
+                  <tr><td class="col-func">儿童专属故事</td><td><span class="cap-net-kw cap-net-kw--hw">扬声器</span></td><td><span class="cap-net-kw cap-net-kw--sw">亲子</span><span class="cap-net-kw cap-net-kw--sw">非遗</span></td><td><span class="cap-net-kw cap-net-kw--mp">语音风格</span></td><td><span class="cap-net-kw cap-net-kw--admin">远程升级</span></td></tr>
+                  <tr><td class="col-func">拍打撒娇</td><td><span class="cap-net-kw cap-net-kw--hw">拍打</span><span class="cap-net-kw cap-net-kw--hw">触摸</span></td><td><span class="cap-net-kw cap-net-kw--sw">情感AI</span></td><td><span class="cap-net-kw cap-net-kw--mp">震动调节</span></td><td><span class="cap-net-kw cap-net-kw--empty">—</span></td></tr>
+                  <tr><td class="col-func">磕碰安抚</td><td><span class="cap-net-kw cap-net-kw--hw">震动</span><span class="cap-net-kw cap-net-kw--hw">RGB</span><span class="cap-net-kw cap-net-kw--hw">防震</span></td><td><span class="cap-net-kw cap-net-kw--sw">情感AI</span></td><td><span class="cap-net-kw cap-net-kw--mp">震动</span><span class="cap-net-kw cap-net-kw--mp">灯光</span></td><td><span class="cap-net-kw cap-net-kw--admin">设备告警</span></td></tr>
+                  <tr><td class="col-func">离园离线使用</td><td><span class="cap-net-kw cap-net-kw--hw">电池</span><span class="cap-net-kw cap-net-kw--hw">主控</span></td><td><span class="cap-net-kw cap-net-kw--sw">离线更新</span></td><td><span class="cap-net-kw cap-net-kw--mp">在线检测</span><span class="cap-net-kw cap-net-kw--mp">自检</span></td><td><span class="cap-net-kw cap-net-kw--admin">设备台账</span></td></tr>
+                  <tr><td class="col-func">心跳助眠</td><td><span class="cap-net-kw cap-net-kw--hw">震动</span><span class="cap-net-kw cap-net-kw--hw">RGB</span></td><td><span class="cap-net-kw cap-net-kw--sw">情感AI</span></td><td><span class="cap-net-kw cap-net-kw--mp">震动调节</span></td><td><span class="cap-net-kw cap-net-kw--empty">—</span></td></tr>
+                  <tr><td class="col-func">回忆贵州旅行</td><td><span class="cap-net-kw cap-net-kw--hw">双麦</span><span class="cap-net-kw cap-net-kw--hw">扬声器</span></td><td><span class="cap-net-kw cap-net-kw--sw">旅行记忆</span></td><td><span class="cap-net-kw cap-net-kw--mp">记忆相册</span></td><td><span class="cap-net-kw cap-net-kw--admin">大数据</span></td></tr>
+                  <tr><td class="col-func">口碑种草传播</td><td><span class="cap-net-kw cap-net-kw--empty">—</span></td><td><span class="cap-net-kw cap-net-kw--sw">旅行记忆</span></td><td><span class="cap-net-kw cap-net-kw--mp">社交分享</span></td><td><span class="cap-net-kw cap-net-kw--admin">裂变分析</span></td></tr>
+                  <tr><td class="col-func">保值与迭代</td><td><span class="cap-net-kw cap-net-kw--hw">OTA</span><span class="cap-net-kw cap-net-kw--hw">快充</span></td><td><span class="cap-net-kw cap-net-kw--sw">离线更新</span></td><td><span class="cap-net-kw cap-net-kw--mp">售后自助</span></td><td><span class="cap-net-kw cap-net-kw--admin">远程升级</span><span class="cap-net-kw cap-net-kw--admin">风控</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+
+        <section class="section subsection reveal" id="hardware">
+          <header class="section__head">
+            <span class="section__num section__num--sub">3.1</span>
+            <div>
+              <h2 class="section__title">硬件详细规格参数</h2>
+              <p class="section__lead">可直接对接厂商量产的技术指标清单</p>
+            </div>
+          </header>
+          <div class="table-wrap reveal">
+<table>
+            <thead>
+              <tr><th scope="col">硬件模块</th><th scope="col">精准落地规格参数</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>主控芯片</td><td>ESP32-S3FN8，Xtensa LX7 双核 32 位，主频 240MHz，512KB SRAM + 384KB ROM；2.4GHz Wi-Fi 802.11b/g/n、蓝牙 5.0 LE，低功耗稳定运行</td></tr>
+              <tr><td>景区定位模块</td><td>蓝牙 5.0 信标，兼容 Eddystone UID；定位精度 ≤2.67 米，响应延迟 ≤1 秒，10 米内信号稳定，适配贵州景区信标系统</td></tr>
+              <tr><td>收音降噪系统</td><td>双麦阵列（间距 15mm±2mm）；NLMS 自适应降噪，噪声抑制 ≥10dB；拾音 0.5–3 米；支持 1 秒唤醒、2 秒打断</td></tr>
+              <tr><td>发声单元</td><td>4Ω 1W 扬声器，频响 200Hz–16kHz，灵敏度 85dB；0–30 级音量可调，专属温柔少女声线</td></tr>
+              <tr><td>智能交互感应</td><td>IPX4 防水触摸按键（寿命 ≥50 万次）；801S 拍打感应（≤10ms）；1027 扁平震动马达，心跳/流水/剧情多模式，低噪安抚</td></tr>
+              <tr><td>灯光显示系统</td><td>5mm RGB 双眼 LED，0–255 级 PWM；蓝/黄/绿三色场景联动，常亮、呼吸、闪烁</td></tr>
+              <tr><td>电源续航系统</td><td>500mAh 聚合物锂电池；连续使用 ≥4 小时，待机 ≥7 天；Type-C 5V/1A 快充，2 小时满电</td></tr>
+              <tr><td>材质安全标准</td><td>亲肤短毛绒可拆洗，加厚 ABS 防震内壳，1 米防摔；整机 ≤150g；符合 GB 6675 国家玩具安全标准，全龄段安全可用</td></tr>
+            </tbody>
+          </table>
+          </div>
+        </section>
+
+        <section class="section subsection reveal" id="software">
+          <header class="section__head">
+            <span class="section__num section__num--sub">3.2</span>
+            <div>
+              <h2 class="section__title">整机软件核心功能</h2>
+              <p class="section__lead">终版落地版功能清单（已剔除民族语言教学模块）</p>
+            </div>
+          </header>
+          <div class="table-wrap reveal">
+<table>
+            <thead>
+              <tr><th scope="col">软件模块</th><th scope="col">详细落地功能</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>景区智能导览</td><td>景点定点自动讲解、游玩贴士、历史传说、实时避堵路线、人流预判、出入口省力路线推荐</td></tr>
+              <tr><td>便民生活服务</td><td>卫生间、充电宝、饮水点、休息区、认证餐饮商户查询，配套游玩优惠推送</td></tr>
+              <tr><td>贵州非遗内容库</td><td>苗族、侗族非遗故事、民俗文化、山水传说、美食溯源、节庆科普，全量离线缓存</td></tr>
+              <tr><td>亲子趣味互动</td><td>景区探索小游戏、自然科普问答、景点趣味谜题，适配亲子游玩</td></tr>
+              <tr><td>情感化 AI 交互</td><td>轻拍撒娇、重拍温柔提醒、磕碰自动安抚；故事剧情联动震动；低落情绪温柔语音 + 心跳助眠</td></tr>
+              <tr><td>离线 & 智能更新</td><td>无网络完整可用；联网静默自动更新新景区、新活动、新故事</td></tr>
+              <tr><td>旅行记忆系统</td><td>自动记录游玩轨迹与互动记录，语音唤醒「回忆贵州旅行」，复刻专属旅途记忆</td></tr>
+            </tbody>
+          </table>
+          </div>
+        </section>
+
+        <section class="section subsection reveal" id="miniprogram">
+          <header class="section__head">
+            <span class="section__num section__num--sub">3.3</span>
+            <div>
+              <h2 class="section__title">微信小程序 MVP 完整功能</h2>
+              <p class="section__lead">用户端设备管理与传播裂变闭环</p>
+            </div>
+          </header>
+          <div class="table-wrap reveal">
+<table>
+            <thead>
+              <tr><th scope="col">功能模块</th><th scope="col">核心功能说明</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>设备蓝牙管理</td><td>一键绑定、重连、解绑、设备在线检测、硬件自检</td></tr>
+              <tr><td>个性化参数设置</td><td>震动强度调节、语音风格切换、灯光模式自定义</td></tr>
+              <tr><td>家长安全管控</td><td>使用时长限制、远程暂停、内容管控，防沉迷</td></tr>
+              <tr><td>旅行记忆相册</td><td>自动生成游玩轨迹、互动日志、旅途高光记录</td></tr>
+              <tr><td>社交分享传播</td><td>一键生成文旅记忆卡片、精彩片段，支持朋友圈裂变传播</td></tr>
+              <tr><td>售后自助服务</td><td>麦克风/喇叭/电池/感应自检、故障上报、客服对接入口</td></tr>
+            </tbody>
+          </table>
+          </div>
+        </section>
+
+        <section class="section subsection reveal" id="admin">
+          <header class="section__head">
+            <span class="section__num section__num--sub">3.4</span>
+            <div>
+              <h2 class="section__title">运营管理后台功能</h2>
+              <p class="section__lead">开发商必备运维体系，支撑规模化运营</p>
+            </div>
+          </header>
+          <div class="table-wrap reveal">
+<table>
+            <thead>
+              <tr><th scope="col">功能模块</th><th scope="col">核心能力</th><th scope="col">项目价值</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>设备台账管理</td><td>全量设备编号、批次、固件版本、出厂信息建档，多维度筛选</td><td>设备全生命周期溯源，支撑售后与品控</td></tr>
+              <tr><td>远程批量升级</td><td>单台/批量静默升级、进度监控、失败重试</td><td>持续迭代内容与功能，设备永久保值</td></tr>
+              <tr><td>设备状态监控告警</td><td>在线状态、电量、信号、异常报错实时监测，异常告警</td><td>降低售后成本，快速响应故障</td></tr>
+              <tr><td>大数据运营分析</td><td>激活量、景区热度、功能使用率、用户偏好统计</td><td>指导内容迭代、景区运营、营销投放</td></tr>
+              <tr><td>安全风控体系</td><td>设备黑白名单、远程锁定、传输加密、隐私脱敏</td><td>保障设备安全与用户数据合规</td></tr>
+            </tbody>
+          </table>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- 四、营销 -->
+      <section class="section reveal" id="marketing">
+        <header class="section__head">
+          <span class="section__num">四</span>
+          <div>
+            <h2 class="section__title">整体营销推广方案</h2>
+            <p class="section__lead">五大推广路径一屏总览：方案要点对照终版文档，便于汇报快速浏览</p>
+          </div>
+        </header>
+
+        <div class="marketing-grid reveal">
+          <div class="marketing-card marketing-card--featured">
+            <div class="marketing-card__head">
+              <span class="marketing-card__num">1</span>
+              <h4>景区沉浸式体验引流</h4>
+            </div>
+            <p class="marketing-card__key">核心获客 · 先体验后购买</p>
+            <ul class="marketing-card__points">
+              <li>游客中心、主入口、文创街区设展台</li>
+              <li>免费试听试玩，灯光震动交互</li>
+              <li>降低门槛，提升当场转化率</li>
+            </ul>
+          </div>
+
+          <div class="marketing-card">
+            <div class="marketing-card__head">
+              <span class="marketing-card__num">2</span>
+              <h4>全渠道铺货合作</h4>
+            </div>
+            <p class="marketing-card__key">进店 · 跟团 · 住店</p>
+            <ul class="marketing-card__points">
+              <li>文创店、特产店、商超定点陈列</li>
+              <li>旅行社套餐捆绑、加价购升级</li>
+              <li>民宿酒店样品体验，扫码购买</li>
+            </ul>
+          </div>
+
+          <div class="marketing-card">
+            <div class="marketing-card__head">
+              <span class="marketing-card__num">3</span>
+              <h4>场景化活动促销</h4>
+            </div>
+            <p class="marketing-card__key">当场成交刺激</p>
+            <ul class="marketing-card__points">
+              <li>赠手绘打卡地图、游玩攻略</li>
+              <li>特色商户优惠券</li>
+              <li>提升性价比感知</li>
+            </ul>
+          </div>
+
+          <div class="marketing-card">
+            <div class="marketing-card__head">
+              <span class="marketing-card__num">4</span>
+              <h4>IP 衍生持续种草</h4>
+            </div>
+            <p class="marketing-card__key">走量 + 复购 + 传播</p>
+            <ul class="marketing-card__points">
+              <li>基础款标准玩偶景区走量</li>
+              <li>民族限定盲盒、换装皮肤</li>
+              <li>配饰周边，拉高毛利</li>
+            </ul>
+          </div>
+
+          <div class="marketing-card">
+            <div class="marketing-card__head">
+              <span class="marketing-card__num">5</span>
+              <h4>用户自发口碑裂变</h4>
+            </div>
+            <p class="marketing-card__key">UGC · 长效流量</p>
+            <ul class="marketing-card__points">
+              <li>情感记忆，归家仍愿分享</li>
+              <li>朋友圈、小红书、短视频</li>
+              <li>自发种草，免费文旅传播</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 五、盈利 -->
+      <section class="section reveal" id="profit">
+        <header class="section__head">
+          <span class="section__num">五</span>
+          <div>
+            <h2 class="section__title">项目完整盈利模式</h2>
+            <p class="section__lead">五维收入结构；加粗处为变现渠道与实现方式要点</p>
+          </div>
+        </header>
+        <div class="advantage-grid">
+          <div class="advantage reveal">
+            <h4>① 硬件产品主营收益</h4>
+            <p>严控<strong>量产成本</strong>，以亲民<strong>零售价</strong>在<strong>景区文创店</strong>、游客商超等<strong>零售</strong>终端<strong>走量销售</strong>，依靠<strong>高周转</strong>形成基础稳定<strong>现金流</strong>（核心盈利）。</p>
+          </div>
+          <div class="advantage reveal">
+            <h4>② 渠道分成收益</h4>
+            <p>与<strong>景区</strong>门店、<strong>旅行社</strong>套餐、<strong>民宿/酒店</strong>客房渠道建立<strong>分成机制</strong>，借合作方触点<strong>零成本铺货</strong>，按销量分成变现。</p>
+          </div>
+          <div class="advantage reveal">
+            <h4>③ IP 衍生品二次收益</h4>
+            <p><strong>盲盒</strong>系列、<strong>换装皮肤</strong>、<strong>配饰周边</strong>等轻库存高毛利品类，在<strong>景区零售</strong>与线上商城持续发售，拉动<strong>二次、三次复购</strong>。</p>
+          </div>
+          <div class="advantage reveal">
+            <h4>④ 内容增值收益（后期）</h4>
+            <p><strong>节日限定故事包</strong>、<strong>季节文旅专题</strong>、<strong>儿童益智付费专辑</strong>等数字内容<strong>付费下载/订阅</strong>，形成<strong>轻资产</strong>长期增值收入。</p>
+          </div>
+          <div class="advantage reveal" style="grid-column: 1 / -1; max-width: 100%;">
+            <h4>⑤ 政企文旅合作收益</h4>
+            <p>成熟后承接<strong>景区 IP 活化</strong>、<strong>文旅数字化体验升级</strong>、<strong>研学亲子</strong>项目配套等<strong>政企/景区采购</strong>，以项目制获取合作收益，提升整体估值。</p>
+          </div>
+        </div>
+        <p class="placeholder-note" id="profit-placeholder">
+          零售价、单台成本、毛利率等财务测算数据原文未列明，确认后可补充可视化收益模型图表。
+        </p>
+      </section>
+
+      <!-- 六、试点 -->
+      <section class="section reveal" id="pilot">
+        <header class="section__head">
+          <span class="section__num">六</span>
+          <div>
+            <h2 class="section__title">项目试点落地方案</h2>
+            <p class="section__lead">青岩古镇 + 肇兴侗寨 · 500 台小批量闭环验证</p>
+          </div>
+        </header>
+
+        <div class="card reveal" style="margin-bottom: 24px;">
+          <h3 style="margin:0 0 12px; font-size:17px; color:var(--blue-primary);">试点选址</h3>
+          <p style="margin:0; color:var(--ink-muted);">优先选取<strong>青岩古镇、肇兴侗寨</strong>两大成熟、人流稳定、亲子与年轻客群密集景区，小范围闭环试点。</p>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline__item reveal">
+            <h4>产量与风险控制</h4>
+            <p>首批小批量试产 <strong>500 台</strong>，轻资产启动，控制前期投入风险，以市场真实数据验证产品模型。</p>
+          </div>
+          <div class="timeline__item reveal">
+            <h4>落地动作（四步）</h4>
+            <p>① 景区设立小型体验展示位，现场功能演示；② 设备贴简易使用指引；③ 配合景区打卡活动拉升购买率；④ 全流程记录用户反馈、成交率、功能使用偏好。</p>
+          </div>
+          <div class="timeline__item reveal">
+            <h4>试点核心目标</h4>
+            <p>验证游客接受度、真实转化率、功能适配性、用户痛点反馈，为后续全贵州景区规模化铺开、大批量量产提供数据依据。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 七、预算 -->
+      <section class="section reveal" id="budget">
+        <header class="section__head">
+          <span class="section__num">七</span>
+          <div>
+            <h2 class="section__title">项目预算与收益预测</h2>
+            <p class="section__lead">轻资产启动 · 低投入验证 · 旺季规模化扩张</p>
+          </div>
+        </header>
+
+        <div class="scene-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+          <div class="stat-card reveal" style="background:var(--card); border:1px solid var(--border); color:var(--ink); box-shadow:var(--shadow);">
+            <div class="stat-card__value" style="color:var(--accent-deep);">5<small style="font-size:14px;">万元</small></div>
+            <p class="stat-card__label" style="color:var(--ink-muted);">首批试点预算（500台量产+包装+物料+运营）</p>
+          </div>
+          <div class="stat-card reveal" style="background:var(--card); border:1px solid var(--border); color:var(--ink); box-shadow:var(--shadow);">
+            <div class="stat-card__value" style="color:var(--blue-primary); font-size:22px;">短期</div>
+            <p class="stat-card__label" style="color:var(--ink-muted);">试点周期：体验式销售，盈亏平衡 + 正向盈利</p>
+          </div>
+          <div class="stat-card reveal" style="background:var(--card); border:1px solid var(--border); color:var(--ink); box-shadow:var(--shadow);">
+            <div class="stat-card__value" style="color:var(--blue-primary); font-size:22px;">5–10月</div>
+            <p class="stat-card__label" style="color:var(--ink-muted);">中期：贵州文旅旺季，全景区铺货，稳定月度利润</p>
+          </div>
+          <div class="stat-card reveal" style="background:var(--card); border:1px solid #7dd3fc; color:var(--ink); box-shadow:var(--shadow);">
+            <div class="stat-card__value" style="color:var(--accent-deep); font-size:22px;">长期</div>
+            <p class="stat-card__label" style="color:var(--ink-muted);">硬件常态化 + 衍生品毛利 + 用户传播降本 + 政企/IP 联名</p>
+          </div>
+        </div>
+
+        <p class="placeholder-note">
+          具体销售额、回本周期、年度利润预测等量化指标原文为定性描述，确认数据后可增加图表模块。
+        </p>
+      </section>
+
+      <!-- 八、优势 -->
+      <section class="section reveal" id="advantage">
+        <header class="section__head">
+          <span class="section__num">八</span>
+          <div>
+            <h2 class="section__title">项目核心竞争优势</h2>
+            <p class="section__lead">六大壁垒构建差异化护城河</p>
+          </div>
+        </header>
+        <div class="advantage-grid">
+          <div class="advantage reveal"><h4>实用性壁垒</h4><p>非摆设文创，景区真实刚需，解决游客痛点。</p></div>
+          <div class="advantage reveal"><h4>情感壁垒</h4><p>旅行记忆复盘 + 情感震动安抚，有温度、有记忆、可留存。</p></div>
+          <div class="advantage reveal"><h4>场景壁垒</h4><p>唯一覆盖「景区游玩 + 居家陪伴」双场景的贵州文旅 IP 产品。</p></div>
+          <div class="advantage reveal"><h4>成本壁垒</h4><p>量产成本可控、售价亲民、受众全覆盖。</p></div>
+          <div class="advantage reveal"><h4>传播壁垒</h4><p>用户自发社交裂变，自带文旅宣传属性。</p></div>
+          <div class="advantage reveal"><h4>运营壁垒</h4><p>软硬件 + 小程序 + 后台完整闭环，可标准化量产、长期迭代。</p></div>
+        </div>
+      </section>
+
+      <!-- 九、支撑 -->
+      <section class="section reveal" id="support">
+        <header class="section__head">
+          <span class="section__num">九</span>
+          <div>
+            <h2 class="section__title">项目落地所需支撑</h2>
+            <p class="section__lead">政产学研协同，推动试点快速落地</p>
+          </div>
+        </header>
+        <div class="support-cta reveal">
+          <h3>恳请支持事项</h3>
+          <ul class="support-list">
+            <li><strong>资金支持</strong>首批试点启动资金</li>
+            <li><strong>资源对接</strong>景区展位、渠道合作资源</li>
+            <li><strong>供应链</strong>硬件量产落地保障</li>
+            <li><strong>技术交付</strong>固件、小程序、管理后台开发</li>
+          </ul>
+          <p class="placeholder-note" style="margin-top:24px; text-align:left;">
+            联系人、联系电话、牵头单位等信息待确认后可展示于页脚。
+          </p>
+        </div>
+      </section>
+
+      <footer>
+        <p>黄小西文旅智能陪伴玩偶 · 完整商业落地方案（终版）</p>
+        <p style="margin-top:8px; opacity:0.7;">本页面依据方案终版文档生成，仅供内部汇报使用</p>
+      </footer>
+    </main>
+  </div>
+
+  <button type="button" class="nav-toggle" id="navToggle" aria-label="打开章节导航" aria-expanded="false">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+  </button>
+
+  <script>
+    document.documentElement.classList.add("js-enabled");
+    document.documentElement.setAttribute("data-report-build", "nav-layout-v3");
+    (function () {
+      var body = document.body;
+      var nav = document.getElementById("sideNav");
+      var overlay = document.getElementById("navOverlay");
+      var toggle = document.getElementById("navToggle");
+      var collapseBtn = document.getElementById("navCollapseBtn");
+      var navLinks = document.querySelectorAll("#sideNavList a");
+      var MOBILE_BP = 900;
+      var STORAGE_KEY = "huangxiaoxi-sidebar-collapsed-v3";
+      var BUILD_ID = "nav-layout-v3";
+
+      try {
+        localStorage.removeItem("huangxiaoxi-sidebar-collapsed");
+        localStorage.removeItem("huangxiaoxi-sidebar-collapsed-v2");
+      } catch (err) {}
+
+      navLinks.forEach(function (link) {
+        var labelEl = link.querySelector(".nav-label");
+        if (labelEl) link.setAttribute("title", labelEl.textContent.trim());
+      });
+
+      function isMobile() {
+        return window.matchMedia("(max-width: " + MOBILE_BP + "px)").matches;
+      }
+
+      function headerOffset() {
+        var v = getComputedStyle(document.documentElement).getPropertyValue("--header-h").trim();
+        return parseInt(v, 10) || 64;
+      }
+
+      function scrollToSection(id) {
+        if (!id) return;
+        var el = document.getElementById(id);
+        if (!el) return;
+        var top = el.getBoundingClientRect().top + window.scrollY - headerOffset() - 16;
+        window.scrollTo({
+          top: Math.max(0, top),
+          behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"
+        });
+      }
+
+      function setActiveNav(id) {
+        navLinks.forEach(function (a) {
+          a.classList.toggle("is-active", a.getAttribute("data-target") === id || a.getAttribute("href") === "#" + id);
+        });
+      }
+
+      function closeMobileDrawer() {
+        if (nav) nav.classList.remove("is-open");
+        if (overlay) {
+          overlay.classList.remove("is-open");
+          overlay.setAttribute("aria-hidden", "true");
+        }
+        if (toggle) toggle.setAttribute("aria-expanded", "false");
+      }
+
+      function openMobileDrawer() {
+        if (!isMobile()) return;
+        if (nav) nav.classList.add("is-open");
+        if (overlay) {
+          overlay.classList.add("is-open");
+          overlay.setAttribute("aria-hidden", "false");
+        }
+        if (toggle) toggle.setAttribute("aria-expanded", "true");
+      }
+
+      function applySidebarCollapsed(collapsed) {
+        body.classList.toggle("sidebar-collapsed", collapsed);
+        if (collapseBtn) {
+          collapseBtn.setAttribute("aria-expanded", String(!collapsed));
+          collapseBtn.setAttribute("aria-label", collapsed ? "展开目录" : "收起目录");
+        }
+        if (!isMobile()) {
+          try { localStorage.setItem(STORAGE_KEY, collapsed ? "1" : "0"); } catch (err) {}
+        }
+      }
+
+      /* 初始化：关闭可能残留的移动端遮罩 */
+      closeMobileDrawer();
+
+      /* 默认展开；仅当用户曾主动收起时读取 v3 存储 */
+      var savedCollapsed = false;
+      if (!isMobile()) {
+        try { savedCollapsed = localStorage.getItem(STORAGE_KEY) === "1"; } catch (err) {}
+      }
+      applySidebarCollapsed(savedCollapsed);
+      if (typeof console !== "undefined" && console.info) {
+        console.info("[黄小西汇报] " + BUILD_ID + " | 侧栏" + (savedCollapsed ? "收起" : "展开"));
+      }
+
+      if (collapseBtn) {
+        collapseBtn.addEventListener("click", function () {
+          if (isMobile()) {
+            if (nav && nav.classList.contains("is-open")) closeMobileDrawer();
+            else openMobileDrawer();
+            return;
+          }
+          applySidebarCollapsed(!body.classList.contains("sidebar-collapsed"));
+        });
+      }
+
+      if (toggle) {
+        toggle.addEventListener("click", function () {
+          if (nav && nav.classList.contains("is-open")) closeMobileDrawer();
+          else openMobileDrawer();
+        });
+      }
+
+      if (overlay) overlay.addEventListener("click", closeMobileDrawer);
+
+      navLinks.forEach(function (link) {
+        link.addEventListener("click", function (e) {
+          e.preventDefault();
+          var id = link.getAttribute("data-target") || (link.getAttribute("href") || "").replace(/^#/, "");
+          scrollToSection(id);
+          setActiveNav(id);
+          if (isMobile()) closeMobileDrawer();
+          if (history.replaceState) history.replaceState(null, "", "#" + id);
+          else location.hash = id;
+        });
+      });
+
+      function bindAnchorTitle(title, targetId) {
+        if (!targetId) return;
+        title.classList.add("section__title--anchor");
+        title.setAttribute("role", "button");
+        title.setAttribute("tabindex", "0");
+        title.setAttribute("title", "点击定位到本节");
+        function go() {
+          scrollToSection(targetId);
+          setActiveNav(targetId);
+          if (history.replaceState) history.replaceState(null, "", "#" + targetId);
+        }
+        title.addEventListener("click", go);
+        title.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            go();
+          }
+        });
+      }
+
+      document.querySelectorAll(".section[id] .section__title").forEach(function (title) {
+        var section = title.closest("section");
+        if (section && section.id) bindAnchorTitle(title, section.id);
+      });
+
+      document.querySelectorAll(".section-group[id] .section-group__head .section__title").forEach(function (title) {
+        var group = title.closest(".section-group[id]");
+        if (group && group.id) bindAnchorTitle(title, group.id);
+      });
+
+      var heroTitle = document.querySelector(".hero__title");
+      if (heroTitle) {
+        heroTitle.classList.add("section__title--anchor");
+        heroTitle.setAttribute("role", "button");
+        heroTitle.setAttribute("tabindex", "0");
+        heroTitle.setAttribute("title", "返回封面");
+        heroTitle.addEventListener("click", function () {
+          scrollToSection("top");
+          setActiveNav("top");
+          if (history.replaceState) history.replaceState(null, "", "#top");
+        });
+      }
+
+      function getNavTargetIds() {
+        var ids = [];
+        navLinks.forEach(function (a) {
+          var id = a.getAttribute("data-target");
+          if (id && ids.indexOf(id) === -1) ids.push(id);
+        });
+        return ids;
+      }
+
+      function updateActiveOnScroll() {
+        var offset = headerOffset() + 20;
+        var activeId = getNavTargetIds()[0] || "top";
+        getNavTargetIds().forEach(function (id) {
+          var el = document.getElementById(id);
+          if (!el) return;
+          if (el.getBoundingClientRect().top <= offset) activeId = id;
+        });
+        setActiveNav(activeId);
+      }
+
+      var scrollRaf = false;
+      window.addEventListener("scroll", function () {
+        if (scrollRaf) return;
+        scrollRaf = true;
+        requestAnimationFrame(function () {
+          updateActiveOnScroll();
+          scrollRaf = false;
+        });
+      }, { passive: true });
+      updateActiveOnScroll();
+
+      if ("IntersectionObserver" in window) {
+        var revealObserver = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) entry.target.classList.add("is-visible");
+            });
+          },
+          { threshold: 0.08, rootMargin: "0px 0px -40px 0px" }
+        );
+        document.querySelectorAll(".reveal").forEach(function (el) {
+          revealObserver.observe(el);
+        });
+      } else {
+        document.querySelectorAll(".reveal").forEach(function (el) {
+          el.classList.add("is-visible");
+        });
+      }
+
+      var hero = document.querySelector(".hero");
+      if (hero) hero.classList.add("is-visible");
+
+      if (location.hash) {
+        var hashId = location.hash.replace(/^#/, "");
+        setTimeout(function () {
+          scrollToSection(hashId);
+          setActiveNav(hashId);
+        }, 120);
+      }
+
+      window.addEventListener("resize", function () {
+        if (isMobile()) {
+          closeMobileDrawer();
+          body.classList.remove("sidebar-collapsed");
+        } else {
+          closeMobileDrawer();
+          var saved = false;
+          try { saved = localStorage.getItem(STORAGE_KEY) === "1"; } catch (err) {}
+          applySidebarCollapsed(saved);
+        }
+      });
+    })();
+  </script>
+</body>
 </html>
