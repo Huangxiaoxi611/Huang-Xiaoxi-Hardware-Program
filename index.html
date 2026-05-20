@@ -7,7 +7,7 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <meta name="description" content="黄小西文旅智能陪伴玩偶 — 贵州文旅官方专属 AI 智能陪伴 IP 玩偶完整商业落地方案" />
-  <!-- nav-layout-v3: 左侧可点击目录 + 收起展开 -->
+  <!-- nav-layout-v4: 顶栏 Tab 方案/竞品 + 侧栏目录 | build: 20260520-tabs -->
   <title>黄小西文旅智能陪伴玩偶 · 商业落地方案汇报</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -37,6 +37,8 @@
       --sidebar-width-collapsed: 48px;
       --sidebar-width: var(--sidebar-width-expanded);
       --header-h: 64px;
+      --tabs-h: 44px;
+      --chrome-top: calc(var(--header-h) + var(--tabs-h));
       --ease: cubic-bezier(0.22, 1, 0.36, 1);
     }
 
@@ -48,7 +50,7 @@
 
     html {
       scroll-behavior: smooth;
-      scroll-padding-top: calc(var(--header-h) + 24px);
+      scroll-padding-top: calc(var(--chrome-top) + 24px);
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -220,20 +222,91 @@
 
     .btn--primary:hover { background: var(--accent-deep); }
 
+    /* 顶栏 Tab：方案 / 竞品分析 */
+    .view-tabs {
+      position: fixed;
+      top: var(--header-h);
+      left: 0;
+      right: 0;
+      height: var(--tabs-h);
+      z-index: 109;
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      padding: 0 20px;
+      background: rgba(255, 255, 255, 0.98);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03);
+    }
+
+    .view-tabs__btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 20px;
+      margin: 0;
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink-muted);
+      cursor: pointer;
+      transition: color 0.2s var(--ease), background 0.2s var(--ease);
+    }
+
+    .view-tabs__btn::after {
+      content: "";
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      bottom: 0;
+      height: 2px;
+      border-radius: 2px 2px 0 0;
+      background: transparent;
+      transition: background 0.2s var(--ease);
+    }
+
+    .view-tabs__btn:hover {
+      color: var(--blue-primary);
+      background: var(--accent-pale);
+    }
+
+    .view-tabs__btn.is-active {
+      color: var(--blue-primary);
+      font-weight: 600;
+    }
+
+    .view-tabs__btn.is-active::after {
+      background: linear-gradient(90deg, var(--accent), var(--highlight));
+    }
+
+    .view-tabs__btn:focus-visible {
+      outline: 2px solid var(--blue-mid);
+      outline-offset: -2px;
+    }
+
+    .app-view { display: none; }
+    .app-view.is-active { display: block; }
+
+    body[data-active-view="competitors"] .site-header__actions { visibility: hidden; }
+
     /* 布局：左侧固定目录 + 主区 margin 留白（避免 grid+fixed 错位） */
     .layout {
       position: relative;
       z-index: 1;
       margin-left: var(--sidebar-width);
       width: auto;
-      min-height: calc(100vh - var(--header-h));
-      padding-top: var(--header-h);
+      min-height: calc(100vh - var(--chrome-top));
+      padding-top: var(--chrome-top);
       transition: margin-left 0.28s var(--ease);
     }
 
     .side-nav {
       position: fixed;
-      top: var(--header-h);
+      top: var(--chrome-top);
       left: 0;
       bottom: 0;
       width: var(--sidebar-width);
@@ -655,11 +728,12 @@
     .cap-network__dot--mp { background: #d97706; }
     .cap-network__dot--admin { background: #7c3aed; }
 
-    /* 左右结构 + 连线 */
+    /* 故事横排 + 连线 + 能力池 */
     .cap-network__diagram {
       display: grid;
-      grid-template-columns: minmax(140px, 22%) 40px minmax(0, 1fr);
-      gap: 0;
+      grid-template-columns: 40px minmax(0, 1fr);
+      grid-template-rows: auto 1fr;
+      gap: 12px 0;
       align-items: stretch;
       margin-bottom: 20px;
       padding-bottom: 18px;
@@ -667,11 +741,12 @@
       min-height: 280px;
     }
 
-    .cap-network__left {
-      display: flex;
-      flex-direction: column;
+    .cap-story-row {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: minmax(88px, auto) repeat(4, minmax(0, 1fr));
       gap: 10px;
-      padding-right: 4px;
+      align-items: stretch;
     }
 
     .cap-network__hub {
@@ -691,20 +766,27 @@
     }
 
     .cap-story-group {
-      padding: 8px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 8px;
       border-radius: 8px;
       border: 1px solid var(--border);
       background: #fafcff;
+      min-height: 44px;
     }
 
     .cap-story-group__head {
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
-      margin-bottom: 6px;
-      font-size: 11px;
+      margin-bottom: 0;
+      font-size: 12px;
       font-weight: 600;
       color: var(--blue-primary);
+      text-align: center;
+      flex-wrap: wrap;
     }
 
     .cap-story-group__head span {
@@ -733,6 +815,8 @@
     .cap-story-group li:last-child { border-bottom: none; }
 
     .cap-network__lines {
+      grid-row: 2;
+      grid-column: 1;
       display: flex;
       align-items: stretch;
       justify-content: center;
@@ -755,6 +839,8 @@
     }
 
     .cap-network__right {
+      grid-row: 2;
+      grid-column: 2;
       display: flex;
       flex-direction: column;
       gap: 8px;
@@ -884,9 +970,19 @@
         grid-template-columns: 1fr;
         min-height: 0;
       }
+      .cap-story-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .cap-network__hub {
+        grid-column: 1 / -1;
+      }
       .cap-network__lines { display: none; }
+      .cap-network__right {
+        grid-row: auto;
+        grid-column: 1;
+        gap: 10px;
+      }
       .cap-network__pool::before { display: none; }
-      .cap-network__right { gap: 10px; }
     }
 
     .card {
@@ -956,14 +1052,210 @@
     }
 
     .product-face-card {
-      padding: 14px 16px;
+      padding: 12px;
       border-radius: var(--radius);
       border: 1px solid var(--border);
       background: linear-gradient(180deg, var(--accent-pale), #fff);
     }
 
+    .product-face-card__inner {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .product-face-card__img {
+      width: 68px;
+      height: 88px;
+      flex-shrink: 0;
+      border-radius: 6px;
+      object-fit: cover;
+      object-position: 78% center;
+      border: 1px solid var(--border);
+      background: #fff;
+      cursor: zoom-in;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .product-face-card__img:hover {
+      transform: scale(1.04);
+      box-shadow: 0 4px 12px rgba(14, 165, 233, 0.18);
+    }
+
+    .product-face-card__img:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* 脸版图片放大预览 — 居中浮窗，不滚动页面 */
+    .img-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      overflow: hidden;
+      overscroll-behavior: contain;
+      pointer-events: none;
+    }
+
+    .img-lightbox.is-open {
+      display: flex;
+      pointer-events: auto;
+    }
+
+    .img-lightbox__backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.42);
+      backdrop-filter: blur(3px);
+      cursor: default;
+    }
+
+    .img-lightbox__frame {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      max-width: min(760px, 96vw);
+    }
+
+    .img-lightbox__panel {
+      position: relative;
+      flex: 1;
+      min-width: 0;
+      width: min(640px, calc(92vw - 104px));
+      max-height: min(88vh, 720px);
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+      padding: 14px 14px 12px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 24px 64px rgba(15, 23, 42, 0.28);
+      animation: lightbox-float-in 0.22s ease;
+      overflow: hidden;
+    }
+
+    .img-lightbox__nav {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.96);
+      color: var(--blue-primary);
+      font-size: 24px;
+      line-height: 1;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.18);
+      transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+    }
+
+    .img-lightbox__nav:hover {
+      background: var(--accent-pale);
+      color: var(--accent-deep);
+      transform: scale(1.05);
+    }
+
+    .img-lightbox__nav:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .img-lightbox__nav:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    @media (max-width: 560px) {
+      .img-lightbox__frame {
+        gap: 8px;
+        max-width: 96vw;
+      }
+
+      .img-lightbox__panel {
+        width: calc(96vw - 88px);
+      }
+
+      .img-lightbox__nav {
+        width: 36px;
+        height: 36px;
+        font-size: 22px;
+      }
+    }
+
+    @keyframes lightbox-float-in {
+      from { opacity: 0; transform: translateY(8px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .img-lightbox__img {
+      display: block;
+      width: 100%;
+      max-height: calc(min(88vh, 720px) - 88px);
+      height: auto;
+      object-fit: contain;
+      border-radius: calc(var(--radius-lg) - 4px);
+      background: var(--surface);
+    }
+
+    .img-lightbox__caption {
+      margin: 0;
+      padding: 0 4px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--blue-primary);
+      text-align: center;
+    }
+
+    .img-lightbox__counter {
+      margin-left: 6px;
+      font-weight: 500;
+      color: var(--ink-muted);
+      font-size: 13px;
+    }
+
+    .img-lightbox__close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--ink-muted);
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+      z-index: 2;
+    }
+
+    .img-lightbox__close:hover {
+      background: var(--accent-pale);
+      color: var(--accent-deep);
+    }
+
+    body.is-lightbox-open {
+      overflow: hidden;
+      touch-action: none;
+    }
+
+    .product-face-card__text {
+      min-width: 0;
+      flex: 1;
+    }
+
     .product-face-card h4 {
-      margin: 0 0 6px;
+      margin: 0 0 4px;
       font-size: 14px;
       font-weight: 700;
       color: var(--accent-deep);
@@ -973,7 +1265,7 @@
       margin: 0;
       font-size: 12px;
       color: var(--ink-muted);
-      line-height: 1.6;
+      line-height: 1.55;
     }
 
     .product-spec-grid {
@@ -1103,7 +1395,7 @@
       color: var(--accent-deep);
     }
 
-    /* 用户故事 — 顺序图文 */
+    /* 用户故事 — 纯文字叙述 */
     .user-stories {
       display: flex;
       flex-direction: column;
@@ -1147,68 +1439,12 @@
       vertical-align: middle;
     }
 
-    .user-story__body {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
-      gap: 0;
-      align-items: stretch;
-      overflow: hidden;
-      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-    }
-
-    .user-story__figure {
-      grid-column: 1;
-      grid-row: 1;
-    }
-
     .user-story__content {
-      grid-column: 2;
-      grid-row: 1;
-    }
-
-    /* 02 / 04：左文右图，文字 2/3、图片 1/3（列宽与列位置一致） */
-    .user-story__body--reverse {
-      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
-    }
-
-    .user-story__body--reverse .user-story__figure {
-      grid-column: 2;
-    }
-
-    .user-story__body--reverse .user-story__content {
-      grid-column: 1;
-      justify-content: flex-start;
-      padding-top: 28px;
-      padding-bottom: 28px;
-    }
-
-    .user-story__figure,
-    .user-story__content {
-      min-width: 0;
-    }
-
-    .user-story__figure {
-      margin: 0;
-      min-height: 200px;
-      background: var(--accent-pale);
-      overflow: hidden;
-    }
-
-    .user-story__figure img {
-      width: 100%;
-      height: 100%;
-      min-height: 200px;
-      object-fit: cover;
-      display: block;
-    }
-
-    .user-story__content {
-      padding: 24px 28px;
+      padding: 24px 28px 28px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      gap: 12px;
-      overflow: visible;
+      gap: 14px;
+      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
     }
 
     .user-story__pain {
@@ -1243,29 +1479,6 @@
     }
 
     @media (max-width: 560px) {
-      .user-story__body,
-      .user-story__body--reverse {
-        grid-template-columns: 1fr;
-      }
-      .user-story__figure,
-      .user-story__body--reverse .user-story__figure {
-        grid-column: 1;
-        min-height: 160px;
-      }
-      .user-story__content,
-      .user-story__body--reverse .user-story__content {
-        grid-column: 1;
-      }
-      /* 小屏优先读文字，图片置底 */
-      .user-story__body--reverse .user-story__content {
-        order: 1;
-      }
-      .user-story__body--reverse .user-story__figure {
-        order: 2;
-      }
-      .user-story__figure img {
-        min-height: 160px;
-      }
       .user-story__content {
         padding: 20px 22px;
       }
@@ -1309,6 +1522,48 @@
       font-weight: 600;
       color: var(--blue-primary);
       white-space: nowrap;
+    }
+
+    .spec-table--3col td:first-child {
+      width: 10em;
+      min-width: 8em;
+    }
+
+    .spec-table--3col td:nth-child(2) {
+      font-weight: 400;
+      color: var(--ink);
+      white-space: normal;
+      line-height: 1.65;
+    }
+
+    .spec-table--3col td:nth-child(3) {
+      width: 11em;
+      min-width: 9em;
+      font-weight: 500;
+      color: var(--accent-deep);
+      white-space: normal;
+    }
+
+    .spec-hw-red,
+    td.spec-hw-red {
+      color: #dc2626;
+      font-weight: 600;
+    }
+
+    .spec-hw-list {
+      margin: 6px 0 0;
+      padding-left: 1.2em;
+    }
+
+    .spec-hw-list li {
+      margin-bottom: 4px;
+    }
+
+    table.spec-table-hw td:nth-child(2) {
+      font-weight: 400;
+      color: var(--ink);
+      white-space: normal;
+      line-height: 1.65;
     }
 
     /* 三栏价值 — 始终横排 */
@@ -1637,6 +1892,171 @@
       font-weight: 700;
     }
 
+    /* 困难与待办 */
+    .difficulty-grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    .difficulty-card {
+      padding: 24px 28px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      border-left: 4px solid #f59e0b;
+    }
+
+    .difficulty-card--critical {
+      border-left-color: #dc2626;
+      background: linear-gradient(135deg, #fffbeb 0%, #fff 48%);
+    }
+
+    .difficulty-card__head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: 10px 16px;
+      margin-bottom: 14px;
+    }
+
+    .difficulty-card__title {
+      margin: 0;
+      font-size: 17px;
+      font-family: "Noto Serif SC", serif;
+      color: var(--blue-primary);
+      flex: 1 1 200px;
+    }
+
+    .difficulty-card__tag {
+      display: inline-block;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #b45309;
+      background: #fef3c7;
+      border-radius: 999px;
+    }
+
+    .difficulty-card__tag--risk {
+      color: #b91c1c;
+      background: #fee2e2;
+    }
+
+    .difficulty-card__lead {
+      margin: 0 0 14px;
+      font-size: 14px;
+      color: var(--ink-muted);
+      line-height: 1.75;
+    }
+
+    .difficulty-card__lead strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .difficulty-card ul {
+      margin: 0;
+      padding-left: 1.25em;
+      font-size: 14px;
+      color: var(--ink-muted);
+      line-height: 1.8;
+    }
+
+    .difficulty-card li + li {
+      margin-top: 6px;
+    }
+
+    .vendor-compare {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .vendor-compare__item {
+      padding: 16px 18px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    .vendor-compare__item h5 {
+      margin: 0 0 8px;
+      font-size: 14px;
+      color: var(--accent-deep);
+    }
+
+    .vendor-compare__item p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--ink-muted);
+      line-height: 1.7;
+    }
+
+    .vendor-compare__status {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #0369a1;
+    }
+
+    .todo-table-wrap {
+      margin-top: 24px;
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    .todo-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .todo-table th,
+    .todo-table td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    .todo-table th {
+      background: #f0f9ff;
+      color: var(--blue-primary);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .todo-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .todo-table td:first-child {
+      font-weight: 600;
+      color: var(--accent-deep);
+      white-space: nowrap;
+    }
+
+    .todo-priority {
+      display: inline-block;
+      padding: 2px 8px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 4px;
+    }
+
+    .todo-priority--p0 {
+      color: #b91c1c;
+      background: #fee2e2;
+    }
+
+    .todo-priority--p1 {
+      color: #b45309;
+      background: #fef3c7;
+    }
+
     footer {
       margin: 48px 24px 32px;
       padding: 24px;
@@ -1788,9 +2208,777 @@
       .site-header__actions .btn--ghost { display: none; }
     }
 
+    /* 竞品分析独立页 */
+    .comp-layout {
+      position: relative;
+      z-index: 1;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: calc(var(--chrome-top) + 28px) 24px 64px;
+    }
+
+    .comp-hero {
+      margin-bottom: 32px;
+      padding: 28px 32px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, #f0f9ff 0%, #fff 55%);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .comp-hero__kicker {
+      margin: 0 0 8px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--accent-deep);
+      text-transform: uppercase;
+    }
+
+    .comp-hero__title {
+      margin: 0 0 10px;
+      font-family: "Noto Serif SC", serif;
+      font-size: clamp(22px, 3vw, 30px);
+      font-weight: 700;
+      color: var(--blue-primary);
+    }
+
+    .comp-hero__lead {
+      margin: 0 0 20px;
+      font-size: 15px;
+      color: var(--ink-muted);
+      max-width: 52em;
+    }
+
+    .comp-gallery {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    .comp-gallery__item {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      margin: 0;
+      padding: 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: #fff;
+      overflow: hidden;
+      cursor: zoom-in;
+      text-align: left;
+      transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease), transform 0.15s var(--ease);
+    }
+
+    .comp-gallery__item:hover {
+      border-color: var(--blue-mid);
+      box-shadow: 0 8px 24px rgba(14, 165, 233, 0.12);
+      transform: translateY(-2px);
+    }
+
+    .comp-gallery__item:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .comp-gallery__thumb-wrap {
+      position: relative;
+      aspect-ratio: 1;
+      background: #f8fafc;
+      overflow: hidden;
+    }
+
+    .comp-gallery__img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.25s var(--ease);
+    }
+
+    .comp-gallery__item:hover .comp-gallery__img {
+      transform: scale(1.04);
+    }
+
+    .comp-gallery__zoom {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      padding: 3px 8px;
+      font-size: 11px;
+      font-weight: 500;
+      color: #fff;
+      background: rgba(15, 23, 42, 0.55);
+      border-radius: 4px;
+      pointer-events: none;
+    }
+
+    .comp-gallery__meta {
+      padding: 10px 10px 11px;
+      border-top: 1px solid var(--border);
+    }
+
+    .comp-gallery__name {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--blue-primary);
+    }
+
+    .comp-gallery__sub {
+      display: block;
+      margin-top: 2px;
+      font-size: 11px;
+      color: var(--ink-muted);
+      line-height: 1.4;
+    }
+
+    .img-lightbox--comp .img-lightbox__frame {
+      max-width: min(920px, 96vw);
+    }
+
+    .img-lightbox--comp .img-lightbox__panel {
+      width: min(780px, calc(92vw - 104px));
+    }
+
+    .img-lightbox--comp .img-lightbox__img {
+      max-height: calc(min(88vh, 720px) - 72px);
+    }
+
+    @media (max-width: 720px) {
+      .comp-gallery {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .comp-block {
+      margin-bottom: 36px;
+    }
+
+    .comp-block__title {
+      margin: 0 0 16px;
+      font-family: "Noto Serif SC", serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--blue-primary);
+    }
+
+    .comp-profile {
+      display: grid;
+      gap: 12px;
+    }
+
+    .comp-profile__row {
+      display: grid;
+      grid-template-columns: 108px minmax(0, 1fr);
+      gap: 12px 16px;
+      padding: 14px 16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--card);
+    }
+
+    .comp-profile__label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--blue-primary);
+    }
+
+    .comp-profile__body {
+      font-size: 14px;
+      line-height: 1.65;
+      color: var(--ink);
+    }
+
+    .comp-profile__body ul {
+      margin: 8px 0 0;
+      padding-left: 1.2em;
+    }
+
+    .comp-profile__body li { margin: 4px 0; }
+
+    .comp-profile__sub {
+      margin-top: 10px;
+      font-weight: 600;
+      color: var(--ink-muted);
+      font-size: 13px;
+    }
+
+    .comp-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      line-height: 1.55;
+      background: var(--card);
+    }
+
+    .comp-table th,
+    .comp-table td {
+      padding: 14px 12px;
+      border: 1px solid var(--border);
+      vertical-align: top;
+      text-align: left;
+    }
+
+    .comp-table thead th {
+      background: var(--accent-pale);
+      color: var(--blue-primary);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .comp-table tbody th {
+      background: #fafcff;
+      font-weight: 600;
+      color: var(--blue-primary);
+      width: 88px;
+    }
+
+    .comp-table ol {
+      margin: 0;
+      padding-left: 1.25em;
+    }
+
+    .comp-table li { margin: 6px 0; }
+
+    .comp-table-wrap {
+      overflow-x: auto;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .comp-table-wrap--matrix {
+      max-height: min(72vh, 720px);
+    }
+
+    .comp-matrix {
+      width: 100%;
+      min-width: 920px;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 12px;
+      line-height: 1.5;
+      background: var(--card);
+    }
+
+    .comp-matrix th,
+    .comp-matrix td {
+      padding: 11px 10px;
+      border: 1px solid var(--border);
+      vertical-align: top;
+      text-align: left;
+    }
+
+    .comp-matrix thead th {
+      position: sticky;
+      top: 0;
+      z-index: 3;
+      background: linear-gradient(180deg, #e0f2fe 0%, #f0f9ff 100%);
+      color: var(--blue-primary);
+      font-weight: 700;
+      font-size: 13px;
+      white-space: nowrap;
+      box-shadow: 0 1px 0 var(--border);
+    }
+
+    .comp-matrix thead th:first-child {
+      left: 0;
+      z-index: 4;
+      min-width: 108px;
+    }
+
+    .comp-matrix tbody th {
+      position: sticky;
+      left: 0;
+      z-index: 2;
+      min-width: 108px;
+      background: #f8fafc;
+      font-weight: 600;
+      color: var(--blue-primary);
+      box-shadow: 1px 0 0 var(--border);
+    }
+
+    .comp-matrix tbody tr:nth-child(even) td {
+      background: #fafcff;
+    }
+
+    .comp-matrix tbody tr:hover td,
+    .comp-matrix tbody tr:hover th {
+      background: #f0f9ff;
+    }
+
+    .comp-matrix .col-product--fuzai { border-top: 3px solid #0ea5e9; }
+    .comp-matrix .col-product--uu { border-top: 3px solid #8b5cf6; }
+    .comp-matrix .col-product--uni { border-top: 3px solid #f59e0b; }
+    .comp-matrix .col-product--miaoda { border-top: 3px solid #10b981; }
+
+    .comp-cell-list {
+      margin: 0;
+      padding-left: 1.15em;
+    }
+
+    .comp-cell-list li { margin: 3px 0; }
+
+    .comp-cell-empty {
+      color: var(--ink-soft);
+      text-align: center;
+    }
+
+    .comp-cell-note {
+      background: #fffbeb;
+      color: #92400e;
+      font-size: 11px;
+      line-height: 1.55;
+      min-width: 200px;
+    }
+
+    .comp-matrix--dialog td strong {
+      color: #059669;
+    }
+
+    .comp-matrix-note {
+      margin: 10px 0 0;
+      font-size: 12px;
+      color: var(--ink-muted);
+    }
+
+    /* 竞品投票工具 */
+    .comp-vote {
+      padding: 24px 28px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, #fafcff 0%, #fff 100%);
+      box-shadow: var(--shadow);
+    }
+
+    .comp-vote__intro {
+      margin: 0 0 20px;
+      font-size: 14px;
+      line-height: 1.65;
+      color: var(--ink-muted);
+    }
+
+    .comp-vote__grid {
+      display: grid;
+      gap: 24px;
+    }
+
+    .comp-vote__panel {
+      padding: 20px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--card);
+    }
+
+    .comp-vote__panel-title {
+      margin: 0 0 14px;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--blue-primary);
+    }
+
+    .comp-vote__field {
+      margin-bottom: 16px;
+    }
+
+    .comp-vote__field label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .comp-vote__field input[type="text"],
+    .comp-vote__field textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--ink);
+      background: #fff;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .comp-vote__field input[type="text"]:focus,
+    .comp-vote__field textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+    }
+
+    .comp-vote__field textarea {
+      min-height: 72px;
+      resize: vertical;
+    }
+
+    .comp-vote__products {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .comp-vote__product {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .comp-vote__product input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .comp-vote__product-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 14px 10px;
+      border-radius: var(--radius);
+      border: 2px solid var(--border);
+      background: #fff;
+      text-align: center;
+      transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+    }
+
+    .comp-vote__product-card:hover {
+      border-color: #cbd5e1;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+    }
+
+    .comp-vote__product input:checked + .comp-vote__product-card {
+      border-color: var(--product-color, var(--accent));
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--product-color, var(--accent)) 18%, transparent);
+      transform: translateY(-1px);
+    }
+
+    .comp-vote__product-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--product-color, var(--accent));
+    }
+
+    .comp-vote__product-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--blue-primary);
+    }
+
+    .comp-vote__product-price {
+      font-size: 11px;
+      color: var(--ink-muted);
+    }
+
+    .comp-vote__reason-groups {
+      display: grid;
+      gap: 16px;
+    }
+
+    .comp-vote__reason-group {
+      padding: 14px;
+      border-radius: var(--radius);
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+    }
+
+    .comp-vote__reason-group-title {
+      margin: 0 0 10px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--blue-primary);
+    }
+
+    .comp-vote__reason-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 8px;
+    }
+
+    .comp-vote__reason {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: #fff;
+      border: 1px solid transparent;
+      cursor: pointer;
+      font-size: 13px;
+      line-height: 1.45;
+      color: var(--ink);
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .comp-vote__reason:hover {
+      border-color: #e2e8f0;
+    }
+
+    .comp-vote__reason input {
+      margin-top: 2px;
+      flex-shrink: 0;
+      accent-color: var(--accent);
+    }
+
+    .comp-vote__reason:has(input:checked) {
+      border-color: var(--accent);
+      background: #f0f9ff;
+    }
+
+    .comp-vote__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-top: 4px;
+    }
+
+    .comp-vote__submit {
+      padding: 10px 22px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%);
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.15s;
+    }
+
+    .comp-vote__submit:hover { opacity: 0.92; transform: translateY(-1px); }
+    .comp-vote__submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .comp-vote__hint {
+      font-size: 12px;
+      color: var(--ink-muted);
+    }
+
+    .comp-vote__status {
+      margin-top: 12px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      display: none;
+    }
+
+    .comp-vote__status.is-visible { display: block; }
+    .comp-vote__status--success { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
+    .comp-vote__status--error { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+
+    .comp-vote__results {
+      margin-top: 8px;
+    }
+
+    .comp-vote__stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .comp-vote__stat {
+      padding: 16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: #fff;
+      text-align: center;
+    }
+
+    .comp-vote__stat-name {
+      margin: 0 0 8px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--blue-primary);
+    }
+
+    .comp-vote__stat-bar {
+      height: 8px;
+      border-radius: 999px;
+      background: #e2e8f0;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .comp-vote__stat-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: var(--product-color, var(--accent));
+      width: 0;
+      transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .comp-vote__stat-count {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1;
+    }
+
+    .comp-vote__stat-pct {
+      font-size: 12px;
+      color: var(--ink-muted);
+      margin-top: 4px;
+    }
+
+    .comp-vote__filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 14px;
+      padding: 12px 14px;
+      border-radius: var(--radius);
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+    }
+
+    .comp-vote__filters-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink-muted);
+      margin-right: 4px;
+    }
+
+    .comp-vote__filter-btn {
+      padding: 5px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #fff;
+      font-size: 12px;
+      color: var(--ink);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .comp-vote__filter-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent-deep);
+    }
+
+    .comp-vote__filter-btn.is-active {
+      border-color: var(--accent);
+      background: var(--accent-pale);
+      color: var(--accent-deep);
+      font-weight: 600;
+    }
+
+    .comp-vote__meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 12px;
+      font-size: 13px;
+      color: var(--ink-muted);
+    }
+
+    .comp-vote__meta strong { color: var(--ink); }
+
+    .comp-vote__table-wrap {
+      overflow-x: auto;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+
+    .comp-vote__table {
+      width: 100%;
+      min-width: 720px;
+      border-collapse: collapse;
+      font-size: 13px;
+      background: #fff;
+    }
+
+    .comp-vote__table th,
+    .comp-vote__table td {
+      padding: 11px 12px;
+      border: 1px solid var(--border);
+      vertical-align: top;
+      text-align: left;
+    }
+
+    .comp-vote__table thead th {
+      background: var(--accent-pale);
+      color: var(--blue-primary);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .comp-vote__table tbody tr:nth-child(even) { background: #fafcff; }
+    .comp-vote__table tbody tr:hover { background: #f0f9ff; }
+
+    .comp-vote__tag {
+      display: inline-block;
+      margin: 2px 4px 2px 0;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      background: #f1f5f9;
+      color: #475569;
+    }
+
+    .comp-vote__tag--fuzai { background: #e0f2fe; color: #0369a1; }
+    .comp-vote__tag--uu { background: #ede9fe; color: #6d28d9; }
+    .comp-vote__tag--uni { background: #fef3c7; color: #b45309; }
+    .comp-vote__tag--miaoda { background: #d1fae5; color: #047857; }
+
+    .comp-vote__empty {
+      padding: 32px;
+      text-align: center;
+      color: var(--ink-muted);
+      font-size: 14px;
+    }
+
+    .comp-vote__toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .comp-vote__tool-btn {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: #fff;
+      font-size: 12px;
+      color: var(--ink-muted);
+      cursor: pointer;
+    }
+
+    .comp-vote__tool-btn:hover {
+      border-color: #cbd5e1;
+      color: var(--ink);
+    }
+
+    @media (max-width: 900px) {
+      .comp-vote__products { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .comp-vote__stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 720px) {
+      .comp-profile__row {
+        grid-template-columns: 1fr;
+      }
+      .view-tabs { padding: 0 12px; }
+      .view-tabs__btn { padding: 0 14px; font-size: 13px; }
+      .comp-layout { padding-left: 16px; padding-right: 16px; }
+      .comp-vote { padding: 18px 16px; }
+      .comp-vote__products { grid-template-columns: 1fr 1fr; }
+      .comp-vote__reason-list { grid-template-columns: 1fr; }
+    }
+
     @media print {
+      .view-tabs { display: none !important; }
       .site-header, .side-nav, .nav-toggle, .nav-overlay, .btn { display: none !important; }
-      .layout { margin-left: 0; padding-top: 0; }
+      body[data-active-view="proposal"] #view-competitors { display: none !important; }
+      body[data-active-view="competitors"] #view-proposal { display: none !important; }
+      .app-view.is-active { display: block !important; }
+      .layout, .comp-layout { margin-left: 0; padding-top: 0; }
       .hero { break-after: page; color: #000; background: #f5f5f5; }
       .hero::before, .hero::after { display: none; }
       .section { break-inside: avoid; }
@@ -1799,7 +2987,7 @@
     }
   </style>
 </head>
-<body>
+<body data-active-view="proposal">
   <header class="site-header" role="banner">
     <div class="site-header__grid">
       <div class="site-header__aside">
@@ -1811,11 +2999,18 @@
       <div class="site-header__main">
         <div class="site-header__actions">
           <button type="button" class="btn btn--ghost" onclick="window.print()" aria-label="打印本方案">打印</button>
-          <a href="#support" class="btn btn--primary">落地支撑</a>
+          <a href="#profit" class="btn btn--primary">盈利模式</a>
         </div>
       </div>
     </div>
   </header>
+
+  <div class="view-tabs" role="tablist" aria-label="页面切换">
+    <button type="button" class="view-tabs__btn is-active" role="tab" id="tab-proposal" aria-selected="true" aria-controls="view-proposal" data-view="proposal">商业落地方案</button>
+    <button type="button" class="view-tabs__btn" role="tab" id="tab-competitors" aria-selected="false" aria-controls="view-competitors" data-view="competitors">竞品分析</button>
+  </div>
+
+  <div id="view-proposal" class="app-view is-active" role="tabpanel" aria-labelledby="tab-proposal">
 
   <div class="nav-overlay" id="navOverlay" aria-hidden="true"></div>
 
@@ -1833,15 +3028,12 @@
         <a href="#capabilities" data-target="capabilities"><span class="nav-index">三</span><span class="nav-label">产品能力与技术</span></a>
         <a href="#story-requirements" class="nav-sub" data-target="story-requirements"><span class="nav-index">3.0</span><span class="nav-label">故事能力对应</span></a>
         <a href="#hardware" class="nav-sub" data-target="hardware"><span class="nav-index">3.1</span><span class="nav-label">硬件规格</span></a>
-        <a href="#software" class="nav-sub" data-target="software"><span class="nav-index">3.2</span><span class="nav-label">软件功能</span></a>
+        <a href="#software" class="nav-sub" data-target="software"><span class="nav-index">3.2</span><span class="nav-label">AI能力</span></a>
         <a href="#miniprogram" class="nav-sub" data-target="miniprogram"><span class="nav-index">3.3</span><span class="nav-label">小程序 MVP</span></a>
         <a href="#admin" class="nav-sub" data-target="admin"><span class="nav-index">3.4</span><span class="nav-label">运营后台</span></a>
         <a href="#marketing" data-target="marketing"><span class="nav-index">四</span><span class="nav-label">营销推广</span></a>
         <a href="#profit" data-target="profit"><span class="nav-index">五</span><span class="nav-label">盈利模式</span></a>
-        <a href="#pilot" data-target="pilot"><span class="nav-index">六</span><span class="nav-label">试点方案</span></a>
-        <a href="#budget" data-target="budget"><span class="nav-index">七</span><span class="nav-label">预算收益</span></a>
-        <a href="#advantage" data-target="advantage"><span class="nav-index">八</span><span class="nav-label">核心优势</span></a>
-      <a href="#support" data-target="support"><span class="nav-index">九</span><span class="nav-label">落地支撑</span></a>
+        <a href="#blockers" data-target="blockers"><span class="nav-index">六</span><span class="nav-label">困难与待办</span></a>
     </div>
   </nav>
 
@@ -1853,7 +3045,7 @@
           <p class="hero__kicker">贵州文旅官方专属 IP</p>
           <h1 class="hero__title">黄小西文旅智能陪伴玩偶</h1>
           <p class="hero__lead">
-            依托景区蓝牙信标定位、离线 AI 语音交互、情感化硬件震动灯光反馈，打造「<strong>景区智能导览 + 民族文化沉浸 + 旅行记忆居家陪伴</strong>」三位一体文旅消费产品。
+            依托 <strong>4G LBS + 景区蓝牙信标</strong>融合定位、<strong>Wi-Fi / 4G 双联网</strong>与离线 AI 语音交互、情感化震动灯光反馈，打造「<strong>景区智能导览 + 民族文化沉浸 + 情感陪伴</strong>」三位一体文旅消费产品。
           </p>
         </div>
       </section>
@@ -1870,23 +3062,38 @@
 
         <div class="product-identity reveal">
           <p class="product-identity__lead">
-            <strong>黄小西是什么？</strong>贵州文旅官方专属 AI 智能陪伴 IP 玩偶，形态上为「<strong>潮玩外壳 + 苗族服饰外观 + 内置 AI 机芯</strong>」，既可<strong>吊挂随身</strong>，也可<strong>桌面摆放</strong>——不是静态文创摆件，而是能听、能说、有灯光与震动反馈的旅行伙伴。
+            <strong>黄小西是什么？</strong>贵州文旅官方专属 AI 智能陪伴 IP 玩偶，形态为「<strong>潮玩外壳 + 苗族服饰外观 + 内置 AI 机芯</strong>」，既可<strong>吊挂随身</strong>，也可<strong>桌面摆放</strong>——能听、能说、有灯光与震动反馈，不是静态文创摆件。区别于普通文创与普通智能玩具，<strong>景区内是实用导游，旅行后是情感纪念品与居家陪伴好物</strong>，将一次性旅游消费转化为长期文旅品牌曝光，构建可商业化、可复制、可持续运营的贵州文旅 IP 落地载体。
           </p>
 
           <h3 class="product-identity__sub">长什么样 · 脸版形象（三选一方向）</h3>
-          <p style="margin:0 0 12px; font-size:13px; color:var(--ink-muted);">脸版设计共三个候选方向，均围绕苗族少女潮玩气质，情绪反馈各有侧重：</p>
+          <p style="margin:0 0 12px; font-size:13px; color:var(--ink-muted);">脸版设计共三个候选方向，均围绕苗族少女潮玩气质，情绪反馈各有侧重（<strong style="color:var(--accent-deep);font-weight:600;">点击图片可放大查看</strong>）：</p>
           <div class="product-face-grid">
             <div class="product-face-card">
-              <h4>温暖少女</h4>
-              <p>安静注视、轻轻回应，让人觉得舒服；情绪是<strong>轻轻的善意</strong>，主打安全亲和。</p>
+              <div class="product-face-card__inner">
+                <img class="product-face-card__img" src="assets/face-warm.png" alt="温暖少女脸版形象" width="136" height="176" loading="lazy" />
+                <div class="product-face-card__text">
+                  <h4>温暖少女</h4>
+                  <p>安静注视、轻轻回应，让人觉得舒服；情绪是<strong>轻轻的善意</strong>，主打安全亲和。</p>
+                </div>
+              </div>
             </div>
             <div class="product-face-card">
-              <h4>灵动少女</h4>
-              <p>好奇机灵、有反应感；情绪是<strong>接住用户的话、有回应</strong>，适合导览互动。</p>
+              <div class="product-face-card__inner">
+                <img class="product-face-card__img" src="assets/face-lively.png" alt="灵动少女脸版形象" width="136" height="176" loading="lazy" />
+                <div class="product-face-card__text">
+                  <h4>灵动少女</h4>
+                  <p>好奇机灵、有反应感；情绪是<strong>接住用户的话、有回应</strong>，适合导览互动。</p>
+                </div>
+              </div>
             </div>
             <div class="product-face-card">
-              <h4>元气傲娇少女</h4>
-              <p>带苗族生命力的古怪灵动；傲娇是<strong>可爱地不服气</strong>，不是冷淡或生气。</p>
+              <div class="product-face-card__inner">
+                <img class="product-face-card__img" src="assets/face-tsundere.png" alt="元气傲娇少女脸版形象" width="136" height="176" loading="lazy" />
+                <div class="product-face-card__text">
+                  <h4>元气傲娇少女</h4>
+                  <p>带苗族生命力的古怪灵动；傲娇是<strong>可爱地不服气</strong>，不是冷淡或生气。</p>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -1915,19 +3122,6 @@
             <p>离园后旅行记忆复盘，情感纪念品持续传播</p>
           </div>
         </div>
-
-        <div class="positioning reveal" style="margin-top: 24px;">
-          <p>
-            <strong>黄小西</strong>为贵州文旅官方专属 AI 智能陪伴 IP 玩偶。产品区别于普通文创摆件、普通智能玩具：
-            <strong>景区内是实用导游，旅行后是情感纪念品、居家陪伴好物</strong>，实现一次性旅游消费转化为长期文旅品牌曝光，构建可商业化、可复制、可持续运营的贵州文旅 IP 落地载体。
-          </p>
-          <div class="tag-row">
-            <span class="tag">蓝牙信标精准定位</span>
-            <span class="tag">离线 AI 语音交互</span>
-            <span class="tag">震动灯光情感反馈</span>
-            <span class="tag tag--gold">GB 6675 玩具安全标准</span>
-          </div>
-        </div>
       </section>
 
       <!-- 二、用户故事 -->
@@ -1936,92 +3130,48 @@
           <span class="section__num">二</span>
           <div>
             <h2 class="section__title">用户故事</h2>
-            <p class="section__lead">以真实人物与场景为主线，还原四大核心落地故事中黄小西如何介入、化解困境并留下记忆</p>
+            <p class="section__lead">以真实人物与场景为主线，用纯文字还原四大核心落地故事中黄小西如何介入、化解困境并留下记忆</p>
           </div>
         </header>
 
-        <div class="user-stories">
+        <div class="user-stories" data-layout="text-only">
           <article class="user-story reveal">
             <h3 class="user-story__title"><span>01</span>景区便民刚需服务</h3>
-            <div class="user-story__body">
-              <figure class="user-story__figure">
-                <img
-                  src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=900&q=80"
-                  alt="游客在景区查看路线指引，象征智能导览与便民出行"
-                  width="900"
-                  height="560"
-                  loading="lazy"
-                />
-              </figure>
-              <div class="user-story__content">
+            <div class="user-story__content">
                 <p class="user-story__pain">故事背景：自由行最怕「手机没电、找路难、踩坑多、人流拥堵」</p>
                 <p class="user-story__desc user-story__desc--scene">暑假，大学生小林独自来到黄果树。瀑布气势磅礴，可人潮也把栈道挤得水泄不通。她跟着网红攻略走，却在岔路口犯了难——指示牌密密麻麻，手机导航又时好时坏。走到下午，电量只剩 12%，想找个卫生间和能歇脚的地方，问了几位路人，得到的答案各不相同。</p>
-                <p class="user-story__desc">她抱着刚买的<strong>黄小西</strong>轻声说：「小西，我现在在哪？附近有没有卫生间和充电宝？」几乎不用掏手机，玩偶便依托景区蓝牙信标<strong>精准定位</strong>，用温柔声线告诉她：前方 80 米有休息区，左转 120 米有认证充电宝；并提醒主游览线当前拥堵，建议改走侧线观景，省力又少排队。</p>
+                <p class="user-story__desc">她抱着刚买的<strong>黄小西</strong>轻声说：「小西，我现在在哪？附近有没有卫生间和充电宝？」几乎不用掏手机，玩偶通过<strong>4G 定位与景区蓝牙信标</strong>判断她所在位置，用温柔声线告诉她：前方 80 米有休息区，左转 120 米有认证充电宝；并提醒主游览线当前拥堵，建议改走侧线观景，省力又少排队。</p>
                 <p class="user-story__desc">傍晚在青岩古镇，石板路蜿蜒，小林再次唤醒黄小西问「怎么逛最省力」。玩偶结合实时人流，为她规划了一条避堵动线，还顺带介绍了古镇里的地道小吃和开放时间。一天下来，她没再为找路和踩坑焦虑，真正把心思放在了风景上——这正是景区便民刚需服务场景要解决的：<strong>让自由行高效、省心、玩得值</strong>。</p>
-              </div>
             </div>
           </article>
 
           <article class="user-story reveal">
             <h3 class="user-story__title"><span>02</span>沉浸式民族文化体验</h3>
-            <div class="user-story__body user-story__body--reverse">
-              <figure class="user-story__figure">
-                <img
-                  src="https://images.unsplash.com/photo-1547981609-fda67a0cc981?w=900&q=80"
-                  alt="贵州侗寨苗寨建筑与民族文化风貌"
-                  width="900"
-                  height="560"
-                  loading="lazy"
-                />
-              </figure>
-              <div class="user-story__content">
+            <div class="user-story__content">
                 <p class="user-story__pain">故事背景：许多游客「只拍照、不走心」，逛完侗寨苗寨却记不住文化</p>
                 <p class="user-story__desc user-story__desc--scene">来自上海的周阿姨和老伴第一次走进黔东南侗寨。鼓楼、吊脚楼、风雨桥，她举着手机拍了一整圈，转头却问老伴：「刚才那个表演叫什么？苗绣和侗绣有什么区别？」老伴摇摇头。导游团的讲解声远远传来，听不真切；他们想深入了解，又不知从何问起。</p>
                 <p class="user-story__desc">女儿临行前给他们买了<strong>黄小西</strong>。周阿姨在鼓楼前轻轻拍了拍玩偶，问：「给我讲讲这里的非遗故事吧。」黄小西双眼灯光柔和亮起，娓娓道来：侗族大歌为何被列入非遗、当地节庆习俗、山水间的传说，还有今晚寨子里哪场演出值得一看、附近哪家酸汤鱼最地道。</p>
                 <p class="user-story__desc">返程高铁上，周阿姨翻着手机里的照片，却能清晰讲出每一段建筑背后的故事。她说：「以前旅游像赶集，这次终于像读了一本书。」黄小西把<strong>「观光打卡」升级为「深度文化体验」</strong>，让贵州非遗、民俗、美食与演出不再只是镜头里的背景，而成为旅客心里带得走的专属记忆。</p>
-              </div>
             </div>
           </article>
 
           <article class="user-story reveal">
             <h3 class="user-story__title"><span>03</span>亲子游玩互动</h3>
-            <div class="user-story__body">
-              <figure class="user-story__figure">
-                <img
-                  src="https://images.unsplash.com/photo-1515488042361-f3982e43e148?w=900&q=80"
-                  alt="亲子家庭在户外景区快乐互动"
-                  width="900"
-                  height="560"
-                  loading="lazy"
-                />
-              </figure>
-              <div class="user-story__content">
+            <div class="user-story__content">
                 <p class="user-story__pain">故事背景：亲子出游常陷「孩子闹、家长累、人人刷手机」的困局</p>
                 <p class="user-story__desc user-story__desc--scene">五一假期，张女士带着 6 岁的儿子浩浩去荔波小七孔。车程两个多小时，浩浩已刷完半集动画片；到了景区，他对栈道旁的古树、碧潭兴致缺缺，只嚷着「没意思、要回家」。张女士一边哄，一边担心他磕碰哭闹，自己也没心思欣赏山水。</p>
                 <p class="user-story__desc">入园时，浩浩一眼看中了柜台上的<strong>黄小西</strong>——「妈妈，它眼睛会亮！」绑定后，玩偶成了他的游伴：在古桥边玩<strong>自然探索小游戏</strong>，答对「这棵树活了多少年」赢得夸奖；经过溶洞时，黄小西讲起儿童专属的贵州山水传说，浩浩听得入神，再也不吵着要手机。</p>
                 <p class="user-story__desc">午后浩浩跑累了，不小心把玩偶摔在地上。黄小西没有责备，而是轻轻震动、灯光转暖，用温柔语音说「没关系，我们一起歇一歇」——<strong>磕碰安抚、心跳震动、情绪灯光</strong>让孩子情绪很快平复。张女士终于能放慢脚步看风景，浩浩也在问答与故事里不知不觉完成了<strong>文旅启蒙</strong>。这正是亲子场景的价值：<strong>轻松遛娃，也让贵州的人文自然住进孩子心里</strong>。</p>
-              </div>
             </div>
           </article>
 
           <article class="user-story user-story--featured reveal">
             <h3 class="user-story__title"><span>04</span>离园居家长期陪伴</h3>
-            <div class="user-story__body user-story__body--reverse">
-              <figure class="user-story__figure">
-                <img
-                  src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=900&q=80"
-                  alt="温馨居家场景，象征旅行后的长效陪伴"
-                  width="900"
-                  height="560"
-                  loading="lazy"
-                />
-              </figure>
-              <div class="user-story__content">
+            <div class="user-story__content">
                 <p class="user-story__pain">故事背景：多数景区纪念品离园即闲置——黄小西要打破这一宿命</p>
                 <p class="user-story__desc user-story__desc--scene">浩浩一家结束贵州之行回到杭州。行李箱里的明信片上了墙，冰箱贴上了贴，唯独景区买的玩偶，第一周还被抱着睡，第二周就被塞进了柜子角落。张女士感慨：「钱花了，孩子的新鲜劲一过，就只剩占地方。」</p>
                 <p class="user-story__desc">黄小西不一样。它<strong>离园后不失效、不闲置</strong>：无需联网也能离线运行。夜里浩浩睡不着，抱着黄小西说「小西，陪我睡觉」——玩偶发出轻柔的<strong>心跳助眠震动</strong>，双眼灯光缓缓呼吸，房间安静下来。周末，浩浩又喊：「回忆贵州旅行！」黄小西便讲起他们在小七孔走过的桥、答过的谜题，像一本会说话的<strong>旅行记忆相册</strong>。</p>
                 <p class="user-story__desc">张女士把这段对话录成短视频发到朋友圈，评论区满是「哪里买的？我们也想去贵州」。一次性景区消费，就这样变成了家里的<strong>长期陪伴载体</strong>——孩子记得贵州，家长愿意分享，贵州文旅的形象在客厅里、在社交平台上持续生长。这正是项目最核心的差异化壁垒：<strong>景区里是导游，回家后是伙伴；有温度、有记忆，才有口碑与二次传播</strong>。</p>
-              </div>
             </div>
           </article>
         </div>
@@ -2035,7 +3185,7 @@
             <span class="section__num">三</span>
             <div>
               <h2 class="section__title">产品能力与技术实现</h2>
-              <p class="section__lead">从用户故事出发，明确每项体验所需的硬件、整机软件、小程序与运营后台能力，并给出可对接落地的技术规格与功能清单</p>
+              <p class="section__lead">从用户故事出发，明确每项体验所需的硬件规格、AI能力、小程序与运营后台能力，并给出可对接落地的技术规格与功能清单</p>
             </div>
           </div>
         </header>
@@ -2045,58 +3195,33 @@
             <span class="section__num section__num--sub">3.0</span>
             <div>
               <h2 class="section__title">用户故事与能力对应</h2>
-              <p class="section__lead">基于用户故事串联功能-硬件-软件-小程序-后台的能力</p>
+              <p class="section__lead">基于四大用户故事，将故事功能与 3.1 硬件规格、3.2 AI 能力及小程序、运营后台逐项对照，便于汇报与研发对齐</p>
             </div>
           </header>
           <div class="cap-network reveal">
             <div class="cap-network__legend">
               <span><i class="cap-network__dot cap-network__dot--func"></i>故事功能</span>
               <span><i class="cap-network__dot cap-network__dot--hw"></i>硬件</span>
-              <span><i class="cap-network__dot cap-network__dot--sw"></i>整机软件</span>
+              <span><i class="cap-network__dot cap-network__dot--sw"></i>AI能力</span>
               <span><i class="cap-network__dot cap-network__dot--mp"></i>小程序</span>
               <span><i class="cap-network__dot cap-network__dot--admin"></i>运营后台</span>
             </div>
             <div class="cap-network__diagram">
-              <aside class="cap-network__left">
+              <div class="cap-story-row">
                 <div class="cap-network__hub">用户故事</div>
                 <div class="cap-story-group">
                   <div class="cap-story-group__head"><span>01</span>便民刚需</div>
-                  <ul>
-                    <li>语音唤醒问询</li>
-                    <li>蓝牙精准定位</li>
-                    <li>便民设施查询</li>
-                    <li>避堵省力动线</li>
-                  </ul>
                 </div>
                 <div class="cap-story-group">
                   <div class="cap-story-group__head"><span>02</span>文化体验</div>
-                  <ul>
-                    <li>拍打触发讲解</li>
-                    <li>非遗深度讲解</li>
-                    <li>演出美食推荐</li>
-                    <li>无网完整可用</li>
-                  </ul>
                 </div>
                 <div class="cap-story-group">
                   <div class="cap-story-group__head"><span>03</span>亲子互动</div>
-                  <ul>
-                    <li>探索小游戏</li>
-                    <li>儿童专属故事</li>
-                    <li>拍打撒娇</li>
-                    <li>磕碰安抚</li>
-                  </ul>
                 </div>
                 <div class="cap-story-group">
                   <div class="cap-story-group__head"><span>04</span>离园陪伴</div>
-                  <ul>
-                    <li>离园离线使用</li>
-                    <li>心跳助眠</li>
-                    <li>回忆贵州旅行</li>
-                    <li>口碑种草传播</li>
-                    <li>保值与迭代</li>
-                  </ul>
                 </div>
-              </aside>
+              </div>
               <div class="cap-network__lines" aria-hidden="true">
                 <svg class="cap-network__svg" viewBox="0 0 48 280" preserveAspectRatio="none">
                   <path d="M0,140 H20 V42 H48" />
@@ -2109,30 +3234,38 @@
                 <div class="cap-network__pool cap-network__pool--hw">
                   <h4 class="cap-network__pool-title">硬件能力</h4>
                   <div class="cap-network__pool-chips">
-                    <span class="cap-net-kw cap-net-kw--hw">双麦收音</span>
-                    <span class="cap-net-kw cap-net-kw--hw">触摸按键</span>
+                    <span class="cap-net-kw cap-net-kw--hw">按键唤醒</span>
+                    <span class="cap-net-kw cap-net-kw--hw">近场收音</span>
+                    <span class="cap-net-kw cap-net-kw--hw">AFE 降噪</span>
+                    <span class="cap-net-kw cap-net-kw--hw">预录缓冲</span>
                     <span class="cap-net-kw cap-net-kw--hw">扬声器</span>
-                    <span class="cap-net-kw cap-net-kw--hw">蓝牙信标</span>
-                    <span class="cap-net-kw cap-net-kw--hw">拍打感应</span>
-                    <span class="cap-net-kw cap-net-kw--hw">RGB 灯光</span>
-                    <span class="cap-net-kw cap-net-kw--hw">震动马达</span>
-                    <span class="cap-net-kw cap-net-kw--hw">ESP32</span>
-                    <span class="cap-net-kw cap-net-kw--hw">电池续航</span>
-                    <span class="cap-net-kw cap-net-kw--hw">OTA</span>
-                    <span class="cap-net-kw cap-net-kw--hw">防震</span>
-                    <span class="cap-net-kw cap-net-kw--hw">本地存储</span>
+                    <span class="cap-net-kw cap-net-kw--hw">连续对话</span>
+                    <span class="cap-net-kw cap-net-kw--hw">屏幕显示</span>
+                    <span class="cap-net-kw cap-net-kw--hw">4G LBS</span>
+                    <span class="cap-net-kw cap-net-kw--hw">Wi-Fi/4G</span>
+                    <span class="cap-net-kw cap-net-kw--hw">离线兜底</span>
+                    <span class="cap-net-kw cap-net-kw--hw">6–8h 续航</span>
+                    <span class="cap-net-kw cap-net-kw--hw">Type-C/磁吸</span>
+                    <span class="cap-net-kw cap-net-kw--hw">震动反馈</span>
+                    <span class="cap-net-kw cap-net-kw--hw">电池安全</span>
+                    <span class="cap-net-kw cap-net-kw--hw">OTA 升级</span>
                   </div>
                 </div>
                 <div class="cap-network__pool cap-network__pool--sw">
-                  <h4 class="cap-network__pool-title">整机软件</h4>
+                  <h4 class="cap-network__pool-title">AI能力</h4>
                   <div class="cap-network__pool-chips">
-                    <span class="cap-net-kw cap-net-kw--sw">景区智能导览</span>
-                    <span class="cap-net-kw cap-net-kw--sw">便民生活服务</span>
+                    <span class="cap-net-kw cap-net-kw--sw">大模型知识</span>
+                    <span class="cap-net-kw cap-net-kw--sw">拒答策略</span>
+                    <span class="cap-net-kw cap-net-kw--sw">对话交互</span>
+                    <span class="cap-net-kw cap-net-kw--sw">打断机制</span>
+                    <span class="cap-net-kw cap-net-kw--sw">情感陪伴</span>
+                    <span class="cap-net-kw cap-net-kw--sw">专属记忆</span>
+                    <span class="cap-net-kw cap-net-kw--sw">多语言</span>
+                    <span class="cap-net-kw cap-net-kw--sw">景区导览</span>
+                    <span class="cap-net-kw cap-net-kw--sw">便民生活</span>
                     <span class="cap-net-kw cap-net-kw--sw">非遗内容库</span>
-                    <span class="cap-net-kw cap-net-kw--sw">亲子互动</span>
-                    <span class="cap-net-kw cap-net-kw--sw">情感 AI</span>
-                    <span class="cap-net-kw cap-net-kw--sw">离线智能更新</span>
-                    <span class="cap-net-kw cap-net-kw--sw">旅行记忆</span>
+                    <span class="cap-net-kw cap-net-kw--sw">弱网离线</span>
+                    <span class="cap-net-kw cap-net-kw--sw">定位协同</span>
                   </div>
                 </div>
                 <div class="cap-network__pool cap-network__pool--mp">
@@ -2167,40 +3300,6 @@
                 </div>
               </div>
             </div>
-
-            <p class="cap-matrix-heading">功能与能力对照（关键词）</p>
-            <div class="cap-matrix-wrap">
-              <table class="cap-matrix">
-                <thead>
-                  <tr>
-                    <th>故事功能</th>
-                    <th>硬件</th>
-                    <th>软件</th>
-                    <th>小程序</th>
-                    <th>后台</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr><td class="col-func">语音唤醒问询</td><td><span class="cap-net-kw cap-net-kw--hw">双麦收音</span><span class="cap-net-kw cap-net-kw--hw">触摸</span><span class="cap-net-kw cap-net-kw--hw">扬声器</span></td><td><span class="cap-net-kw cap-net-kw--sw">景区导览</span></td><td><span class="cap-net-kw cap-net-kw--mp">蓝牙管理</span></td><td><span class="cap-net-kw cap-net-kw--admin">监控告警</span></td></tr>
-                  <tr><td class="col-func">蓝牙精准定位</td><td><span class="cap-net-kw cap-net-kw--hw">蓝牙信标</span></td><td><span class="cap-net-kw cap-net-kw--sw">便民</span><span class="cap-net-kw cap-net-kw--sw">导览</span></td><td><span class="cap-net-kw cap-net-kw--empty">—</span></td><td><span class="cap-net-kw cap-net-kw--admin">大数据</span></td></tr>
-                  <tr><td class="col-func">便民设施查询</td><td><span class="cap-net-kw cap-net-kw--hw">扬声器</span></td><td><span class="cap-net-kw cap-net-kw--sw">便民生活</span></td><td><span class="cap-net-kw cap-net-kw--mp">优惠推送</span></td><td><span class="cap-net-kw cap-net-kw--admin">远程升级</span></td></tr>
-                  <tr><td class="col-func">避堵省力动线</td><td><span class="cap-net-kw cap-net-kw--empty">—</span></td><td><span class="cap-net-kw cap-net-kw--sw">景区导览</span></td><td><span class="cap-net-kw cap-net-kw--empty">—</span></td><td><span class="cap-net-kw cap-net-kw--admin">运营分析</span></td></tr>
-                  <tr><td class="col-func">拍打触发讲解</td><td><span class="cap-net-kw cap-net-kw--hw">拍打</span><span class="cap-net-kw cap-net-kw--hw">RGB</span></td><td><span class="cap-net-kw cap-net-kw--sw">情感AI</span><span class="cap-net-kw cap-net-kw--sw">非遗</span></td><td><span class="cap-net-kw cap-net-kw--mp">灯光</span></td><td><span class="cap-net-kw cap-net-kw--empty">—</span></td></tr>
-                  <tr><td class="col-func">非遗深度讲解</td><td><span class="cap-net-kw cap-net-kw--hw">扬声器</span><span class="cap-net-kw cap-net-kw--hw">存储</span></td><td><span class="cap-net-kw cap-net-kw--sw">非遗库</span></td><td><span class="cap-net-kw cap-net-kw--empty">—</span></td><td><span class="cap-net-kw cap-net-kw--admin">远程升级</span><span class="cap-net-kw cap-net-kw--admin">统计</span></td></tr>
-                  <tr><td class="col-func">演出美食推荐</td><td><span class="cap-net-kw cap-net-kw--hw">扬声器</span></td><td><span class="cap-net-kw cap-net-kw--sw">非遗</span><span class="cap-net-kw cap-net-kw--sw">便民</span></td><td><span class="cap-net-kw cap-net-kw--mp">优惠</span></td><td><span class="cap-net-kw cap-net-kw--admin">大数据</span></td></tr>
-                  <tr><td class="col-func">无网完整可用</td><td><span class="cap-net-kw cap-net-kw--hw">ESP32</span></td><td><span class="cap-net-kw cap-net-kw--sw">离线更新</span></td><td><span class="cap-net-kw cap-net-kw--empty">—</span></td><td><span class="cap-net-kw cap-net-kw--admin">批量升级</span></td></tr>
-                  <tr><td class="col-func">探索小游戏</td><td><span class="cap-net-kw cap-net-kw--hw">扬声器</span><span class="cap-net-kw cap-net-kw--hw">触摸</span></td><td><span class="cap-net-kw cap-net-kw--sw">亲子互动</span></td><td><span class="cap-net-kw cap-net-kw--mp">家长管控</span></td><td><span class="cap-net-kw cap-net-kw--admin">大数据</span></td></tr>
-                  <tr><td class="col-func">儿童专属故事</td><td><span class="cap-net-kw cap-net-kw--hw">扬声器</span></td><td><span class="cap-net-kw cap-net-kw--sw">亲子</span><span class="cap-net-kw cap-net-kw--sw">非遗</span></td><td><span class="cap-net-kw cap-net-kw--mp">语音风格</span></td><td><span class="cap-net-kw cap-net-kw--admin">远程升级</span></td></tr>
-                  <tr><td class="col-func">拍打撒娇</td><td><span class="cap-net-kw cap-net-kw--hw">拍打</span><span class="cap-net-kw cap-net-kw--hw">触摸</span></td><td><span class="cap-net-kw cap-net-kw--sw">情感AI</span></td><td><span class="cap-net-kw cap-net-kw--mp">震动调节</span></td><td><span class="cap-net-kw cap-net-kw--empty">—</span></td></tr>
-                  <tr><td class="col-func">磕碰安抚</td><td><span class="cap-net-kw cap-net-kw--hw">震动</span><span class="cap-net-kw cap-net-kw--hw">RGB</span><span class="cap-net-kw cap-net-kw--hw">防震</span></td><td><span class="cap-net-kw cap-net-kw--sw">情感AI</span></td><td><span class="cap-net-kw cap-net-kw--mp">震动</span><span class="cap-net-kw cap-net-kw--mp">灯光</span></td><td><span class="cap-net-kw cap-net-kw--admin">设备告警</span></td></tr>
-                  <tr><td class="col-func">离园离线使用</td><td><span class="cap-net-kw cap-net-kw--hw">电池</span><span class="cap-net-kw cap-net-kw--hw">主控</span></td><td><span class="cap-net-kw cap-net-kw--sw">离线更新</span></td><td><span class="cap-net-kw cap-net-kw--mp">在线检测</span><span class="cap-net-kw cap-net-kw--mp">自检</span></td><td><span class="cap-net-kw cap-net-kw--admin">设备台账</span></td></tr>
-                  <tr><td class="col-func">心跳助眠</td><td><span class="cap-net-kw cap-net-kw--hw">震动</span><span class="cap-net-kw cap-net-kw--hw">RGB</span></td><td><span class="cap-net-kw cap-net-kw--sw">情感AI</span></td><td><span class="cap-net-kw cap-net-kw--mp">震动调节</span></td><td><span class="cap-net-kw cap-net-kw--empty">—</span></td></tr>
-                  <tr><td class="col-func">回忆贵州旅行</td><td><span class="cap-net-kw cap-net-kw--hw">双麦</span><span class="cap-net-kw cap-net-kw--hw">扬声器</span></td><td><span class="cap-net-kw cap-net-kw--sw">旅行记忆</span></td><td><span class="cap-net-kw cap-net-kw--mp">记忆相册</span></td><td><span class="cap-net-kw cap-net-kw--admin">大数据</span></td></tr>
-                  <tr><td class="col-func">口碑种草传播</td><td><span class="cap-net-kw cap-net-kw--empty">—</span></td><td><span class="cap-net-kw cap-net-kw--sw">旅行记忆</span></td><td><span class="cap-net-kw cap-net-kw--mp">社交分享</span></td><td><span class="cap-net-kw cap-net-kw--admin">裂变分析</span></td></tr>
-                  <tr><td class="col-func">保值与迭代</td><td><span class="cap-net-kw cap-net-kw--hw">OTA</span><span class="cap-net-kw cap-net-kw--hw">快充</span></td><td><span class="cap-net-kw cap-net-kw--sw">离线更新</span></td><td><span class="cap-net-kw cap-net-kw--mp">售后自助</span></td><td><span class="cap-net-kw cap-net-kw--admin">远程升级</span><span class="cap-net-kw cap-net-kw--admin">风控</span></td></tr>
-                </tbody>
-              </table>
-            </div>
           </div>
         </section>
 
@@ -2210,23 +3309,105 @@
             <span class="section__num section__num--sub">3.1</span>
             <div>
               <h2 class="section__title">硬件详细规格参数</h2>
-              <p class="section__lead">可直接对接厂商量产的技术指标清单</p>
             </div>
           </header>
           <div class="table-wrap reveal">
-<table>
+<table class="spec-table-hw">
             <thead>
-              <tr><th scope="col">硬件模块</th><th scope="col">精准落地规格参数</th></tr>
+              <tr><th scope="col">功能</th><th scope="col">要求</th></tr>
             </thead>
             <tbody>
-              <tr><td>主控芯片</td><td>ESP32-S3FN8，Xtensa LX7 双核 32 位，主频 240MHz，512KB SRAM + 384KB ROM；2.4GHz Wi-Fi 802.11b/g/n、蓝牙 5.0 LE，低功耗稳定运行</td></tr>
-              <tr><td>景区定位模块</td><td>蓝牙 5.0 信标，兼容 Eddystone UID；定位精度 ≤2.67 米，响应延迟 ≤1 秒，10 米内信号稳定，适配贵州景区信标系统</td></tr>
-              <tr><td>收音降噪系统</td><td>双麦阵列（间距 15mm±2mm）；NLMS 自适应降噪，噪声抑制 ≥10dB；拾音 0.5–3 米；支持 1 秒唤醒、2 秒打断</td></tr>
-              <tr><td>发声单元</td><td>4Ω 1W 扬声器，频响 200Hz–16kHz，灵敏度 85dB；0–30 级音量可调，专属温柔少女声线</td></tr>
-              <tr><td>智能交互感应</td><td>IPX4 防水触摸按键（寿命 ≥50 万次）；801S 拍打感应（≤10ms）；1027 扁平震动马达，心跳/流水/剧情多模式，低噪安抚</td></tr>
-              <tr><td>灯光显示系统</td><td>5mm RGB 双眼 LED，0–255 级 PWM；蓝/黄/绿三色场景联动，常亮、呼吸、闪烁</td></tr>
-              <tr><td>电源续航系统</td><td>500mAh 聚合物锂电池；连续使用 ≥4 小时，待机 ≥7 天；Type-C 5V/1A 快充，2 小时满电</td></tr>
-              <tr><td>材质安全标准</td><td>亲肤短毛绒可拆洗，加厚 ABS 防震内壳，1 米防摔；整机 ≤150g；符合 GB 6675 国家玩具安全标准，全龄段安全可用</td></tr>
+              <tr>
+                <td>语音提问入口</td>
+                <td>按键唤醒，支持连续对话，支持按键或指令关闭对话，进入待机模式。</td>
+              </tr>
+              <tr>
+                <td>收音能力</td>
+                <td>近场语音稳定采集；麦克风区域不能被毛绒或结构遮挡；<span class="spec-hw-red">景区噪声下可用。</span>具体要求如下：
+                  <ul class="spec-hw-list">
+                    <li>拾音距离：保证 1.5 米内正常说话可识别，1 米内体验稳定</li>
+                    <li>环境噪声适应：70 dBA 人群/景区噪声下可用；75 dBA 下仍可唤醒和识别核心指令</li>
+                    <li>唤醒成功率：户外 70 dBA、1 米距离唤醒成功率大于等于 90%</li>
+                    <li>误唤醒率：≤1 次/小时/设备，最好更低</li>
+                    <li>降噪后语音质量：降噪后有效 SNR ≥10 dB；ASR 可稳定识别短句</li>
+                    <li>风噪：微风/步行场景下，3–5 m/s 风速下仍可唤醒</li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td>音频预处理</td>
+                <td>
+                  <ul class="spec-hw-list">
+                    <li>支持基础 AFE（声音处理总模块），至少 NS + AGC + VAD，AEC 优先，<span class="spec-hw-red">小声可识别；</span></li>
+                    <li><span class="spec-hw-red">支持打断并继续收音：</span>播放打断后可继续收音；</li>
+                    <li><span class="spec-hw-red">首字/首音不丢：</span>预录音缓存 500–1000ms，首字截断率 ≤1%；</li>
+                    <li>（在户外景区 70 dBA 噪声环境下，用户距设备 1 米正常说话时，设备应支持 500–1000ms 前置音频缓存，确保唤醒后用户语音开头不被截断）</li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td>回答播放</td>
+                <td>
+                  <ul class="spec-hw-list">
+                    <li>人声清晰可听，优先清晰度而非单纯大音量；</li>
+                    <li>1kHz–4kHz 人声频段清楚；</li>
+                    <li>最大音量可限制，支持在户外场景下使用。</li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td>对话能力</td>
+                <td>具备连续对话能力。</td>
+              </tr>
+              <tr>
+                <td>连续对话交互闭环</td>
+                <td>
+                  <ul class="spec-hw-list">
+                    <li>支持「提问、说完自动结束、播放、打断重问」；</li>
+                    <li>静音 30s–1min 自动结束。</li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td>屏幕显示</td>
+                <td>具备显示屏，支持查看玩偶形象、电量、联网状态等基本信息。</td>
+              </tr>
+              <tr>
+                <td>定位能力</td>
+                <td>需支持 4G 的 <span class="spec-hw-red">LBS 定位</span>，硬件端发送位置给软件端。</td>
+              </tr>
+              <tr>
+                <td>连接能力</td>
+                <td>支持 Wi-Fi 和内置 4G 芯片。</td>
+              </tr>
+              <tr>
+                <td>离线兜底</td>
+                <td>无网时仍有基础可用能力；可播放提示音和基础导览/安全内容。</td>
+              </tr>
+              <tr>
+                <td>续航充电</td>
+                <td>满足景区单日使用（6–8h），充电方式简单，通用 Type-C 或磁吸式充电；内置电池需符合 3C 认证。</td>
+              </tr>
+              <tr>
+                <td>安全可靠</td>
+                <td class="spec-hw-red">设备需满足儿童和游客高频使用场景下的电池安全要求，避免过充、过放、短路、过热、鼓包、跌落后异常等风险。</td>
+              </tr>
+              <tr>
+                <td>硬件交互表现</td>
+                <td>部分触摸场景、提醒、指令等情况支持硬件震动，具体如下：
+                  <ul class="spec-hw-list">
+                    <li>触摸/按键确认：用户 <span class="spec-hw-red">开机/关机</span> 成功，应有轻微震动反馈；</li>
+                    <li>语音 <span class="spec-hw-red">唤醒</span> 成功：设备识别到唤醒词或按键唤醒后，应短震提示用户「设备已开始听」；</li>
+                    <li><span class="spec-hw-red">导航</span> 提醒：到达转向点、偏航、接近目标点时，应支持震动提醒；</li>
+                    <li><span class="spec-hw-red">安全</span> 提醒：低电量、设备即将关机、越界、防丢、异常状态时，应有明显震动；</li>
+                    <li><span class="spec-hw-red">弱网/离线</span> 提醒：网络异常、无法完成在线问答时，可震动并配合语音/灯效提醒。</li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td>远程升级</td>
+                <td>支持固件升级、配置更新和内容缓存更新。</td>
+              </tr>
             </tbody>
           </table>
           </div>
@@ -2236,25 +3417,59 @@
           <header class="section__head">
             <span class="section__num section__num--sub">3.2</span>
             <div>
-              <h2 class="section__title">整机软件核心功能</h2>
-              <p class="section__lead">终版落地版功能清单（已剔除民族语言教学模块）</p>
+              <h2 class="section__title">AI能力</h2>
+              <p class="section__lead">以「答得准、聊得顺、有陪伴、玩得明白」为体验目标，合并软件能力规范与贵州文旅场景落地要求</p>
             </div>
           </header>
           <div class="table-wrap reveal">
-<table>
+<table class="spec-table spec-table--3col">
             <thead>
-              <tr><th scope="col">软件模块</th><th scope="col">详细落地功能</th></tr>
+              <tr><th scope="col">能力方向</th><th scope="col">具体措施</th><th scope="col">目标效果</th></tr>
             </thead>
             <tbody>
-              <tr><td>景区智能导览</td><td>景点定点自动讲解、游玩贴士、历史传说、实时避堵路线、人流预判、出入口省力路线推荐</td></tr>
-              <tr><td>便民生活服务</td><td>卫生间、充电宝、饮水点、休息区、认证餐饮商户查询，配套游玩优惠推送</td></tr>
-              <tr><td>贵州非遗内容库</td><td>苗族、侗族非遗故事、民俗文化、山水传说、美食溯源、节庆科普，全量离线缓存</td></tr>
-              <tr><td>亲子趣味互动</td><td>景区探索小游戏、自然科普问答、景点趣味谜题，适配亲子游玩</td></tr>
-              <tr><td>情感化 AI 交互</td><td>轻拍撒娇、重拍温柔提醒、磕碰自动安抚；故事剧情联动震动；低落情绪温柔语音 + 心跳助眠</td></tr>
-              <tr><td>离线 & 智能更新</td><td>无网络完整可用；联网静默自动更新新景区、新活动、新故事</td></tr>
-              <tr><td>旅行记忆系统</td><td>自动记录游玩轨迹与互动记录，语音唤醒「回忆贵州旅行」，复刻专属旅途记忆</td></tr>
+              <tr>
+                <td>大模型知识</td>
+                <td>① 接入互联网检索，实时补充景区开放、天气、交通等动态信息；② 设置拒答与安全策略，边界外问题明确告知「不知道」，避免幻觉式「瞎说」；③ 知识覆盖贵州文旅全场景：景区讲解、非遗民俗、美食节庆、亲子科普、便民设施等，支持多领域问答；④ 贵州非遗内容库（苗/侗故事、山水传说、节庆科普）与景区 POI 知识库全量/增量缓存，支撑离线降级。</td>
+                <td>回答准确可信，<strong>「不知道」优于乱答</strong>；游客敢问、愿意信。</td>
+              </tr>
+              <tr>
+                <td>对话交互</td>
+                <td>① 支持随时打断，播放中可切入下一轮提问，与硬件 VAD、预录缓冲协同；② 思考/检索过程播放「让我思考一下」等过渡提示，降低等待焦虑；③ 多轮对话上下文隔离，不串台、不混杂历史无关话题；④ 连续对话：说完静音 500–1000ms 自动结束拾音，支持「问—答—再问」闭环；⑤ 结合 4G LBS + 信标位置理解「这里」「刚才那个景点」等指代。</td>
+                <td>交互流畅、<strong>不串台、有温度</strong>，像真人导游而非机器播报。</td>
+              </tr>
+              <tr>
+                <td>情感陪伴</td>
+                <td>① 非对话态配合硬件灯光/音效/震动表达情绪（待机、倾听、思考、开心等）；② 支持主动互动（接近景点提醒、久未互动轻唤起等，频控防打扰）；③ 性格养成与用户专属记忆：记录历史对话与旅途高光，语音唤醒「回忆贵州旅行」；④ 情感化反馈：轻拍撒娇、磕碰安抚、低落助眠等，与硬件多模态联动。</td>
+                <td><strong>陪伴属性强</strong>，具备主动服务能力，离园后仍可延续情感连接。</td>
+              </tr>
+              <tr>
+                <td>多语言支持</td>
+                <td>支持中文（普通话/方言适配按客源裁剪）、英语、日语等；ASR、TTS 与内容表达多语言版本一致，可按景区客源配置上线语言包。</td>
+                <td>覆盖外地游客与<strong>海外市场</strong>拓展需求。</td>
+              </tr>
+              <tr>
+                <td>景区智能导览</td>
+                <td>景点定点/接近自动讲解；游玩贴士、历史传说；结合位置与人流的避堵路线、省力动线、出入口推荐；亲子向探索小游戏、趣味谜题与自然科普问答。</td>
+                <td>把「看风景」变成「懂风景」，<strong>省心省力</strong>完成游览。</td>
+              </tr>
+              <tr>
+                <td>便民生活服务</td>
+                <td>基于实时位置查询卫生间、充电宝、饮水点、休息区、认证餐饮；可联动小程序推送游玩优惠与商户信息。</td>
+                <td>解决景区<strong>刚需痛点</strong>，提升自由行体验与消费转化。</td>
+              </tr>
+              <tr>
+                <td>弱网与离线策略</td>
+                <td>无网时核心讲解、欢迎语、基础 POI 与安全提示可用；联网后静默更新内容包/配置；云端超时或失败时调度设备端本地提示音与兜底语音；弱网状态明确告知用户当前能力边界。</td>
+                <td>山地景区网络不稳时<strong>体验不崩</strong>，游客不感知「设备坏了」。</td>
+              </tr>
+              <tr>
+                <td>定位与状态协同</td>
+                <td>接收硬件上报的 4G LBS、电量、联网、故障码；融合景区蓝牙信标触发讲解与路线；异常联动小程序通知与后台告警。</td>
+                <td>软件侧<strong>看得见设备、管得住体验</strong>，支撑运维与规模化投放。</td>
+              </tr>
             </tbody>
           </table>
+          <p class="placeholder-note" style="margin:12px 4px 0; text-align:left; font-size:13px;">以上能力可分期落地：首期优先大模型拒答策略、连续对话打断、景区导览与离线兜底；二期叠加性格记忆、多语言扩展与更丰富的主动陪伴策略。</p>
           </div>
         </section>
 
@@ -2272,7 +3487,7 @@
               <tr><th scope="col">功能模块</th><th scope="col">核心功能说明</th></tr>
             </thead>
             <tbody>
-              <tr><td>设备蓝牙管理</td><td>一键绑定、重连、解绑、设备在线检测、硬件自检</td></tr>
+              <tr><td>设备蓝牙管理</td><td>扫码/蓝牙一键绑定、重连、解绑与恢复出厂；唯一 Device ID 与会话绑定；设备在线检测与硬件自检</td></tr>
               <tr><td>个性化参数设置</td><td>震动强度调节、语音风格切换、灯光模式自定义</td></tr>
               <tr><td>家长安全管控</td><td>使用时长限制、远程暂停、内容管控，防沉迷</td></tr>
               <tr><td>旅行记忆相册</td><td>自动生成游玩轨迹、互动日志、旅途高光记录</td></tr>
@@ -2297,9 +3512,9 @@
               <tr><th scope="col">功能模块</th><th scope="col">核心能力</th><th scope="col">项目价值</th></tr>
             </thead>
             <tbody>
-              <tr><td>设备台账管理</td><td>全量设备编号、批次、固件版本、出厂信息建档，多维度筛选</td><td>设备全生命周期溯源，支撑售后与品控</td></tr>
-              <tr><td>远程批量升级</td><td>单台/批量静默升级、进度监控、失败重试</td><td>持续迭代内容与功能，设备永久保值</td></tr>
-              <tr><td>设备状态监控告警</td><td>在线状态、电量、信号、异常报错实时监测，异常告警</td><td>降低售后成本，快速响应故障</td></tr>
+              <tr><td>设备台账管理</td><td>全量 Device ID、批次、固件/配置/缓存版本、绑定会话、出厂信息建档，多维度筛选</td><td>设备全生命周期溯源，支撑售后与品控</td></tr>
+              <tr><td>远程批量升级</td><td>固件 OTA、配置下发、内容缓存包单台/批量静默升级，进度监控、失败重试</td><td>持续迭代内容与功能，设备永久保值</td></tr>
+              <tr><td>设备状态监控告警</td><td>接收硬件上报的电量、4G LBS 位置、联网状态、故障码；在线/离线、低电、断网、硬件异常实时监测并推送用户/运维；支持告警补传</td><td>降低售后成本，快速响应故障</td></tr>
               <tr><td>大数据运营分析</td><td>激活量、景区热度、功能使用率、用户偏好统计</td><td>指导内容迭代、景区运营、营销投放</td></tr>
               <tr><td>安全风控体系</td><td>设备黑白名单、远程锁定、传输加密、隐私脱敏</td><td>保障设备安全与用户数据合规</td></tr>
             </tbody>
@@ -2423,111 +3638,69 @@
         </p>
       </section>
 
-      <!-- 六、试点 -->
-      <section class="section reveal" id="pilot">
+      <!-- 六、困难与待办 -->
+      <section class="section reveal" id="blockers">
         <header class="section__head">
           <span class="section__num">六</span>
           <div>
-            <h2 class="section__title">项目试点落地方案</h2>
-            <p class="section__lead">青岩古镇 + 肇兴侗寨 · 500 台小批量闭环验证</p>
+            <h2 class="section__title">目前遇到的困难和待办项</h2>
+            <p class="section__lead">推进黄小西玩偶落地前的关键阻塞项与近期需闭环事项，供汇报决策与资源协调</p>
           </div>
         </header>
 
-        <div class="card reveal" style="margin-bottom: 24px;">
-          <h3 style="margin:0 0 12px; font-size:17px; color:var(--blue-primary);">试点选址</h3>
-          <p style="margin:0; color:var(--ink-muted);">优先选取<strong>青岩古镇、肇兴侗寨</strong>两大成熟、人流稳定、亲子与年轻客群密集景区，小范围闭环试点。</p>
+        <div class="difficulty-grid">
+          <article class="difficulty-card difficulty-card--critical reveal">
+            <div class="difficulty-card__head">
+              <h3 class="difficulty-card__title">1. 外观设计与供应商未确定</h3>
+              <span class="difficulty-card__tag difficulty-card__tag--risk">阻塞项 · 高优先级</span>
+            </div>
+            <p class="difficulty-card__lead">
+              <strong>外观是吸引用户的「敲门砖」</strong>：在情感陪伴类 AI 玩偶赛道，用户往往先为「可爱、好看、可挂、可送礼」买单，再因 AI 能力形成复用。黄小西需在苗族少女 IP 与潮玩审美之间找到市场可接受的平衡点，否则后续硬件与 AI 投入难以转化为购买转化。
+            </p>
+            <ul>
+              <li><strong>现状：</strong>已调研的多款<strong>人形玩偶方案外观反馈较差</strong>（与芙崽、萌 UU、雷鸟 Uni 等成熟竞品相比缺乏「第一眼吸引力」），尚未锁定可量产、可承载 AI 机芯且 IP 表达到位的工业设计与毛绒/搪胶供应链。</li>
+              <li><strong>方案文档内脸版方向</strong>（温暖少女 / 灵动少女 / 元气傲娇）仍处概念阶段，<strong>未进入打样与成本测算</strong>。</li>
+              <li><strong>关联厂商：</strong>其其格等 IP 毛绒厂可做工偶本体，但<strong>不含硬件固件能力</strong>，需另寻机芯与结构方案；定制 IP 设计费、打样周期（约 2–3 个月）与起订量需在商务侧一并确认。</li>
+            </ul>
+          </article>
+
+          <article class="difficulty-card difficulty-card--critical reveal">
+            <div class="difficulty-card__head">
+              <h3 class="difficulty-card__title">2. 硬件厂商未确定</h3>
+              <span class="difficulty-card__tag difficulty-card__tag--risk">阻塞项 · 影响交期与 BOM</span>
+            </div>
+            <p class="difficulty-card__lead">
+              产品方案已明确 <strong>4G + Wi-Fi 双联网、GPS/北斗 定位、设备端独立使用</strong> 等能力边界，但<strong>尚无一家厂商同时满足外观载体、音频体验、联网定位与可对接我方 AI 云端</strong>的完整交付路径。各候选方差异大，需尽快收敛选型或明确「降配验证版」与「目标量产版」两条路线。
+            </p>
+
+            <div class="vendor-compare">
+              <div class="vendor-compare__item">
+                <h5>复数时空</h5>
+                <p><strong>合作意向大</strong>，愿意配合景区伴游/玩偶方向推进。若按当前需求<strong>不削减 4G 与定位能力</strong>，对方反馈需约 <strong>3 个月开模</strong>，且<strong>单机成本预计增加 100 元以上</strong>（具体 BOM 与模具费待书面报价）。</p>
+                <span class="vendor-compare__status">待办：索要正式方案书、阶梯报价、样机演示时间</span>
+              </div>
+              <div class="vendor-compare__item">
+                <h5>道格拉斯（熊猫方案）</h5>
+                <p>由道格拉斯推荐的硬件方案（内部称「熊猫」），<strong>实机体验与音频/交互效果一般</strong>，尚不足以支撑「景区噪声下稳定对话 + 陪伴感」的验收标准；毛绒载体与语音硬件是否一体交付仍待确认。</p>
+                <span class="vendor-compare__status">待办：是否继续深度评估或仅作结构/渠道参考</span>
+              </div>
+              <div class="vendor-compare__item">
+                <h5>球宠（硅基生命）</h5>
+                <p>曾沟通 NFC+硬件 / 软件 / AI 能力分包报价（合计约 40 万量级），<strong>NFC 方案出景区不可用</strong>，与「离园后持续陪伴」故事冲突；Wi-Fi/4G 内嵌方案需小程序或 App 配合，与当前「P0 硬件独立使用」方向需再对齐。ASR/TTS 可对接阿里，<strong>接口与量产周期、是否支持我方 AI 直连</strong>仍待书面确认。</p>
+                <span class="vendor-compare__status">待决策：是否继续跟进 · 建议 1 周内拍板</span>
+              </div>
+            </div>
+
+            <ul style="margin-top:16px;">
+              <li><strong>核心矛盾：</strong>保留 4G + GPS → 成本与开模周期上升；砍配置 → 与已确认产品决策及竞品对标能力不一致。</li>
+              <li><strong>建议决策点：</strong>是否接受「3 个月开模 + 单机 +100」换完整能力；或是否先做<strong>无 4G/无 GPS 的验证样机</strong>验证外观与对话闭环，再迭代量产版。</li>
+            </ul>
+          </article>
         </div>
 
-        <div class="timeline">
-          <div class="timeline__item reveal">
-            <h4>产量与风险控制</h4>
-            <p>首批小批量试产 <strong>500 台</strong>，轻资产启动，控制前期投入风险，以市场真实数据验证产品模型。</p>
-          </div>
-          <div class="timeline__item reveal">
-            <h4>落地动作（四步）</h4>
-            <p>① 景区设立小型体验展示位，现场功能演示；② 设备贴简易使用指引；③ 配合景区打卡活动拉升购买率；④ 全流程记录用户反馈、成交率、功能使用偏好。</p>
-          </div>
-          <div class="timeline__item reveal">
-            <h4>试点核心目标</h4>
-            <p>验证游客接受度、真实转化率、功能适配性、用户痛点反馈，为后续全贵州景区规模化铺开、大批量量产提供数据依据。</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- 七、预算 -->
-      <section class="section reveal" id="budget">
-        <header class="section__head">
-          <span class="section__num">七</span>
-          <div>
-            <h2 class="section__title">项目预算与收益预测</h2>
-            <p class="section__lead">轻资产启动 · 低投入验证 · 旺季规模化扩张</p>
-          </div>
-        </header>
-
-        <div class="scene-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
-          <div class="stat-card reveal" style="background:var(--card); border:1px solid var(--border); color:var(--ink); box-shadow:var(--shadow);">
-            <div class="stat-card__value" style="color:var(--accent-deep);">5<small style="font-size:14px;">万元</small></div>
-            <p class="stat-card__label" style="color:var(--ink-muted);">首批试点预算（500台量产+包装+物料+运营）</p>
-          </div>
-          <div class="stat-card reveal" style="background:var(--card); border:1px solid var(--border); color:var(--ink); box-shadow:var(--shadow);">
-            <div class="stat-card__value" style="color:var(--blue-primary); font-size:22px;">短期</div>
-            <p class="stat-card__label" style="color:var(--ink-muted);">试点周期：体验式销售，盈亏平衡 + 正向盈利</p>
-          </div>
-          <div class="stat-card reveal" style="background:var(--card); border:1px solid var(--border); color:var(--ink); box-shadow:var(--shadow);">
-            <div class="stat-card__value" style="color:var(--blue-primary); font-size:22px;">5–10月</div>
-            <p class="stat-card__label" style="color:var(--ink-muted);">中期：贵州文旅旺季，全景区铺货，稳定月度利润</p>
-          </div>
-          <div class="stat-card reveal" style="background:var(--card); border:1px solid #7dd3fc; color:var(--ink); box-shadow:var(--shadow);">
-            <div class="stat-card__value" style="color:var(--accent-deep); font-size:22px;">长期</div>
-            <p class="stat-card__label" style="color:var(--ink-muted);">硬件常态化 + 衍生品毛利 + 用户传播降本 + 政企/IP 联名</p>
-          </div>
-        </div>
-
-        <p class="placeholder-note">
-          具体销售额、回本周期、年度利润预测等量化指标原文为定性描述，确认数据后可增加图表模块。
+        <p class="placeholder-note" style="margin-top:20px;">
+          本节内容随厂商沟通与打样进展动态更新；决策结果（外观定稿、厂商选定、是否降配）确定后，建议回写至 PRD 与硬件厂商选型跟进总表。
         </p>
-      </section>
-
-      <!-- 八、优势 -->
-      <section class="section reveal" id="advantage">
-        <header class="section__head">
-          <span class="section__num">八</span>
-          <div>
-            <h2 class="section__title">项目核心竞争优势</h2>
-            <p class="section__lead">六大壁垒构建差异化护城河</p>
-          </div>
-        </header>
-        <div class="advantage-grid">
-          <div class="advantage reveal"><h4>实用性壁垒</h4><p>非摆设文创，景区真实刚需，解决游客痛点。</p></div>
-          <div class="advantage reveal"><h4>情感壁垒</h4><p>旅行记忆复盘 + 情感震动安抚，有温度、有记忆、可留存。</p></div>
-          <div class="advantage reveal"><h4>场景壁垒</h4><p>唯一覆盖「景区游玩 + 居家陪伴」双场景的贵州文旅 IP 产品。</p></div>
-          <div class="advantage reveal"><h4>成本壁垒</h4><p>量产成本可控、售价亲民、受众全覆盖。</p></div>
-          <div class="advantage reveal"><h4>传播壁垒</h4><p>用户自发社交裂变，自带文旅宣传属性。</p></div>
-          <div class="advantage reveal"><h4>运营壁垒</h4><p>软硬件 + 小程序 + 后台完整闭环，可标准化量产、长期迭代。</p></div>
-        </div>
-      </section>
-
-      <!-- 九、支撑 -->
-      <section class="section reveal" id="support">
-        <header class="section__head">
-          <span class="section__num">九</span>
-          <div>
-            <h2 class="section__title">项目落地所需支撑</h2>
-            <p class="section__lead">政产学研协同，推动试点快速落地</p>
-          </div>
-        </header>
-        <div class="support-cta reveal">
-          <h3>恳请支持事项</h3>
-          <ul class="support-list">
-            <li><strong>资金支持</strong>首批试点启动资金</li>
-            <li><strong>资源对接</strong>景区展位、渠道合作资源</li>
-            <li><strong>供应链</strong>硬件量产落地保障</li>
-            <li><strong>技术交付</strong>固件、小程序、管理后台开发</li>
-          </ul>
-          <p class="placeholder-note" style="margin-top:24px; text-align:left;">
-            联系人、联系电话、牵头单位等信息待确认后可展示于页脚。
-          </p>
-        </div>
       </section>
 
       <footer>
@@ -2541,11 +3714,655 @@
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
   </button>
 
+  </div><!-- /#view-proposal -->
+
+  <div id="view-competitors" class="app-view" role="tabpanel" aria-labelledby="tab-competitors" hidden>
+    <div class="comp-layout">
+      <header class="comp-hero reveal">
+        <p class="comp-hero__kicker">市场调研</p>
+        <h1 class="comp-hero__title">情感陪伴类 AI 玩偶 · 竞品分析</h1>
+        <p class="comp-hero__lead">梳理品类共性能力边界，并以基础能力矩阵、亮点嘈点对比等方式呈现芙崽、萌 UU、雷鸟 Uni、秒嗒等代表产品，为黄小西差异化定位提供对照。</p>
+        <div class="comp-gallery" role="list" aria-label="代表竞品产品图">
+          <button type="button" class="comp-gallery__item" role="listitem" aria-label="放大查看芙崽产品图">
+            <span class="comp-gallery__thumb-wrap">
+              <img class="comp-gallery__img" src="assets/competitors/fuzai.png" alt="芙崽产品宣传图" width="320" height="320" loading="lazy" data-lightbox-group="competitors" data-caption="芙崽" />
+              <span class="comp-gallery__zoom" aria-hidden="true">放大</span>
+            </span>
+            <span class="comp-gallery__meta">
+              <span class="comp-gallery__name">芙崽</span>
+              <span class="comp-gallery__sub">珞博智能 · 毛球玩偶</span>
+            </span>
+          </button>
+          <button type="button" class="comp-gallery__item" role="listitem" aria-label="放大查看萌 UU 产品图">
+            <span class="comp-gallery__thumb-wrap">
+              <img class="comp-gallery__img" src="assets/competitors/menguu.png" alt="萌 UU 茉茉·MOMO 产品宣传图" width="320" height="320" loading="lazy" data-lightbox-group="competitors" data-caption="萌 UU" />
+              <span class="comp-gallery__zoom" aria-hidden="true">放大</span>
+            </span>
+            <span class="comp-gallery__meta">
+              <span class="comp-gallery__name">萌 UU</span>
+              <span class="comp-gallery__sub">优必选 · 屏幕 + 毛绒外套</span>
+            </span>
+          </button>
+          <button type="button" class="comp-gallery__item" role="listitem" aria-label="放大查看雷鸟 Uni 产品图">
+            <span class="comp-gallery__thumb-wrap">
+              <img class="comp-gallery__img" src="assets/competitors/leiniao-uni.png" alt="雷鸟 Uni Amby 夜焰产品宣传图" width="320" height="320" loading="lazy" data-lightbox-group="competitors" data-caption="雷鸟 Uni" />
+              <span class="comp-gallery__zoom" aria-hidden="true">放大</span>
+            </span>
+            <span class="comp-gallery__meta">
+              <span class="comp-gallery__name">雷鸟 Uni</span>
+              <span class="comp-gallery__sub">雷鸟 · AI 陪伴挂件</span>
+            </span>
+          </button>
+          <button type="button" class="comp-gallery__item" role="listitem" aria-label="放大查看秒嗒产品图">
+            <span class="comp-gallery__thumb-wrap">
+              <img class="comp-gallery__img" src="assets/competitors/miaoda.png" alt="秒嗒 AiMOON 产品宣传图" width="320" height="320" loading="lazy" data-lightbox-group="competitors" data-caption="秒嗒" />
+              <span class="comp-gallery__zoom" aria-hidden="true">放大</span>
+            </span>
+            <span class="comp-gallery__meta">
+              <span class="comp-gallery__name">秒嗒</span>
+              <span class="comp-gallery__sub">上海灵犀科技 · 毛绒玩偶</span>
+            </span>
+          </button>
+        </div>
+      </header>
+
+      <section class="comp-block reveal" id="comp-overview">
+        <h2 class="comp-block__title">1. 品类共性画像</h2>
+        <div class="comp-profile">
+          <div class="comp-profile__row">
+            <div class="comp-profile__label">产品定位</div>
+            <div class="comp-profile__body">情感陪伴</div>
+          </div>
+          <div class="comp-profile__row">
+            <div class="comp-profile__label">核心场景</div>
+            <div class="comp-profile__body">日常问答</div>
+          </div>
+          <div class="comp-profile__row">
+            <div class="comp-profile__label">功能能力</div>
+            <div class="comp-profile__body">简单对话</div>
+          </div>
+          <div class="comp-profile__row">
+            <div class="comp-profile__label">硬件能力</div>
+            <div class="comp-profile__body">
+              保证重要体验
+              <p class="comp-profile__sub">（1）优点</p>
+              <ul>
+                <li>支持内置 4G 芯片，独立联网使用</li>
+                <li>响应速度 3–5s</li>
+                <li>屏幕显示情感和形象，陪伴属性强</li>
+              </ul>
+              <p class="comp-profile__sub">（2）缺点</p>
+              <ul>
+                <li>单麦收音，不支持打断</li>
+                <li>无噪音处理，无差别收音（个别玩偶可做声纹识别）</li>
+                <li>收音能力弱，距离要求较近</li>
+                <li>无定位能力</li>
+                <li>断网状态不可用</li>
+              </ul>
+            </div>
+          </div>
+          <div class="comp-profile__row">
+            <div class="comp-profile__label">AI 能力</div>
+            <div class="comp-profile__body">
+              中规中矩
+              <ol>
+                <li>基本上都为国产通用大模型（萌 UU 有自研模型），问答能力一般</li>
+                <li>有部分上下文记忆能力；基本都支持中英双语</li>
+                <li>支持储存部分用户信息，形成记忆，稍微有些活人感</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="comp-block reveal" id="comp-spec-matrix">
+        <h2 class="comp-block__title">2. 竞品基础能力对照矩阵</h2>
+        <div class="comp-table-wrap comp-table-wrap--matrix">
+          <table class="comp-matrix">
+            <thead>
+              <tr>
+                <th scope="col">对比维度</th>
+                <th scope="col" class="col-product--fuzai">芙崽</th>
+                <th scope="col" class="col-product--uu">萌 UU</th>
+                <th scope="col" class="col-product--uni">雷鸟 Uni</th>
+                <th scope="col" class="col-product--miaoda">秒嗒</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">形态</th>
+                <td>毛球玩偶，可手持、可包挂</td>
+                <td>屏幕 + 毛绒外套，可手持、可包挂</td>
+                <td>屏幕 + 毛绒外套，可手持、可包挂</td>
+                <td>毛绒玩偶，可手持</td>
+              </tr>
+              <tr>
+                <th scope="row">重量</th>
+                <td>适中</td>
+                <td>轻</td>
+                <td>轻</td>
+                <td>重</td>
+              </tr>
+              <tr>
+                <th scope="row">唤醒方式</th>
+                <td>口令；切换至对话模式</td>
+                <td>按键</td>
+                <td>按键开机，无唤醒词，随时随地收音对话</td>
+                <td>按键</td>
+              </tr>
+              <tr>
+                <th scope="row">关闭方式</th>
+                <td>按键或静止 3 分钟后关闭对话，进入陪伴状态；10 分钟后自动关闭系统</td>
+                <td>按键</td>
+                <td>按键；无对话 3 分钟后进入待机，按键继续对话</td>
+                <td>一分钟自动关闭对话模式</td>
+              </tr>
+              <tr>
+                <th scope="row">对话方式</th>
+                <td>连续对话</td>
+                <td>长按收音进行连续对话</td>
+                <td>开机后持续对话</td>
+                <td>
+                  <ol class="comp-cell-list">
+                    <li>长按收音对话</li>
+                    <li>双击后连续对话</li>
+                  </ol>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">收音能力</th>
+                <td>
+                  <ol class="comp-cell-list">
+                    <li>嘈杂环境依然收音</li>
+                    <li>收音能力弱，距离要求较近</li>
+                  </ol>
+                </td>
+                <td class="comp-cell-empty">—</td>
+                <td>
+                  <ol class="comp-cell-list">
+                    <li>嘈杂环境依然收音</li>
+                    <li>收音能力强，但没做去噪处理</li>
+                  </ol>
+                </td>
+                <td class="comp-cell-empty">—</td>
+              </tr>
+              <tr>
+                <th scope="row">连接方式</th>
+                <td>
+                  <ol class="comp-cell-list">
+                    <li><strong>Wi-Fi 版：</strong>硬件与软件蓝牙连接，依赖 App 配网</li>
+                    <li><strong>移动网络版：</strong>内置流量卡，一年免费，之后 6 元/月，App 内购流量</li>
+                  </ol>
+                </td>
+                <td>内置 4G 模组，无需 Wi-Fi</td>
+                <td>内置 4G 模组，开机联网使用</td>
+                <td>内置 4G 模组，购机享 3 年免费移动网络；支持 Wi-Fi；微信小程序 + 蓝牙连接</td>
+              </tr>
+              <tr>
+                <th scope="row">蓝牙</th>
+                <td>蓝牙 5.4，连接距离约 10 m</td>
+                <td>无</td>
+                <td>无</td>
+                <td>无</td>
+              </tr>
+              <tr>
+                <th scope="row">离线兜底</th>
+                <td>无</td>
+                <td>无</td>
+                <td>无</td>
+                <td>无</td>
+              </tr>
+              <tr>
+                <th scope="row">定位能力</th>
+                <td>无</td>
+                <td>无（规划中）</td>
+                <td>无</td>
+                <td>无</td>
+              </tr>
+              <tr>
+                <th scope="row">麦克风</th>
+                <td>疑似单麦</td>
+                <td>单麦</td>
+                <td>疑似单麦</td>
+                <td>疑似单麦</td>
+              </tr>
+              <tr>
+                <th scope="row">电池</th>
+                <td>3C 认证</td>
+                <td>无 3C 认证</td>
+                <td>3C 认证</td>
+                <td>3C 认证</td>
+              </tr>
+              <tr>
+                <th scope="row">其他能力</th>
+                <td>六轴感应器，支持触摸反应</td>
+                <td>无</td>
+                <td>无</td>
+                <td>无</td>
+              </tr>
+              <tr>
+                <th scope="row">软件载体</th>
+                <td>App</td>
+                <td>App</td>
+                <td>小程序</td>
+                <td>App / 小程序</td>
+              </tr>
+              <tr>
+                <th scope="row">价格</th>
+                <td>
+                  <ol class="comp-cell-list">
+                    <li>Wi-Fi 版：399 元</li>
+                    <li>移动网络版：499 元</li>
+                  </ol>
+                </td>
+                <td>399 元</td>
+                <td>299 元</td>
+                <td>499 元（默认 Wi-Fi + 4G）</td>
+              </tr>
+              <tr>
+                <th scope="row">厂商</th>
+                <td>珞博智能</td>
+                <td>优必选</td>
+                <td>雷鸟</td>
+                <td>上海灵犀科技</td>
+              </tr>
+              <tr>
+                <th scope="row">大模型</th>
+                <td>自研 MEM 多模态情感大模型</td>
+                <td>通义千问 + 优必选自研「点灵」Agent</td>
+                <td>国产通用大模型</td>
+                <td>国产通用大模型</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="comp-matrix-note">表格可横向、纵向滚动；首行与首列固定，便于对照四项基础能力。空白项表示调研资料未注明。</p>
+      </section>
+
+      <section class="comp-block reveal" id="comp-dialog-matrix">
+        <h2 class="comp-block__title">3. 竞品对话能力对照矩阵</h2>
+        <div class="comp-table-wrap comp-table-wrap--matrix">
+          <table class="comp-matrix comp-matrix--dialog">
+            <thead>
+              <tr>
+                <th scope="col">对比维度</th>
+                <th scope="col" class="col-product--fuzai">芙崽</th>
+                <th scope="col" class="col-product--uu">萌 UU</th>
+                <th scope="col" class="col-product--uni">雷鸟 Uni</th>
+                <th scope="col" class="col-product--miaoda">秒嗒</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">情感交互</th>
+                <td>强（被动触发）</td>
+                <td>一般</td>
+                <td>强</td>
+                <td>一般</td>
+              </tr>
+              <tr>
+                <th scope="row">对话流畅度</th>
+                <td>强</td>
+                <td>强</td>
+                <td>强</td>
+                <td>流畅</td>
+              </tr>
+              <tr>
+                <th scope="row">意图识别能力</th>
+                <td class="comp-cell-empty">—</td>
+                <td class="comp-cell-empty">—</td>
+                <td class="comp-cell-empty">—</td>
+                <td>强</td>
+              </tr>
+              <tr>
+                <th scope="row">响应速度</th>
+                <td>约 3s</td>
+                <td>3–5s</td>
+                <td>3–5s</td>
+                <td>普通常识约 3s；复杂问题响应时间会增大</td>
+              </tr>
+              <tr>
+                <th scope="row">记忆能力</th>
+                <td>有；但会记错</td>
+                <td>有；但会记错</td>
+                <td>无</td>
+                <td>有（按 Token 限制截取最近轮次对话）</td>
+              </tr>
+              <tr>
+                <th scope="row">多轮对话能力</th>
+                <td>有</td>
+                <td>有</td>
+                <td>无</td>
+                <td>有</td>
+              </tr>
+              <tr>
+                <th scope="row">是否支持打断</th>
+                <td>不支持</td>
+                <td>不支持</td>
+                <td>不支持</td>
+                <td><strong>支持</strong></td>
+              </tr>
+              <tr>
+                <th scope="row">知识覆盖度</th>
+                <td>覆盖不全，整体智力偏低</td>
+                <td>覆盖较全</td>
+                <td>很低，仅能回答基础问题；未知问题易「瞎说」</td>
+                <td>覆盖较全（支持联网检索补充回答）</td>
+              </tr>
+              <tr>
+                <th scope="row">多语言能力</th>
+                <td>无</td>
+                <td>英语</td>
+                <td>英语、日语、德语、韩语等多国语言</td>
+                <td>英语、中文、日语</td>
+              </tr>
+              <tr>
+                <th scope="row">个性化服务</th>
+                <td>六轴感应，可触摸感应</td>
+                <td>无</td>
+                <td>可修改角色与屏幕展示形象</td>
+                <td>无</td>
+              </tr>
+              <tr>
+                <th scope="row">主动服务</th>
+                <td>主动发出声音进行互动</td>
+                <td>无</td>
+                <td>结束对话后会进行一次对话询问</td>
+                <td>主动服务目前未启用</td>
+              </tr>
+              <tr>
+                <th scope="row">Token / 用量</th>
+                <td>每日 120 点精力值，自动恢复，亦可购买</td>
+                <td class="comp-cell-empty">—</td>
+                <td>每日限制聊天轮数</td>
+                <td class="comp-cell-empty">—</td>
+              </tr>
+              <tr>
+                <th scope="row">备注</th>
+                <td class="comp-cell-empty">—</td>
+                <td class="comp-cell-empty">—</td>
+                <td class="comp-cell-empty">—</td>
+                <td class="comp-cell-note">「说 200 遍你好」场景下可能无即时响应，但服务仍可用；进入第二、三轮问答时，首轮「你好」会延迟播报，并与后续答案夹杂串播。<strong>需避免此类交互：即使答不了也应给用户明确反馈，且不可串对话。</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="comp-matrix-note">对话能力为实测与调研记录，供黄小西在打断机制、拒答策略、多轮上下文与 Token 管理上对标取舍。</p>
+      </section>
+
+      <section class="comp-block reveal" id="comp-compare">
+        <h2 class="comp-block__title">4. 主要竞品亮点与盈利对比</h2>
+        <div class="comp-table-wrap">
+          <table class="comp-table">
+            <thead>
+              <tr>
+                <th scope="col">产品名称</th>
+                <th scope="col">亮点功能</th>
+                <th scope="col">嘈点功能</th>
+                <th scope="col">盈利方式</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">芙崽</th>
+                <td>
+                  <ol>
+                    <li><strong>陪伴属性：</strong>非对话场景有声音、眼睛动画，陪伴感强</li>
+                    <li><strong>附加功能：</strong>（1）新手任务引导领奖励；（2）性格养成增强互动；（3）好友圈可加好友；（4）触摸灵敏度支持非语言交互</li>
+                  </ol>
+                </td>
+                <td>
+                  <ol>
+                    <li>大模型知识弱，只能简单对话</li>
+                    <li>额头、下巴为触摸区，灵敏度高，把玩时易误触、重复回复</li>
+                  </ol>
+                </td>
+                <td>
+                  <ol>
+                    <li>商城购买「精力值」维持对话能力</li>
+                    <li>购买移动 4G 流量</li>
+                  </ol>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">萌 UU</th>
+                <td>
+                  <ol>
+                    <li>大模型知识丰富，对话能力强</li>
+                  </ol>
+                </td>
+                <td>
+                  <ol>
+                    <li>每次对话需长按语音输入，不便</li>
+                    <li>屏幕交互区过大，易误触</li>
+                  </ol>
+                </td>
+                <td>
+                  <ol>
+                    <li>购买头饰等配件</li>
+                    <li>大模型、流量、特色语音包费用（99 元/年）</li>
+                  </ol>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">雷鸟 Uni</th>
+                <td>
+                  <ol>
+                    <li>屏幕显示内容可配置</li>
+                    <li>用户可创建角色并定义关系</li>
+                    <li>支持下载表情包</li>
+                  </ol>
+                </td>
+                <td>
+                  <ol>
+                    <li>唤醒速度慢</li>
+                    <li>无降噪处理</li>
+                    <li>回复逻辑混乱，易「胡说」</li>
+                  </ol>
+                </td>
+                <td>角色需购买</td>
+              </tr>
+              <tr>
+                <th scope="row">秒嗒</th>
+                <td>
+                  <ol>
+                    <li>知识覆盖高，联网检索补充；检索时播放「让我思考/查一下」等过渡语，体验较好</li>
+                    <li>多轮对话表现好</li>
+                    <li>当前交互可打断，进入下一轮</li>
+                    <li>双模式：免唤醒；双击多轮对话；长按单轮（松手结束录音）；静音 30–60s 自动退出</li>
+                  </ol>
+                </td>
+                <td>—</td>
+                <td>暂无</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="comp-block reveal" id="comp-vote">
+        <h2 class="comp-block__title">5. 竞品偏好投票</h2>
+        <div class="comp-vote" id="compVoteRoot">
+          <p class="comp-vote__intro">请从用户视角选出最倾向的 AI 玩偶，并勾选投票原因（选项来自上方基础能力、对话能力与亮点功能调研）。提交后立即显示汇总结果；同一浏览器可修改自己的投票，多标签页会自动同步刷新。</p>
+
+          <div class="comp-vote__grid">
+            <div class="comp-vote__panel" id="compVoteFormPanel">
+              <h3 class="comp-vote__panel-title">提交投票</h3>
+              <form id="compVoteForm" novalidate>
+                <div class="comp-vote__field">
+                  <label for="compVoteName">您的昵称 <span style="color:#dc2626">*</span></label>
+                  <input type="text" id="compVoteName" name="voterName" placeholder="便于识别是谁投的票" maxlength="20" required autocomplete="nickname" />
+                </div>
+
+                <div class="comp-vote__field">
+                  <span class="comp-vote__panel-title" style="margin-bottom:10px;display:block;">选择产品 <span style="color:#dc2626">*</span></span>
+                  <div class="comp-vote__products" role="radiogroup" aria-label="选择竞品">
+                    <label class="comp-vote__product" style="--product-color:#0ea5e9">
+                      <input type="radio" name="product" value="fuzai" required />
+                      <span class="comp-vote__product-card">
+                        <span class="comp-vote__product-dot"></span>
+                        <span class="comp-vote__product-name">芙崽</span>
+                        <span class="comp-vote__product-price">399–499 元</span>
+                      </span>
+                    </label>
+                    <label class="comp-vote__product" style="--product-color:#8b5cf6">
+                      <input type="radio" name="product" value="uu" />
+                      <span class="comp-vote__product-card">
+                        <span class="comp-vote__product-dot"></span>
+                        <span class="comp-vote__product-name">萌 UU</span>
+                        <span class="comp-vote__product-price">399 元</span>
+                      </span>
+                    </label>
+                    <label class="comp-vote__product" style="--product-color:#f59e0b">
+                      <input type="radio" name="product" value="uni" />
+                      <span class="comp-vote__product-card">
+                        <span class="comp-vote__product-dot"></span>
+                        <span class="comp-vote__product-name">雷鸟 Uni</span>
+                        <span class="comp-vote__product-price">299 元</span>
+                      </span>
+                    </label>
+                    <label class="comp-vote__product" style="--product-color:#10b981">
+                      <input type="radio" name="product" value="miaoda" />
+                      <span class="comp-vote__product-card">
+                        <span class="comp-vote__product-dot"></span>
+                        <span class="comp-vote__product-name">秒嗒</span>
+                        <span class="comp-vote__product-price">499 元</span>
+                      </span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="comp-vote__field">
+                  <span class="comp-vote__panel-title" style="margin-bottom:10px;display:block;">选择原因 <span style="color:#dc2626">*</span> <span style="font-weight:400;font-size:12px;color:var(--ink-muted)">（可多选）</span></span>
+                  <div class="comp-vote__reason-groups" id="compVoteReasonGroups"></div>
+                </div>
+
+                <div class="comp-vote__field">
+                  <label for="compVoteRemark">备注 <span style="font-weight:400;color:var(--ink-muted)">（选填，自由发挥）</span></label>
+                  <textarea id="compVoteRemark" name="remark" placeholder="例如：我还希望有景区导览能力、更在意价格、担心误触问题……" maxlength="300"></textarea>
+                </div>
+
+                <div class="comp-vote__actions">
+                  <button type="submit" class="comp-vote__submit" id="compVoteSubmit">提交投票</button>
+                  <span class="comp-vote__hint">至少选择 1 项原因；提交后可再次修改</span>
+                </div>
+                <div class="comp-vote__status" id="compVoteStatus" role="status" aria-live="polite"></div>
+              </form>
+            </div>
+
+            <div class="comp-vote__panel comp-vote__results" id="compVoteResultsPanel">
+              <h3 class="comp-vote__panel-title">实时投票结果</h3>
+              <div class="comp-vote__meta" id="compVoteMeta">
+                <span>总票数：<strong id="compVoteTotal">0</strong></span>
+                <span>最近更新：<strong id="compVoteUpdated">—</strong></span>
+              </div>
+              <div class="comp-vote__stats" id="compVoteStats" aria-live="polite"></div>
+
+              <div class="comp-vote__filters" id="compVoteFilters">
+                <span class="comp-vote__filters-label">筛选原因：</span>
+                <button type="button" class="comp-vote__filter-btn is-active" data-filter="all">全部</button>
+                <button type="button" class="comp-vote__filter-btn" data-filter="cat:hardware">基础能力</button>
+                <button type="button" class="comp-vote__filter-btn" data-filter="cat:dialogue">对话能力</button>
+                <button type="button" class="comp-vote__filter-btn" data-filter="cat:highlight">亮点功能</button>
+              </div>
+
+              <div class="comp-vote__table-wrap">
+                <table class="comp-vote__table" id="compVoteTable">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">昵称</th>
+                      <th scope="col">选择产品</th>
+                      <th scope="col">选择原因</th>
+                      <th scope="col">备注</th>
+                      <th scope="col">时间</th>
+                    </tr>
+                  </thead>
+                  <tbody id="compVoteTableBody">
+                    <tr><td colspan="6" class="comp-vote__empty">暂无投票，成为第一个投票的人吧</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="comp-vote__toolbar">
+                <button type="button" class="comp-vote__tool-btn" id="compVoteExport">导出投票 JSON</button>
+                <button type="button" class="comp-vote__tool-btn" id="compVoteImport">导入合并投票</button>
+                <button type="button" class="comp-vote__tool-btn" id="compVoteReset">清空全部投票</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        <p>竞品分析 · 黄小西项目内部参考</p>
+        <p style="margin-top:8px; opacity:0.7;">与「商业落地方案」Tab 独立展示，不影响原方案阅读与汇报结构</p>
+      </footer>
+    </div>
+  </div>
+
+  <div class="img-lightbox" id="imgLightbox" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="imgLightboxCaption">
+    <div class="img-lightbox__backdrop" data-lightbox-close aria-hidden="true"></div>
+    <div class="img-lightbox__frame">
+      <button type="button" class="img-lightbox__nav img-lightbox__nav--prev" id="imgLightboxPrev" aria-label="上一张脸版">‹</button>
+      <div class="img-lightbox__panel">
+        <button type="button" class="img-lightbox__close" data-lightbox-close aria-label="关闭预览">×</button>
+        <img class="img-lightbox__img" id="imgLightboxImg" alt="" />
+        <p class="img-lightbox__caption" id="imgLightboxCaption"></p>
+      </div>
+      <button type="button" class="img-lightbox__nav img-lightbox__nav--next" id="imgLightboxNext" aria-label="下一张脸版">›</button>
+    </div>
+  </div>
+
   <script>
     document.documentElement.classList.add("js-enabled");
-    document.documentElement.setAttribute("data-report-build", "nav-layout-v3");
+    document.documentElement.setAttribute("data-report-build", "nav-layout-v4-tabs");
     (function () {
       var body = document.body;
+      var VIEW_KEY = "huangxiaoxi-active-view-v1";
+      var viewTabs = document.querySelectorAll(".view-tabs__btn");
+      var viewProposal = document.getElementById("view-proposal");
+      var viewCompetitors = document.getElementById("view-competitors");
+      var navToggleEl = document.getElementById("navToggle");
+
+      function chromeOffset() {
+        var root = getComputedStyle(document.documentElement);
+        var headerH = parseInt(root.getPropertyValue("--header-h"), 10) || 64;
+        var tabsH = parseInt(root.getPropertyValue("--tabs-h"), 10) || 44;
+        return headerH + tabsH;
+      }
+
+      function setActiveView(name) {
+        var isProposal = name !== "competitors";
+        body.setAttribute("data-active-view", isProposal ? "proposal" : "competitors");
+        if (viewProposal) {
+          viewProposal.classList.toggle("is-active", isProposal);
+          viewProposal.hidden = !isProposal;
+        }
+        if (viewCompetitors) {
+          viewCompetitors.classList.toggle("is-active", !isProposal);
+          viewCompetitors.hidden = isProposal;
+        }
+        viewTabs.forEach(function (btn) {
+          var active = btn.getAttribute("data-view") === (isProposal ? "proposal" : "competitors");
+          btn.classList.toggle("is-active", active);
+          btn.setAttribute("aria-selected", active ? "true" : "false");
+        });
+        if (navToggleEl) navToggleEl.style.display = isProposal ? "" : "none";
+        window.scrollTo({ top: 0, behavior: "auto" });
+        try { sessionStorage.setItem(VIEW_KEY, isProposal ? "proposal" : "competitors"); } catch (err) {}
+      }
+
+      viewTabs.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          setActiveView(btn.getAttribute("data-view") || "proposal");
+        });
+      });
+
+      var savedView = "proposal";
+      try { savedView = sessionStorage.getItem(VIEW_KEY) || "proposal"; } catch (err) {}
+      if (savedView === "competitors") setActiveView("competitors");
+
       var nav = document.getElementById("sideNav");
       var overlay = document.getElementById("navOverlay");
       var toggle = document.getElementById("navToggle");
@@ -2553,7 +4370,7 @@
       var navLinks = document.querySelectorAll("#sideNavList a");
       var MOBILE_BP = 900;
       var STORAGE_KEY = "huangxiaoxi-sidebar-collapsed-v3";
-      var BUILD_ID = "nav-layout-v3";
+      var BUILD_ID = "nav-layout-v4-tabs";
 
       try {
         localStorage.removeItem("huangxiaoxi-sidebar-collapsed");
@@ -2570,8 +4387,7 @@
       }
 
       function headerOffset() {
-        var v = getComputedStyle(document.documentElement).getPropertyValue("--header-h").trim();
-        return parseInt(v, 10) || 64;
+        return chromeOffset();
       }
 
       function scrollToSection(id) {
@@ -2780,6 +4596,602 @@
           applySidebarCollapsed(saved);
         }
       });
+
+      /* 竞品投票工具 */
+      (function initCompVote() {
+        var STORAGE_KEY = "hx-comp-vote-v1";
+        var VOTER_KEY = "hx-comp-voter-id-v1";
+        var PRODUCTS = {
+          fuzai: { name: "芙崽", color: "#0ea5e9", price: "399–499 元" },
+          uu: { name: "萌 UU", color: "#8b5cf6", price: "399 元" },
+          uni: { name: "雷鸟 Uni", color: "#f59e0b", price: "299 元" },
+          miaoda: { name: "秒嗒", color: "#10b981", price: "499 元" }
+        };
+        var REASONS = [
+          { id: "carry", cat: "hardware", label: "轻便随身，挂包/手持都合适" },
+          { id: "4g", cat: "hardware", label: "内置 4G，不依赖 Wi-Fi 也能用" },
+          { id: "dual-net", cat: "hardware", label: "Wi-Fi + 4G 双联网，家里户外都能连" },
+          { id: "traffic", cat: "hardware", label: "购机含长期流量，后续成本低" },
+          { id: "price", cat: "hardware", label: "价格门槛友好（299 元起）" },
+          { id: "continuous", cat: "hardware", label: "连续对话，不用反复按键" },
+          { id: "touch", cat: "hardware", label: "触摸 + 六轴感应，摸一摸有回应" },
+          { id: "screen", cat: "hardware", label: "屏幕 + 毛绒形态，形象生动可换" },
+          { id: "battery", cat: "hardware", label: "3C 认证电池，安全合规" },
+          { id: "fast", cat: "dialogue", label: "响应快，一般 3–5 秒就有答复" },
+          { id: "multi-turn", cat: "dialogue", label: "多轮对话跟得上，上下文不丢" },
+          { id: "memory", cat: "dialogue", label: "能记住我说过的事，越聊越像熟人" },
+          { id: "knowledge", cat: "dialogue", label: "知识覆盖广，日常问题答得住" },
+          { id: "search", cat: "dialogue", label: "支持联网搜索，新资讯也能查" },
+          { id: "search-hint", cat: "dialogue", label: "查资料时会提示「让我查一下」，等待不焦虑" },
+          { id: "barge-in", cat: "dialogue", label: "说话可打断，交互更像聊天" },
+          { id: "multilingual", cat: "dialogue", label: "支持多国外语，出行也能陪聊" },
+          { id: "active", cat: "dialogue", label: "会主动找我说话，闲时也有陪伴感" },
+          { id: "companion", cat: "highlight", label: "不聊天时也有声音/动画，陪伴感强" },
+          { id: "grow", cat: "highlight", label: "性格养成 + 好友圈，越玩越有归属" },
+          { id: "custom-role", cat: "highlight", label: "屏幕角色/关系可自定义" },
+          { id: "dual-mode", cat: "highlight", label: "长按单轮 + 双击多轮，两种聊法都顺手" },
+          { id: "deep-chat", cat: "highlight", label: "大模型知识丰富，能聊深度话题" },
+          { id: "accessories", cat: "highlight", label: "头饰配件/表情包，可玩性高" },
+          { id: "no-wakeup", cat: "highlight", label: "无唤醒词，开机就能随时开聊" }
+        ];
+        var CAT_LABELS = { hardware: "基础能力", dialogue: "对话能力", highlight: "亮点功能" };
+
+        var form = document.getElementById("compVoteForm");
+        var reasonGroups = document.getElementById("compVoteReasonGroups");
+        var statusEl = document.getElementById("compVoteStatus");
+        var statsEl = document.getElementById("compVoteStats");
+        var tableBody = document.getElementById("compVoteTableBody");
+        var totalEl = document.getElementById("compVoteTotal");
+        var updatedEl = document.getElementById("compVoteUpdated");
+        var filtersEl = document.getElementById("compVoteFilters");
+        var nameInput = document.getElementById("compVoteName");
+        var remarkInput = document.getElementById("compVoteRemark");
+
+        if (!form || !reasonGroups) return;
+
+        var activeFilter = "all";
+        var reasonMap = {};
+        REASONS.forEach(function (r) { reasonMap[r.id] = r; });
+
+        function uid() {
+          return "v-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 8);
+        }
+
+        function getVoterId() {
+          try {
+            var id = localStorage.getItem(VOTER_KEY);
+            if (!id) {
+              id = uid();
+              localStorage.setItem(VOTER_KEY, id);
+            }
+            return id;
+          } catch (err) {
+            return uid();
+          }
+        }
+
+        function loadVotes() {
+          try {
+            var raw = localStorage.getItem(STORAGE_KEY);
+            if (!raw) return [];
+            var data = JSON.parse(raw);
+            return Array.isArray(data.votes) ? data.votes : [];
+          } catch (err) {
+            return [];
+          }
+        }
+
+        function saveVotes(votes) {
+          try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({ votes: votes, updatedAt: Date.now() }));
+          } catch (err) {}
+        }
+
+        function formatTime(ts) {
+          if (!ts) return "—";
+          var d = new Date(ts);
+          var pad = function (n) { return n < 10 ? "0" + n : String(n); };
+          return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()) + " " + pad(d.getHours()) + ":" + pad(d.getMinutes());
+        }
+
+        function showStatus(msg, type) {
+          if (!statusEl) return;
+          statusEl.textContent = msg;
+          statusEl.className = "comp-vote__status is-visible comp-vote__status--" + (type || "success");
+        }
+
+        function buildReasonGroups() {
+          var groups = { hardware: [], dialogue: [], highlight: [] };
+          REASONS.forEach(function (r) { groups[r.cat].push(r); });
+          reasonGroups.innerHTML = "";
+          ["hardware", "dialogue", "highlight"].forEach(function (cat) {
+            var wrap = document.createElement("div");
+            wrap.className = "comp-vote__reason-group";
+            wrap.innerHTML = '<p class="comp-vote__reason-group-title">' + CAT_LABELS[cat] + "</p>";
+            var list = document.createElement("div");
+            list.className = "comp-vote__reason-list";
+            groups[cat].forEach(function (r) {
+              var label = document.createElement("label");
+              label.className = "comp-vote__reason";
+              label.innerHTML = '<input type="checkbox" name="reasons" value="' + r.id + '" />' + r.label;
+              list.appendChild(label);
+            });
+            wrap.appendChild(list);
+            reasonGroups.appendChild(wrap);
+          });
+        }
+
+        function buildFilterButtons() {
+          if (!filtersEl) return;
+          var existing = filtersEl.querySelectorAll("[data-filter^='reason:']");
+          existing.forEach(function (el) { el.remove(); });
+          REASONS.forEach(function (r) {
+            var btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "comp-vote__filter-btn";
+            btn.setAttribute("data-filter", "reason:" + r.id);
+            btn.textContent = r.label.length > 14 ? r.label.slice(0, 14) + "…" : r.label;
+            btn.title = r.label;
+            filtersEl.appendChild(btn);
+          });
+        }
+
+        function matchFilter(vote) {
+          if (activeFilter === "all") return true;
+          if (activeFilter.indexOf("cat:") === 0) {
+            var cat = activeFilter.slice(4);
+            return vote.reasons.some(function (id) {
+              return reasonMap[id] && reasonMap[id].cat === cat;
+            });
+          }
+          if (activeFilter.indexOf("reason:") === 0) {
+            var rid = activeFilter.slice(7);
+            return vote.reasons.indexOf(rid) >= 0;
+          }
+          return true;
+        }
+
+        function renderResults() {
+          var allVotes = loadVotes();
+          var votes = allVotes.filter(matchFilter);
+          var statSource = activeFilter === "all" ? allVotes : votes;
+          var counts = { fuzai: 0, uu: 0, uni: 0, miaoda: 0 };
+          statSource.forEach(function (v) {
+            if (counts[v.product] !== undefined) counts[v.product]++;
+          });
+          var maxCount = Math.max.apply(null, Object.keys(counts).map(function (k) { return counts[k]; })) || 1;
+          if (maxCount === 0) maxCount = 1;
+
+          if (statsEl) {
+            statsEl.innerHTML = "";
+            ["fuzai", "uu", "uni", "miaoda"].forEach(function (key) {
+              var p = PRODUCTS[key];
+              var c = counts[key];
+              var pct = statSource.length ? Math.round((c / statSource.length) * 100) : 0;
+              var barPct = Math.round((c / maxCount) * 100);
+              var card = document.createElement("div");
+              card.className = "comp-vote__stat";
+              card.style.setProperty("--product-color", p.color);
+              card.innerHTML =
+                '<p class="comp-vote__stat-name">' + p.name + "</p>" +
+                '<div class="comp-vote__stat-bar"><div class="comp-vote__stat-fill" style="width:' + barPct + '%"></div></div>' +
+                '<div class="comp-vote__stat-count">' + c + "</div>" +
+                '<div class="comp-vote__stat-pct">占比 ' + pct + "%</div>";
+              statsEl.appendChild(card);
+            });
+          }
+
+          if (totalEl) totalEl.textContent = String(allVotes.length);
+          if (updatedEl) {
+            var latest = 0;
+            allVotes.forEach(function (v) { if (v.timestamp > latest) latest = v.timestamp; });
+            updatedEl.textContent = latest ? formatTime(latest) : "—";
+          }
+
+          if (!tableBody) return;
+          tableBody.innerHTML = "";
+          if (!votes.length) {
+            var emptyRow = document.createElement("tr");
+            emptyRow.innerHTML = '<td colspan="6" class="comp-vote__empty">' +
+              (allVotes.length ? "当前筛选条件下暂无匹配投票" : "暂无投票，成为第一个投票的人吧") +
+              "</td>";
+            tableBody.appendChild(emptyRow);
+            return;
+          }
+
+          votes.slice().sort(function (a, b) { return b.timestamp - a.timestamp; }).forEach(function (v, i) {
+            var tr = document.createElement("tr");
+            var p = PRODUCTS[v.product] || { name: v.product };
+            var reasonTags = v.reasons.map(function (id) {
+              var r = reasonMap[id];
+              return r ? '<span class="comp-vote__tag">' + r.label + "</span>" : "";
+            }).join("");
+            tr.innerHTML =
+              "<td>" + (i + 1) + "</td>" +
+              "<td>" + escapeHtml(v.voterName) + "</td>" +
+              '<td><span class="comp-vote__tag comp-vote__tag--' + v.product + '">' + p.name + "</span></td>" +
+              "<td>" + (reasonTags || "—") + "</td>" +
+              "<td>" + (v.remark ? escapeHtml(v.remark) : '<span style="color:var(--ink-soft)">—</span>') + "</td>" +
+              "<td>" + formatTime(v.timestamp) + "</td>";
+            tableBody.appendChild(tr);
+          });
+        }
+
+        function escapeHtml(str) {
+          return String(str)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;");
+        }
+
+        function fillFormFromVote(vote) {
+          if (!vote) return;
+          if (nameInput) nameInput.value = vote.voterName || "";
+          if (remarkInput) remarkInput.value = vote.remark || "";
+          var productRadio = form.querySelector('input[name="product"][value="' + vote.product + '"]');
+          if (productRadio) productRadio.checked = true;
+          form.querySelectorAll('input[name="reasons"]').forEach(function (cb) {
+            cb.checked = vote.reasons.indexOf(cb.value) >= 0;
+          });
+        }
+
+        function getMyVote(votes) {
+          var voterId = getVoterId();
+          var name = nameInput ? nameInput.value.trim() : "";
+          for (var i = votes.length - 1; i >= 0; i--) {
+            if (votes[i].voterId === voterId) return votes[i];
+            if (name && votes[i].voterName === name) return votes[i];
+          }
+          return null;
+        }
+
+        function restoreMyVote() {
+          var mine = getMyVote(loadVotes());
+          if (mine) fillFormFromVote(mine);
+        }
+
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          var voterName = nameInput ? nameInput.value.trim() : "";
+          var productEl = form.querySelector('input[name="product"]:checked');
+          var reasonEls = form.querySelectorAll('input[name="reasons"]:checked');
+          var remark = remarkInput ? remarkInput.value.trim() : "";
+
+          if (!voterName) {
+            showStatus("请填写昵称", "error");
+            if (nameInput) nameInput.focus();
+            return;
+          }
+          if (!productEl) {
+            showStatus("请选择一款产品", "error");
+            return;
+          }
+          if (!reasonEls.length) {
+            showStatus("请至少选择 1 项投票原因", "error");
+            return;
+          }
+
+          var reasons = Array.prototype.map.call(reasonEls, function (el) { return el.value; });
+          var votes = loadVotes();
+          var voterId = getVoterId();
+          var vote = {
+            id: uid(),
+            voterId: voterId,
+            voterName: voterName,
+            product: productEl.value,
+            reasons: reasons,
+            remark: remark,
+            timestamp: Date.now()
+          };
+
+          var replaced = false;
+          for (var i = 0; i < votes.length; i++) {
+            if (votes[i].voterId === voterId || votes[i].voterName === voterName) {
+              vote.id = votes[i].id;
+              votes[i] = vote;
+              replaced = true;
+              break;
+            }
+          }
+          if (!replaced) votes.push(vote);
+
+          saveVotes(votes);
+          renderResults();
+          showStatus(
+            (replaced ? "投票已更新！" : "投票成功！") +
+            " 您选择了「" + PRODUCTS[vote.product].name + "」，共 " + reasons.length + " 项原因。",
+            "success"
+          );
+
+          var resultsPanel = document.getElementById("compVoteResultsPanel");
+          if (resultsPanel) {
+            var top = resultsPanel.getBoundingClientRect().top + window.scrollY - chromeOffset() - 16;
+            window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+          }
+        });
+
+        if (filtersEl) {
+          filtersEl.addEventListener("click", function (e) {
+            var btn = e.target.closest("[data-filter]");
+            if (!btn) return;
+            activeFilter = btn.getAttribute("data-filter") || "all";
+            filtersEl.querySelectorAll(".comp-vote__filter-btn").forEach(function (b) {
+              b.classList.toggle("is-active", b === btn);
+            });
+            renderResults();
+          });
+        }
+
+        var exportBtn = document.getElementById("compVoteExport");
+        if (exportBtn) {
+          exportBtn.addEventListener("click", function () {
+            var data = JSON.stringify({ votes: loadVotes() }, null, 2);
+            var blob = new Blob([data], { type: "application/json" });
+            var a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "竞品投票-" + new Date().toISOString().slice(0, 10) + ".json";
+            a.click();
+            URL.revokeObjectURL(a.href);
+          });
+        }
+
+        var importBtn = document.getElementById("compVoteImport");
+        if (importBtn) {
+          importBtn.addEventListener("click", function () {
+            var input = document.createElement("input");
+            input.type = "file";
+            input.accept = "application/json,.json";
+            input.addEventListener("change", function () {
+              var file = input.files && input.files[0];
+              if (!file) return;
+              var reader = new FileReader();
+              reader.onload = function () {
+                try {
+                  var parsed = JSON.parse(reader.result);
+                  var incoming = Array.isArray(parsed) ? parsed : (parsed.votes || []);
+                  var current = loadVotes();
+                  var merged = current.slice();
+                  incoming.forEach(function (v) {
+                    if (!v || !v.voterName || !v.product) return;
+                    var idx = -1;
+                    for (var i = 0; i < merged.length; i++) {
+                      if (merged[i].voterId === v.voterId || merged[i].voterName === v.voterName) {
+                        idx = i;
+                        break;
+                      }
+                    }
+                    if (idx >= 0) merged[idx] = v;
+                    else merged.push(v);
+                  });
+                  saveVotes(merged);
+                  renderResults();
+                  showStatus("已合并 " + incoming.length + " 条投票记录", "success");
+                } catch (err) {
+                  showStatus("导入失败：文件格式不正确", "error");
+                }
+              };
+              reader.readAsText(file);
+            });
+            input.click();
+          });
+        }
+
+        var resetBtn = document.getElementById("compVoteReset");
+        if (resetBtn) {
+          resetBtn.addEventListener("click", function () {
+            if (!confirm("确定清空全部投票记录？此操作不可恢复。")) return;
+            saveVotes([]);
+            renderResults();
+            form.reset();
+            showStatus("全部投票已清空", "success");
+          });
+        }
+
+        window.addEventListener("storage", function (e) {
+          if (e.key === STORAGE_KEY) {
+            renderResults();
+            restoreMyVote();
+          }
+        });
+
+        buildReasonGroups();
+        buildFilterButtons();
+        restoreMyVote();
+        renderResults();
+
+        setInterval(function () {
+          renderResults();
+        }, 2000);
+      })();
+
+      (function initImageLightbox() {
+        var lightbox = document.getElementById("imgLightbox");
+        var lbImg = document.getElementById("imgLightboxImg");
+        var lbCaption = document.getElementById("imgLightboxCaption");
+        var lbPrev = document.getElementById("imgLightboxPrev");
+        var lbNext = document.getElementById("imgLightboxNext");
+        if (!lightbox || !lbImg || !lbCaption || !lbPrev || !lbNext) return;
+
+        var groups = {};
+        document.querySelectorAll("[data-lightbox-group]").forEach(function (img) {
+          var key = img.getAttribute("data-lightbox-group");
+          if (!key) return;
+          if (!groups[key]) groups[key] = [];
+          groups[key].push(img);
+        });
+        document.querySelectorAll(".product-face-card__img:not([data-lightbox-group])").forEach(function (img) {
+          img.setAttribute("data-lightbox-group", "face");
+          if (!groups.face) groups.face = [];
+          groups.face.push(img);
+        });
+
+        var activeImages = [];
+        var currentIndex = 0;
+        var lastFocus = null;
+        var savedScrollY = 0;
+
+        function lockPageScroll() {
+          savedScrollY = window.scrollY || window.pageYOffset || 0;
+          body.classList.add("is-lightbox-open");
+          body.style.top = "-" + savedScrollY + "px";
+          body.style.position = "fixed";
+          body.style.left = "0";
+          body.style.right = "0";
+          body.style.width = "100%";
+        }
+
+        function unlockPageScroll() {
+          body.classList.remove("is-lightbox-open");
+          body.style.top = "";
+          body.style.position = "";
+          body.style.left = "";
+          body.style.right = "";
+          body.style.width = "";
+          window.scrollTo(0, savedScrollY);
+        }
+
+        function focusNoScroll(el) {
+          if (!el || typeof el.focus !== "function") return;
+          try {
+            el.focus({ preventScroll: true });
+          } catch (err) {
+            el.focus();
+          }
+        }
+
+        function getCaption(img) {
+          return img.getAttribute("data-caption") || (img.alt || "").replace(/脸版形象$/, "");
+        }
+
+        function renderSlide(index) {
+          if (!activeImages.length) return;
+          currentIndex = (index + activeImages.length) % activeImages.length;
+          var img = activeImages[currentIndex];
+          lbImg.src = img.currentSrc || img.src;
+          lbImg.alt = img.alt;
+          lbCaption.innerHTML = getCaption(img) + '<span class="img-lightbox__counter">' + (currentIndex + 1) + " / " + activeImages.length + "</span>";
+          lbPrev.disabled = activeImages.length <= 1;
+          lbNext.disabled = activeImages.length <= 1;
+          var groupKey = img.getAttribute("data-lightbox-group");
+          lightbox.classList.toggle("img-lightbox--comp", groupKey === "competitors");
+          lbPrev.setAttribute("aria-label", groupKey === "competitors" ? "上一款竞品" : "上一张脸版");
+          lbNext.setAttribute("aria-label", groupKey === "competitors" ? "下一款竞品" : "下一张脸版");
+        }
+
+        function closeLightbox() {
+          lightbox.classList.remove("is-open", "img-lightbox--comp");
+          lightbox.setAttribute("hidden", "");
+          lightbox.setAttribute("aria-hidden", "true");
+          activeImages = [];
+          unlockPageScroll();
+          lbImg.removeAttribute("src");
+          lbCaption.textContent = "";
+          if (lastFocus) focusNoScroll(lastFocus);
+          lastFocus = null;
+        }
+
+        function openLightbox(img, focusEl) {
+          var groupKey = img.getAttribute("data-lightbox-group");
+          activeImages = groups[groupKey] || [img];
+          var idx = activeImages.indexOf(img);
+          lastFocus = focusEl || img;
+          lockPageScroll();
+          lightbox.classList.add("is-open");
+          lightbox.removeAttribute("hidden");
+          lightbox.setAttribute("aria-hidden", "false");
+          renderSlide(idx >= 0 ? idx : 0);
+          focusNoScroll(lbPrev);
+        }
+
+        function goPrev(e) {
+          if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+          if (!lightbox.classList.contains("is-open") || activeImages.length <= 1) return;
+          renderSlide(currentIndex - 1);
+        }
+
+        function goNext(e) {
+          if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+          if (!lightbox.classList.contains("is-open") || activeImages.length <= 1) return;
+          renderSlide(currentIndex + 1);
+        }
+
+        Object.keys(groups).forEach(function (groupKey) {
+          groups[groupKey].forEach(function (img) {
+            if (!img.getAttribute("data-caption")) {
+              img.setAttribute("data-caption", getCaption(img));
+            }
+          });
+        });
+
+        document.querySelectorAll(".product-face-card__img").forEach(function (img) {
+          img.setAttribute("tabindex", "0");
+          img.setAttribute("role", "button");
+          img.setAttribute("title", "点击放大查看");
+
+          function handleOpen(e) {
+            if (e.type === "keydown" && e.key !== "Enter" && e.key !== " ") return;
+            e.preventDefault();
+            e.stopPropagation();
+            openLightbox(img, img);
+          }
+
+          img.addEventListener("click", handleOpen);
+          img.addEventListener("keydown", handleOpen);
+        });
+
+        document.querySelectorAll(".comp-gallery__item").forEach(function (btn) {
+          var img = btn.querySelector(".comp-gallery__img");
+          if (!img) return;
+
+          function handleOpen(e) {
+            if (e.type === "keydown" && e.key !== "Enter" && e.key !== " ") return;
+            e.preventDefault();
+            e.stopPropagation();
+            openLightbox(img, btn);
+          }
+
+          btn.addEventListener("click", handleOpen);
+          btn.addEventListener("keydown", handleOpen);
+        });
+
+        lbPrev.addEventListener("click", goPrev);
+        lbNext.addEventListener("click", goNext);
+
+        lightbox.querySelectorAll("[data-lightbox-close]").forEach(function (el) {
+          el.addEventListener("click", function (e) {
+            e.preventDefault();
+            closeLightbox();
+          });
+        });
+
+        var lbPanel = lightbox.querySelector(".img-lightbox__panel");
+        if (lbPanel) {
+          lbPanel.addEventListener("click", function (e) {
+            e.stopPropagation();
+          });
+        }
+
+        document.addEventListener("keydown", function (e) {
+          if (!lightbox.classList.contains("is-open")) return;
+          if (e.key === "Escape") {
+            e.preventDefault();
+            closeLightbox();
+          } else if (e.key === "ArrowLeft") {
+            e.preventDefault();
+            goPrev();
+          } else if (e.key === "ArrowRight") {
+            e.preventDefault();
+            goNext();
+          }
+        });
+      })();
     })();
   </script>
 </body>
