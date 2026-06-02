@@ -63,11 +63,8 @@ async function writeData(data) {
 
 function upsertVote(votes, vote) {
   if (!vote || !vote.voterName || !vote.product) return votes;
-  const idx = votes.findIndex((v) => {
-    if (vote.voterId && v.voterId === vote.voterId) return true;
-    if (vote.clientIp && v.clientIp === vote.clientIp) return true;
-    return false;
-  });
+  if (!vote.voterId) return votes;
+  const idx = votes.findIndex((v) => v.voterId === vote.voterId);
   if (idx >= 0) votes[idx] = vote;
   else votes.push(vote);
   return votes;

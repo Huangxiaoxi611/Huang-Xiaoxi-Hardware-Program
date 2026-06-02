@@ -2449,11 +2449,16 @@
       box-shadow: var(--shadow);
     }
 
-    .comp-vote__intro {
-      margin: 0 0 20px;
-      font-size: 14px;
-      line-height: 1.65;
-      color: var(--ink-muted);
+    .comp-vote__done {
+      padding: 28px 20px;
+      text-align: center;
+    }
+
+    .comp-vote__done-msg {
+      margin: 0 0 18px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--ink);
     }
 
     .comp-vote__grid {
@@ -2854,29 +2859,6 @@
     .comp-vote__sync--online { color: #047857; }
     .comp-vote__sync--offline { color: #b45309; }
     .comp-vote__sync--connecting { color: #64748b; }
-
-    .comp-vote__alert {
-      padding: 12px 14px;
-      border-radius: 8px;
-      font-size: 13px;
-      line-height: 1.55;
-      margin-bottom: 14px;
-      border: 1px solid #fcd34d;
-      background: #fffbeb;
-      color: #92400e;
-    }
-
-    .comp-vote__alert.is-error {
-      border-color: #fecaca;
-      background: #fef2f2;
-      color: #b91c1c;
-    }
-
-    .comp-vote__alert.is-success {
-      border-color: #a7f3d0;
-      background: #ecfdf5;
-      color: #047857;
-    }
 
     .comp-vote__connect {
       padding: 14px 16px;
@@ -4209,10 +4191,6 @@
       <section class="comp-block reveal" id="comp-vote">
         <h2 class="comp-block__title">5. 竞品偏好投票</h2>
         <div class="comp-vote" id="compVoteRoot">
-          <p class="comp-vote__intro">请从用户视角选出最倾向的 AI 玩偶，并勾选投票原因。<strong>所有人必须在各自电脑上打开同一个投票地址</strong>（见下方「共享地址」），数据才会汇总到一处；右侧统计表与明细表会每 2 秒自动刷新，全员可见。</p>
-
-          <div class="comp-vote__alert" id="compVoteAlert" role="alert" hidden></div>
-
           <div class="comp-vote__connect" id="compVoteConnect" hidden>
             <p class="comp-vote__connect-title">连接投票服务（多人同步必做）</p>
             <p class="comp-vote__hint" style="margin:0">请主持人在电脑终端运行 <code>npm run vote-server</code>，将下方地址填到输入框并点击「连接」，或让所有人直接打开终端里打印的局域网链接。</p>
@@ -4232,6 +4210,10 @@
           <div class="comp-vote__grid">
             <div class="comp-vote__panel" id="compVoteFormPanel">
               <h3 class="comp-vote__panel-title">提交投票</h3>
+              <div class="comp-vote__done" id="compVoteDone" hidden>
+                <p class="comp-vote__done-msg">您已投票，刷新后查看全部投票记录</p>
+                <button type="button" class="comp-vote__submit" id="compVoteRevote">重新投票</button>
+              </div>
               <form id="compVoteForm" novalidate>
                 <div class="comp-vote__field">
                   <label for="compVoteName">您的昵称 <span style="color:#dc2626">*</span></label>
@@ -4296,10 +4278,9 @@
 
                 <div class="comp-vote__actions">
                   <button type="submit" class="comp-vote__submit" id="compVoteSubmit">提交投票</button>
-                  <span class="comp-vote__hint">至少选择 1 项原因；提交后可再次修改</span>
+                  <span class="comp-vote__hint">至少选择 1 项原因</span>
                 </div>
                 <div class="comp-vote__status" id="compVoteStatus" role="status" aria-live="polite"></div>
-                <p class="comp-vote__hint" style="margin-top:10px">本机 IP：<strong id="compVoteClientIp">检测中…</strong> · 同一 IP / 同一浏览器重复提交会更新原投票</p>
               </form>
             </div>
 
@@ -4309,7 +4290,6 @@
                 <span>总票数：<strong id="compVoteTotal">0</strong></span>
                 <span>参与 IP 数：<strong id="compVoteUniqueIp">0</strong></span>
                 <span>最近更新：<strong id="compVoteUpdated">—</strong></span>
-                <span>同步状态：<strong id="compVoteSync" class="comp-vote__sync comp-vote__sync--connecting">连接中…</strong></span>
               </div>
               <div class="comp-vote__stats" id="compVoteStats" aria-live="polite"></div>
 
@@ -4381,8 +4361,6 @@
 
               <div class="comp-vote__toolbar">
                 <button type="button" class="comp-vote__tool-btn" id="compVoteExport">导出投票 JSON</button>
-                <button type="button" class="comp-vote__tool-btn" id="compVoteImport">导入合并投票</button>
-                <button type="button" class="comp-vote__tool-btn" id="compVoteReset">清空全部投票</button>
               </div>
             </div>
           </div>
@@ -4696,6 +4674,7 @@
       (function initCompVote() {
         var STORAGE_KEY = "hx-comp-vote-v1";
         var VOTER_KEY = "hx-comp-voter-id-v1";
+        var REVOTE_KEY = "hx-comp-vote-revote-v1";
         var MIGRATE_KEY = "hx-comp-vote-migrated-v1";
         var API_STORAGE_KEY = "hx-vote-api-base-v1";
         var cfg = window.HX_VOTE_CONFIG || {};
@@ -4742,6 +4721,8 @@
         var CAT_LABELS = { hardware: "基础能力", dialogue: "对话能力", highlight: "亮点功能" };
 
         var form = document.getElementById("compVoteForm");
+        var doneEl = document.getElementById("compVoteDone");
+        var revoteBtn = document.getElementById("compVoteRevote");
         var reasonGroups = document.getElementById("compVoteReasonGroups");
         var statusEl = document.getElementById("compVoteStatus");
         var statsEl = document.getElementById("compVoteStats");
@@ -4749,13 +4730,10 @@
         var totalEl = document.getElementById("compVoteTotal");
         var uniqueIpEl = document.getElementById("compVoteUniqueIp");
         var updatedEl = document.getElementById("compVoteUpdated");
-        var syncEl = document.getElementById("compVoteSync");
-        var clientIpEl = document.getElementById("compVoteClientIp");
         var filtersEl = document.getElementById("compVoteFilters");
         var nameInput = document.getElementById("compVoteName");
         var remarkInput = document.getElementById("compVoteRemark");
         var submitBtn = document.getElementById("compVoteSubmit");
-        var alertEl = document.getElementById("compVoteAlert");
         var connectEl = document.getElementById("compVoteConnect");
         var apiInput = document.getElementById("compVoteApiInput");
         var apiSaveBtn = document.getElementById("compVoteApiSave");
@@ -4773,9 +4751,40 @@
         var syncState = "connecting";
         var pollTimer = null;
         var refreshInFlight = false;
-        var myClientIp = "";
 
         REASONS.forEach(function (r) { reasonMap[r.id] = r; });
+
+        function isRevoteMode() {
+          try { return sessionStorage.getItem(REVOTE_KEY) === "1"; } catch (err) { return false; }
+        }
+
+        function clearRevoteMode() {
+          try { sessionStorage.removeItem(REVOTE_KEY); } catch (err) {}
+        }
+
+        function showVotedState() {
+          if (form) form.hidden = true;
+          if (doneEl) doneEl.hidden = false;
+        }
+
+        function showVoteForm() {
+          if (form) form.hidden = false;
+          if (doneEl) doneEl.hidden = true;
+        }
+
+        function updateVoteFormUI() {
+          if (isRevoteMode()) {
+            showVoteForm();
+            var mine = getMyVote();
+            if (mine) fillFormFromVote(mine);
+            return;
+          }
+          if (getMyVote()) {
+            showVotedState();
+          } else {
+            showVoteForm();
+          }
+        }
 
         function isSupabaseMode() {
           return window.HX_VOTE_STORE && HX_VOTE_STORE.mode() === "supabase";
@@ -4893,18 +4902,6 @@
           return base ? base + path : "";
         }
 
-        function showAlert(msg, type) {
-          if (!alertEl) return;
-          if (!msg) {
-            alertEl.hidden = true;
-            alertEl.textContent = "";
-            return;
-          }
-          alertEl.hidden = false;
-          alertEl.textContent = msg;
-          alertEl.className = "comp-vote__alert" + (type === "error" ? " is-error" : type === "success" ? " is-success" : "");
-        }
-
         function updateConnectUI() {
           if (isSupabaseMode()) {
             if (connectEl) connectEl.hidden = true;
@@ -4962,7 +4959,6 @@
         function connectToApiBase(raw) {
           var base = normalizeApiBase(raw);
           if (!base) {
-            showAlert("请填写投票服务地址，例如 http://192.168.1.8:3456", "error");
             return Promise.resolve(false);
           }
           resolvedApiBase = base;
@@ -4973,11 +4969,9 @@
               resolvedApiBase = "";
               saveStoredApiBase("");
               setSyncState("offline", "连接失败");
-              showAlert("无法连接投票服务，请确认主持人已运行 npm run vote-server，且地址、防火墙正确。", "error");
               updateConnectUI();
               return false;
             }
-            showAlert("已连接投票服务，提交后所有人可见统计结果。", "success");
             updateConnectUI();
             return migrateLocalVotesOnce()
               .then(function () { return refreshVotes(); })
@@ -4988,9 +4982,6 @@
 
         function setSyncState(state, label) {
           syncState = state;
-          if (!syncEl) return;
-          syncEl.textContent = label;
-          syncEl.className = "comp-vote__sync comp-vote__sync--" + state;
         }
 
         function formatTime(ts) {
@@ -5011,7 +5002,7 @@
           serverUpdatedAt = data.updatedAt || 0;
           saveLocalVotes(votesCache);
           renderResults();
-          restoreMyVote();
+          updateVoteFormUI();
         }
 
         function fetchJson(url, options) {
@@ -5050,20 +5041,6 @@
           }).catch(function () {});
         }
 
-        function fetchClientIp() {
-          var url = apiUrl("/client-info");
-          if (!url) {
-            if (clientIpEl) clientIpEl.textContent = "未连接服务";
-            return Promise.resolve();
-          }
-          return fetchJson(url).then(function (data) {
-            myClientIp = data.clientIp || "";
-            if (clientIpEl) clientIpEl.textContent = myClientIp || "—";
-          }).catch(function () {
-            if (clientIpEl) clientIpEl.textContent = "—";
-          });
-        }
-
         function countUniqueIps(votes) {
           var set = {};
           votes.forEach(function (v) {
@@ -5080,17 +5057,14 @@
               .then(function (data) {
                 applyVotes(data);
                 setSyncState("online", "已连接 · 云数据库全员同步");
-                showAlert("", "");
                 updateConnectUI();
-                if (clientIpEl) clientIpEl.textContent = "云同步";
                 return true;
               })
               .catch(function () {
                 votesCache = loadLocalVotes();
                 setSyncState("offline", "云数据库连接失败");
-                showAlert("无法连接 Supabase，请检查 comp-vote-config.js 中的 supabaseUrl / supabaseAnonKey 及 SQL 是否已执行。", "error");
                 renderResults();
-                restoreMyVote();
+                updateVoteFormUI();
                 return false;
               })
               .finally(function () {
@@ -5103,15 +5077,9 @@
           if (!url) {
             votesCache = loadLocalVotes();
             setSyncState("offline", "未连接投票服务");
-            showAlert(
-              isStaticOnlyHost()
-                ? "当前为静态页面。请配置 Supabase 云表（见 docs/投票存储方案说明.md），或填写上方投票服务地址 / 使用 http://局域网IP:3456 。"
-                : "未连接投票服务。请运行 npm run vote-server，或填写投票服务地址。",
-              "error"
-            );
             updateConnectUI();
             renderResults();
-            restoreMyVote();
+            updateVoteFormUI();
             return Promise.resolve(false);
           }
           if (refreshInFlight) return Promise.resolve(false);
@@ -5120,17 +5088,15 @@
             .then(function (data) {
               applyVotes(data);
               setSyncState("online", "已连接 · 全员实时同步");
-              showAlert("", "");
               updateConnectUI();
-              return fetchClientIp().then(function () { return true; });
+              return true;
             })
             .catch(function () {
               votesCache = loadLocalVotes();
               setSyncState("offline", "连接失败（仅本机缓存）");
-              showAlert("无法从投票服务拉取数据，请检查网络或服务是否已启动。", "error");
               updateConnectUI();
               renderResults();
-              restoreMyVote();
+              updateVoteFormUI();
               return false;
             })
             .finally(function () {
@@ -5151,9 +5117,8 @@
             var votes = votesCache.slice();
             var replaced = false;
             for (var i = 0; i < votes.length; i++) {
-              if (votes[i].voterId === vote.voterId || (myClientIp && votes[i].clientIp === myClientIp)) {
+              if (votes[i].voterId === vote.voterId) {
                 vote.id = votes[i].id;
-                vote.clientIp = myClientIp || votes[i].clientIp || "";
                 votes[i] = vote;
                 replaced = true;
                 break;
@@ -5380,14 +5345,8 @@
           var voterId = getVoterId();
           for (var i = votesCache.length - 1; i >= 0; i--) {
             if (votesCache[i].voterId === voterId) return votesCache[i];
-            if (myClientIp && votesCache[i].clientIp === myClientIp) return votesCache[i];
           }
           return null;
-        }
-
-        function restoreMyVote() {
-          var mine = getMyVote();
-          if (mine) fillFormFromVote(mine);
         }
 
         form.addEventListener("submit", function (e) {
@@ -5433,16 +5392,11 @@
           if (submitBtn) submitBtn.disabled = true;
           postVote(vote)
             .then(function (result) {
-              showStatus(
-                (existing ? "投票已更新！" : "投票成功！") +
-                " 您选择了「" + PRODUCTS[vote.product].name + "」，共 " + reasons.length + " 项原因。" +
-                (result.offline ? "（当前为离线缓存，请检查投票服务连接）" : ""),
-                result.offline ? "error" : "success"
-              );
-              var resultsPanel = document.getElementById("compVoteResultsPanel");
-              if (resultsPanel) {
-                var top = resultsPanel.getBoundingClientRect().top + window.scrollY - chromeOffset() - 16;
-                window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+              clearRevoteMode();
+              showVotedState();
+              if (statusEl) {
+                statusEl.textContent = "";
+                statusEl.className = "comp-vote__status";
               }
             })
             .catch(function () {
@@ -5452,6 +5406,13 @@
               if (submitBtn) submitBtn.disabled = false;
             });
         });
+
+        if (revoteBtn) {
+          revoteBtn.addEventListener("click", function () {
+            try { sessionStorage.setItem(REVOTE_KEY, "1"); } catch (err) {}
+            location.reload();
+          });
+        }
 
         if (filtersEl) {
           filtersEl.addEventListener("click", function (e) {
@@ -5475,108 +5436,6 @@
             a.download = "竞品投票-" + new Date().toISOString().slice(0, 10) + ".json";
             a.click();
             URL.revokeObjectURL(a.href);
-          });
-        }
-
-        var importBtn = document.getElementById("compVoteImport");
-        if (importBtn) {
-          importBtn.addEventListener("click", function () {
-            var input = document.createElement("input");
-            input.type = "file";
-            input.accept = "application/json,.json";
-            input.addEventListener("change", function () {
-              var file = input.files && input.files[0];
-              if (!file) return;
-              var reader = new FileReader();
-              reader.onload = function () {
-                try {
-                  var parsed = JSON.parse(reader.result);
-                  var incoming = Array.isArray(parsed) ? parsed : (parsed.votes || []);
-                  if (isSupabaseMode()) {
-                    HX_VOTE_STORE.mergeVotes(incoming).then(function (data) {
-                      applyVotes(data);
-                      showStatus("已合并 " + incoming.length + " 条投票到云数据库", "success");
-                    }).catch(function () {
-                      showStatus("导入失败，请检查 Supabase 配置", "error");
-                    });
-                  } else {
-                  var url = apiUrl("/votes/merge");
-                  if (url) {
-                    fetchJson(url, {
-                      method: "POST",
-                      headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify({ votes: incoming })
-                    }).then(function (data) {
-                      applyVotes(data);
-                      showStatus("已合并 " + incoming.length + " 条投票到云端", "success");
-                    }).catch(function () {
-                      showStatus("导入失败，请检查投票服务连接", "error");
-                    });
-                  } else {
-                    var merged = votesCache.slice();
-                    incoming.forEach(function (v) {
-                      if (!v || !v.voterName || !v.product) return;
-                      var idx = merged.findIndex(function (m) {
-                        return (v.voterId && m.voterId === v.voterId) ||
-                          (v.clientIp && m.clientIp === v.clientIp);
-                      });
-                      if (idx >= 0) merged[idx] = v;
-                      else merged.push(v);
-                    });
-                    applyVotes({ votes: merged, updatedAt: Date.now() });
-                    showStatus("已合并 " + incoming.length + " 条投票（本地）", "success");
-                  }
-                  }
-                } catch (err) {
-                  showStatus("导入失败：文件格式不正确", "error");
-                }
-              };
-              reader.readAsText(file);
-            });
-            input.click();
-          });
-        }
-
-        var resetBtn = document.getElementById("compVoteReset");
-        if (resetBtn) {
-          resetBtn.addEventListener("click", function () {
-            if (!confirm("确定清空全部投票记录？此操作不可恢复。")) return;
-            if (isSupabaseMode()) {
-              if (!confirm("将清空 Supabase 云表中的全部投票，确定继续？")) return;
-              HX_VOTE_STORE.clearVotes()
-                .then(function (data) {
-                  applyVotes(data);
-                  form.reset();
-                  showStatus("云数据库投票已全部清空", "success");
-                })
-                .catch(function () {
-                  showStatus("清空失败，请检查 Supabase 权限配置", "error");
-                });
-              return;
-            }
-            var url = apiUrl("/votes");
-            if (url) {
-              var token = prompt("请输入管理员口令以清空云端投票：", adminToken);
-              if (token === null) return;
-              fetch(url, {
-                method: "DELETE",
-                headers: { Authorization: "Bearer " + token },
-                cache: "no-store"
-              }).then(function (res) {
-                if (!res.ok) throw new Error("forbidden");
-                return res.json();
-              }).then(function (data) {
-                applyVotes(data);
-                form.reset();
-                showStatus("云端投票已全部清空", "success");
-              }).catch(function () {
-                showStatus("清空失败：口令错误或无法连接服务", "error");
-              });
-            } else {
-              applyVotes({ votes: [], updatedAt: Date.now() });
-              form.reset();
-              showStatus("本地投票已清空", "success");
-            }
           });
         }
 
@@ -5620,6 +5479,7 @@
         }
 
         bootPromise.finally(function () {
+          updateVoteFormUI();
           pollTimer = setInterval(function () {
             refreshVotes();
           }, pollMs);
