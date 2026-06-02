@@ -1595,15 +1595,19 @@
       line-height: 1.65;
     }
 
-    /* 三栏价值 — 始终横排 */
+    /* 核心能力 — 四点规则排列 */
     .value-trio {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 14px;
     }
 
     .value-trio__item {
-      padding: 28px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      min-height: 148px;
+      padding: 22px 18px;
       text-align: center;
       color: var(--blue-primary);
       border-radius: var(--radius);
@@ -1614,11 +1618,15 @@
     .value-trio__item:nth-child(1) { background: #f0f9ff; }
     .value-trio__item:nth-child(2) { background: #e0f2fe; }
     .value-trio__item:nth-child(3) { background: #bae6fd; }
+    .value-trio__item:nth-child(4) { background: linear-gradient(135deg, #e0f2fe 0%, #ffffff 100%); }
 
     .value-trio__item h4 {
-      margin: 0 0 8px;
+      margin: 0 0 10px;
       font-family: "Noto Serif SC", serif;
       font-size: 18px;
+      font-weight: 700;
+      line-height: 1.35;
+      color: var(--blue-primary);
     }
 
     .value-trio__item p {
@@ -1865,6 +1873,19 @@
       font-weight: 600;
     }
 
+    /* 盈利模式：上行 2 列，下行 ③④⑤ 三列等宽 */
+    #profit .advantage-grid {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+
+    #profit .advantage-grid > .advantage:nth-child(-n + 2) {
+      grid-column: span 3;
+    }
+
+    #profit .advantage-grid > .advantage:nth-child(n + 3) {
+      grid-column: span 2;
+    }
+
     /* 支撑 CTA */
     .support-cta {
       padding: 40px;
@@ -2058,16 +2079,25 @@
       .section { margin: 0 16px 40px; }
 
       .value-trio {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 10px;
       }
 
       .value-trio__item {
         padding: 18px 12px;
+        min-height: 126px;
       }
 
       .value-trio__item h4 { font-size: 15px; }
       .value-trio__item p { font-size: 12px; }
+
+      #profit .advantage-grid {
+        grid-template-columns: 1fr;
+      }
+
+      #profit .advantage-grid > .advantage {
+        grid-column: auto;
+      }
 
       .site-header__actions .btn--ghost { display: none; }
     }
@@ -2116,7 +2146,7 @@
 
     .comp-gallery {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 12px;
       margin-top: 4px;
     }
@@ -2374,6 +2404,7 @@
       background: #f0f9ff;
     }
 
+    .comp-matrix .col-product--momoo { border-top: 3px solid #ec4899; }
     .comp-matrix .col-product--fuzai { border-top: 3px solid #0ea5e9; }
     .comp-matrix .col-product--uu { border-top: 3px solid #8b5cf6; }
     .comp-matrix .col-product--uni { border-top: 3px solid #f59e0b; }
@@ -2483,7 +2514,7 @@
 
     .comp-vote__products {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 10px;
     }
 
@@ -2785,6 +2816,7 @@
       color: #475569;
     }
 
+    .comp-vote__tag--momoo { background: #fce7f3; color: #be185d; }
     .comp-vote__tag--fuzai { background: #e0f2fe; color: #0369a1; }
     .comp-vote__tag--uu { background: #ede9fe; color: #6d28d9; }
     .comp-vote__tag--uni { background: #fef3c7; color: #b45309; }
@@ -2913,7 +2945,7 @@
           <p class="hero__kicker">贵州官方专属 AI 智能陪伴 IP 家族</p>
           <h1 class="hero__title">黄小西家族文旅智能体陪伴玩偶</h1>
           <p class="hero__lead">
-            依托 <strong>4G LBS + 景区蓝牙信标</strong>融合定位、<strong>Wi-Fi / 4G 双联网</strong>与离线 AI 语音交互、情感化震动灯光反馈，打造「<strong>景区智能导览 + 民族文化沉浸 + 情感陪伴</strong>」三位一体文旅消费产品。
+            依托 <strong>内置 4G + LBS 定位</strong>、<strong>多语言连续语音对话</strong>与<strong>离线兜底能力</strong>，打造「<strong>开机即用 + 定位伴游 + 长效陪伴</strong>」三位一体文旅消费产品。
           </p>
         </div>
       </section>
@@ -2930,7 +2962,7 @@
 
         <div class="product-identity reveal">
           <p class="product-identity__lead">
-            <strong>黄小西家族是什么？</strong>由<strong>黄小西、小晚、小饭和黔多多</strong>组成的贵州官方专属 AI 智能陪伴 IP 家族，形态为「<strong>潮玩外壳 + 贵州特色外形和服饰 + 内置 AI 机芯</strong>」，既可<strong>吊挂随身</strong>，也可<strong>桌面摆放</strong>——能听、能说、有灯光与震动反馈，不是静态文创摆件。区别于普通文创与普通智能玩具，<strong>景区内是实用导游，旅行后是情感纪念品与居家陪伴好物</strong>，将一次性旅游消费转化为长期文旅品牌曝光，构建可商业化、可复制、可持续运营的贵州文旅 IP 落地载体。
+            <strong>黄小西家族是什么？</strong>由<strong>黄小西、小晚、小饭和黔多多</strong>组成的贵州官方专属 AI 智能陪伴 IP 家族，形态为「<strong>潮玩外壳 + 贵州特色外形和服饰 + 内置 AI 机芯</strong>」，既可<strong>吊挂随身</strong>，也可<strong>桌面摆放</strong>——能听、能说、可连续语音对话，不是静态文创摆件。区别于普通文创与普通智能玩具，<strong>景区内是开机即用的定位伴游，旅行后是情感纪念品与居家陪伴好物</strong>，将一次性旅游消费转化为长期文旅品牌曝光和持续运营收益，构建可商业化、可复制、可持续运营的贵州文旅 IP 落地载体。
           </p>
 
           <header class="section__head section__head--minor">
@@ -2989,9 +3021,9 @@
             <li><strong>IP 家族</strong>：黄小西、小晚、小饭、黔多多四位，贵州官方专属 AI 智能陪伴 IP</li>
             <li><strong>整体造型</strong>：潮玩外壳 + 贵州特色外形和服饰，含大头吊卡、玩偶等多种形态</li>
             <li><strong>内置机芯</strong>：内置 AI 机芯（主板、电池、喇叭、麦克风等），能听、能说</li>
-            <li><strong>交互反馈</strong>：灯光与震动等多模态反馈，非静态文创摆件</li>
+            <li><strong>交互反馈</strong>：语音交互，可进行连续对话，非静态文创摆件</li>
             <li><strong>使用形态</strong>：可吊挂随身，也可桌面摆放；背部检修盖与 Type-C 充电口</li>
-            <li><strong>产品价值</strong>：景区内实用导游，旅行后情感纪念品与居家陪伴好物</li>
+            <li><strong>产品价值</strong>：景区内开机即用的定位伴游，旅行后持续陪伴并形成长期收益</li>
           </ul>
         </div>
 
@@ -3014,10 +3046,11 @@
             <h4>长效陪伴，形成长期收益</h4>
             <p>离开贵州后依然可以使用，充分发挥价值，提升体验并增加收益</p>
           </div>
+          <div class="value-trio__item">
+            <h4>家族模式，提升动销</h4>
+            <p>以黄小西、小晚、小饭、黔多多构成 IP 家族矩阵，支持单款选购与盲盒组合售卖，增强渠道铺货、复购与传播能力</p>
+          </div>
         </div>
-        <p class="positioning-family-note reveal">
-          <strong>家族模式 · 销售设计：</strong>以黄小西、小晚、小饭、黔多多四位角色构成 IP 家族矩阵，既可单款选购，也可盲盒组合售卖；契合潮玩盲盒消费趋势，便于景区与渠道铺货，增强动销能力与用户复购空间。
-        </p>
       </section>
 
       <!-- 二、用户故事 -->
@@ -3026,7 +3059,7 @@
           <span class="section__num">二</span>
           <div>
             <h2 class="section__title">用户故事</h2>
-            <p class="section__lead">以真实人物与场景为主线，用纯文字还原四大核心落地故事中黄小西如何介入、化解困境并留下记忆</p>
+            <p class="section__lead">以真实人物与场景为主线，用纯文字还原黄小西家族如何介入游览、讲解与亲子陪伴场景，并留下可延续的旅行记忆</p>
           </div>
         </header>
 
@@ -3036,8 +3069,8 @@
             <div class="user-story__content">
                 <p class="user-story__pain">故事背景：自由行最怕「手机没电、找路难、踩坑多、人流拥堵」</p>
                 <p class="user-story__desc user-story__desc--scene">暑假，大学生小林独自来到黄果树。瀑布气势磅礴，可人潮也把栈道挤得水泄不通。她跟着网红攻略走，却在岔路口犯了难——指示牌密密麻麻，手机导航又时好时坏。走到下午，电量只剩 12%，想找个卫生间和能歇脚的地方，问了几位路人，得到的答案各不相同。</p>
-                <p class="user-story__desc">她抱着刚买的<strong>黄小西</strong>轻声说：「小西，我现在在哪？附近有没有卫生间和充电宝？」几乎不用掏手机，玩偶通过<strong>4G 定位与景区蓝牙信标</strong>判断她所在位置，用温柔声线告诉她：前方 80 米有休息区，左转 120 米有认证充电宝；并提醒主游览线当前拥堵，建议改走侧线观景，省力又少排队。</p>
-                <p class="user-story__desc">傍晚在青岩古镇，石板路蜿蜒，小林再次唤醒黄小西问「怎么逛最省力」。玩偶结合实时人流，为她规划了一条避堵动线，还顺带介绍了古镇里的地道小吃和开放时间。一天下来，她没再为找路和踩坑焦虑，真正把心思放在了风景上——这正是景区便民刚需服务场景要解决的：<strong>让自由行高效、省心、玩得值</strong>。</p>
+                <p class="user-story__desc">她抱着刚买的<strong>黄小西</strong>轻声说：「小西，我现在在哪？附近有没有卫生间和充电宝？」几乎不用掏手机，玩偶通过<strong>4G LBS 定位与景区信标</strong>判断她所在位置，用温柔声线告诉她：前方 80 米有休息区，左转 120 米有认证充电宝；并提醒主游览线当前拥堵，建议改走侧线观景，省力又少排队。</p>
+                <p class="user-story__desc">傍晚在青岩古镇，石板路蜿蜒，小林再次唤醒黄小西问「怎么逛最省力」。黄小西结合位置与游览信息，为她规划了一条避堵动线，还顺带介绍古镇里的地道小吃和开放时间。一天下来，她没再为找路和踩坑焦虑，真正把心思放在了风景上——这正是景区便民刚需服务场景要解决的：<strong>让自由行高效、省心、玩得值</strong>。</p>
             </div>
           </article>
 
@@ -3046,8 +3079,8 @@
             <div class="user-story__content">
                 <p class="user-story__pain">故事背景：许多游客「只拍照、不走心」，逛完侗寨苗寨却记不住文化</p>
                 <p class="user-story__desc user-story__desc--scene">来自上海的周阿姨和老伴第一次走进黔东南侗寨。鼓楼、吊脚楼、风雨桥，她举着手机拍了一整圈，转头却问老伴：「刚才那个表演叫什么？苗绣和侗绣有什么区别？」老伴摇摇头。导游团的讲解声远远传来，听不真切；他们想深入了解，又不知从何问起。</p>
-                <p class="user-story__desc">女儿临行前给他们买了<strong>黄小西</strong>。周阿姨在鼓楼前轻轻拍了拍玩偶，问：「给我讲讲这里的非遗故事吧。」黄小西双眼灯光柔和亮起，娓娓道来：侗族大歌为何被列入非遗、当地节庆习俗、山水间的传说，还有今晚寨子里哪场演出值得一看、附近哪家酸汤鱼最地道。</p>
-                <p class="user-story__desc">返程高铁上，周阿姨翻着手机里的照片，却能清晰讲出每一段建筑背后的故事。她说：「以前旅游像赶集，这次终于像读了一本书。」黄小西把<strong>「观光打卡」升级为「深度文化体验」</strong>，让贵州非遗、民俗、美食与演出不再只是镜头里的背景，而成为旅客心里带得走的专属记忆。</p>
+                <p class="user-story__desc">女儿临行前给他们买了<strong>黔多多</strong>。周阿姨在鼓楼前唤醒玩偶，问：「给我讲讲这里的非遗故事吧。」黔多多用活泼的语气娓娓道来：侗族大歌为何被列入非遗、当地节庆习俗、山水间的传说，还有今晚寨子里哪场演出值得一看、附近哪家酸汤鱼最地道。</p>
+                <p class="user-story__desc">返程高铁上，周阿姨翻着手机里的照片，却能清晰讲出每一段建筑背后的故事。她说：「以前旅游像赶集，这次终于像读了一本书。」黔多多把<strong>「观光打卡」升级为「深度文化体验」</strong>，让贵州非遗、民俗、美食与演出不再只是镜头里的背景，而成为旅客心里带得走的专属记忆。</p>
             </div>
           </article>
 
@@ -3056,8 +3089,8 @@
             <div class="user-story__content">
                 <p class="user-story__pain">故事背景：亲子出游常陷「孩子闹、家长累、人人刷手机」的困局</p>
                 <p class="user-story__desc user-story__desc--scene">五一假期，张女士带着 6 岁的儿子浩浩去荔波小七孔。车程两个多小时，浩浩已刷完半集动画片；到了景区，他对栈道旁的古树、碧潭兴致缺缺，只嚷着「没意思、要回家」。张女士一边哄，一边担心他磕碰哭闹，自己也没心思欣赏山水。</p>
-                <p class="user-story__desc">入园时，浩浩一眼看中了柜台上的<strong>黄小西</strong>——「妈妈，它眼睛会亮！」绑定后，玩偶成了他的游伴：在古桥边玩<strong>自然探索小游戏</strong>，答对「这棵树活了多少年」赢得夸奖；经过溶洞时，黄小西讲起儿童专属的贵州山水传说，浩浩听得入神，再也不吵着要手机。</p>
-                <p class="user-story__desc">午后浩浩跑累了，不小心把玩偶摔在地上。黄小西没有责备，而是轻轻震动、灯光转暖，用温柔语音说「没关系，我们一起歇一歇」——<strong>磕碰安抚、心跳震动、情绪灯光</strong>让孩子情绪很快平复。张女士终于能放慢脚步看风景，浩浩也在问答与故事里不知不觉完成了<strong>文旅启蒙</strong>。这正是亲子场景的价值：<strong>轻松遛娃，也让贵州的人文自然住进孩子心里</strong>。</p>
+                <p class="user-story__desc">入园时，浩浩一眼看中了柜台上的<strong>小晚</strong>——「妈妈，她会讲故事！」绑定后，小晚成了他的游伴：在古桥边玩<strong>自然探索小游戏</strong>，答对「这棵树活了多少年」赢得夸奖；经过溶洞时，小晚讲起儿童专属的贵州山水传说，浩浩听得入神，再也不吵着要手机。</p>
+                <p class="user-story__desc">午后浩浩跑累了，开始闹着要回家。小晚没有催促，而是用温柔语音说「我们先休息一下，再去找下一个小任务」——<strong>语音安抚、连续问答、亲子探索任务</strong>让孩子情绪很快平复。张女士终于能放慢脚步看风景，浩浩也在问答与故事里不知不觉完成了<strong>文旅启蒙</strong>。这正是亲子场景的价值：<strong>轻松遛娃，也让贵州的人文自然住进孩子心里</strong>。</p>
             </div>
           </article>
 
@@ -3066,7 +3099,7 @@
             <div class="user-story__content">
                 <p class="user-story__pain">故事背景：多数景区纪念品离园即闲置——黄小西要打破这一宿命</p>
                 <p class="user-story__desc user-story__desc--scene">浩浩一家结束贵州之行回到杭州。行李箱里的明信片上了墙，冰箱贴上了贴，唯独景区买的玩偶，第一周还被抱着睡，第二周就被塞进了柜子角落。张女士感慨：「钱花了，孩子的新鲜劲一过，就只剩占地方。」</p>
-                <p class="user-story__desc">黄小西不一样。它<strong>离园后不失效、不闲置</strong>：无需联网也能离线运行。夜里浩浩睡不着，抱着黄小西说「小西，陪我睡觉」——玩偶发出轻柔的<strong>心跳助眠震动</strong>，双眼灯光缓缓呼吸，房间安静下来。周末，浩浩又喊：「回忆贵州旅行！」黄小西便讲起他们在小七孔走过的桥、答过的谜题，像一本会说话的<strong>旅行记忆相册</strong>。</p>
+                <p class="user-story__desc">黄小西不一样。它<strong>离园后不失效、不闲置</strong>：无网时也能播放基础内容，联网后继续更新旅行记忆。周末，浩浩喊：「回忆贵州旅行！」黄小西便讲起他们在小七孔走过的桥、答过的谜题，像一本会说话的<strong>旅行记忆相册</strong>。</p>
                 <p class="user-story__desc">张女士把这段对话录成短视频发到朋友圈，评论区满是「哪里买的？我们也想去贵州」。一次性景区消费，就这样变成了家里的<strong>长期陪伴载体</strong>——孩子记得贵州，家长愿意分享，贵州文旅的形象在客厅里、在社交平台上持续生长。这正是项目最核心的差异化壁垒：<strong>景区里是导游，回家后是伙伴；有温度、有记忆，才有口碑与二次传播</strong>。</p>
             </div>
           </article>
@@ -3142,7 +3175,6 @@
                     <span class="cap-net-kw cap-net-kw--hw">离线兜底</span>
                     <span class="cap-net-kw cap-net-kw--hw">6–8h 续航</span>
                     <span class="cap-net-kw cap-net-kw--hw">Type-C/磁吸</span>
-                    <span class="cap-net-kw cap-net-kw--hw">震动反馈</span>
                     <span class="cap-net-kw cap-net-kw--hw">电池安全</span>
                     <span class="cap-net-kw cap-net-kw--hw">OTA 升级</span>
                   </div>
@@ -3169,10 +3201,8 @@
                   <div class="cap-network__pool-chips">
                     <span class="cap-net-kw cap-net-kw--mp">设备蓝牙管理</span>
                     <span class="cap-net-kw cap-net-kw--mp">优惠推送</span>
-                    <span class="cap-net-kw cap-net-kw--mp">灯光自定义</span>
                     <span class="cap-net-kw cap-net-kw--mp">家长管控</span>
                     <span class="cap-net-kw cap-net-kw--mp">语音风格</span>
-                    <span class="cap-net-kw cap-net-kw--mp">震动调节</span>
                     <span class="cap-net-kw cap-net-kw--mp">记忆相册</span>
                     <span class="cap-net-kw cap-net-kw--mp">社交分享</span>
                     <span class="cap-net-kw cap-net-kw--mp">售后自助</span>
@@ -3290,15 +3320,7 @@
               </tr>
               <tr>
                 <td>硬件交互表现</td>
-                <td>部分触摸场景、提醒、指令等情况支持硬件震动，具体如下：
-                  <ul class="spec-hw-list">
-                    <li>触摸/按键确认：用户 <span class="spec-hw-red">开机/关机</span> 成功，应有轻微震动反馈；</li>
-                    <li>语音 <span class="spec-hw-red">唤醒</span> 成功：设备识别到唤醒词或按键唤醒后，应短震提示用户「设备已开始听」；</li>
-                    <li><span class="spec-hw-red">导航</span> 提醒：到达转向点、偏航、接近目标点时，应支持震动提醒；</li>
-                    <li><span class="spec-hw-red">安全</span> 提醒：低电量、设备即将关机、越界、防丢、异常状态时，应有明显震动；</li>
-                    <li><span class="spec-hw-red">弱网/离线</span> 提醒：网络异常、无法完成在线问答时，可震动并配合语音/灯效提醒。</li>
-                  </ul>
-                </td>
+                <td>以语音反馈和屏幕状态提示为主：开机/关机、唤醒成功、低电量、网络异常、定位/导航提醒等场景，应通过清晰提示音、语音播报或屏幕状态让用户明确知道设备当前状态。</td>
               </tr>
               <tr>
                 <td>远程升级</td>
@@ -3335,7 +3357,7 @@
               </tr>
               <tr>
                 <td>情感陪伴</td>
-                <td>① 非对话态配合硬件灯光/音效/震动表达情绪（待机、倾听、思考、开心等）；② 支持主动互动（接近景点提醒、久未互动轻唤起等，频控防打扰）；③ 性格养成与用户专属记忆：记录历史对话与旅途高光，语音唤醒「回忆贵州旅行」；④ 情感化反馈：轻拍撒娇、磕碰安抚、低落助眠等，与硬件多模态联动。</td>
+                <td>① 通过语音语气、角色人设与内容表达承载陪伴感（待机、倾听、思考、开心等状态可用提示音/屏幕状态辅助）；② 支持主动互动（接近景点提醒、久未互动轻唤起等，频控防打扰）；③ 性格养成与用户专属记忆：记录历史对话与旅途高光，语音唤醒「回忆贵州旅行」；④ 情感化反馈以语音安抚、连续问答和旅行记忆复盘为主。</td>
                 <td><strong>陪伴属性强</strong>，具备主动服务能力，离园后仍可延续情感连接。</td>
               </tr>
               <tr>
@@ -3384,7 +3406,7 @@
             </thead>
             <tbody>
               <tr><td>设备蓝牙管理</td><td>扫码/蓝牙一键绑定、重连、解绑与恢复出厂；唯一 Device ID 与会话绑定；设备在线检测与硬件自检</td></tr>
-              <tr><td>个性化参数设置</td><td>震动强度调节、语音风格切换、灯光模式自定义</td></tr>
+              <tr><td>个性化参数设置</td><td>语音风格切换、角色口吻配置、内容偏好与家长管控参数设置</td></tr>
               <tr><td>家长安全管控</td><td>使用时长限制、远程暂停、内容管控，防沉迷</td></tr>
               <tr><td>旅行记忆相册</td><td>自动生成游玩轨迹、互动日志、旅途高光记录</td></tr>
               <tr><td>社交分享传播</td><td>一键生成文旅记忆卡片、精彩片段，支持朋友圈裂变传播</td></tr>
@@ -3439,7 +3461,7 @@
             <p class="marketing-card__key">核心获客 · 先体验后购买</p>
             <ul class="marketing-card__points">
               <li>游客中心、主入口、文创街区设展台</li>
-              <li>免费试听试玩，灯光震动交互</li>
+              <li>免费试听试玩，连续语音对话体验</li>
               <li>降低门槛，提升当场转化率</li>
             </ul>
           </div>
@@ -3524,7 +3546,7 @@
             <h4>④ 内容增值收益（后期）</h4>
             <p><strong>节日限定故事包</strong>、<strong>季节文旅专题</strong>、<strong>儿童益智付费专辑</strong>等数字内容<strong>付费下载/订阅</strong>，形成<strong>轻资产</strong>长期增值收入。</p>
           </div>
-          <div class="advantage reveal" style="grid-column: 1 / -1; max-width: 100%;">
+          <div class="advantage reveal">
             <h4>⑤ 政企文旅合作收益</h4>
             <p>成熟后承接<strong>景区 IP 活化</strong>、<strong>文旅数字化体验升级</strong>、<strong>研学亲子</strong>项目配套等<strong>政企/景区采购</strong>，以项目制获取合作收益，提升整体估值。</p>
           </div>
@@ -3552,8 +3574,28 @@
       <header class="comp-hero reveal">
         <p class="comp-hero__kicker">市场调研</p>
         <h1 class="comp-hero__title">情感陪伴类 AI 玩偶 · 竞品分析</h1>
-        <p class="comp-hero__lead">梳理品类共性能力边界，并以基础能力矩阵、亮点嘈点对比等方式呈现芙崽、萌 UU、雷鸟 Uni、秒嗒等代表产品，为黄小西差异化定位提供对照。</p>
+        <p class="comp-hero__lead">梳理品类共性能力边界，并以基础能力矩阵、亮点嘈点对比等方式呈现 MOMOO、妙嗒、芙崽、萌 UU、雷鸟 Uni 等代表产品，为黄小西差异化定位提供对照。</p>
         <div class="comp-gallery" role="list" aria-label="代表竞品产品图">
+          <button type="button" class="comp-gallery__item" role="listitem" aria-label="放大查看 MOMOO 产品图">
+            <span class="comp-gallery__thumb-wrap">
+              <img class="comp-gallery__img" src="assets/competitors/momoo.png" alt="MOMOO 骑士熊守梦师产品宣传图" width="320" height="320" loading="lazy" data-lightbox-group="competitors" data-caption="MOMOO" />
+              <span class="comp-gallery__zoom" aria-hidden="true">放大</span>
+            </span>
+            <span class="comp-gallery__meta">
+              <span class="comp-gallery__name">MOMOO</span>
+              <span class="comp-gallery__sub">二元魂 · 毛绒玩偶 · 供应商：奥远云创（深圳）</span>
+            </span>
+          </button>
+          <button type="button" class="comp-gallery__item" role="listitem" aria-label="放大查看妙嗒产品图">
+            <span class="comp-gallery__thumb-wrap">
+              <img class="comp-gallery__img" src="assets/competitors/miaoda.png" alt="妙嗒 AiMOON 产品宣传图" width="320" height="320" loading="lazy" data-lightbox-group="competitors" data-caption="妙嗒" />
+              <span class="comp-gallery__zoom" aria-hidden="true">放大</span>
+            </span>
+            <span class="comp-gallery__meta">
+              <span class="comp-gallery__name">妙嗒</span>
+              <span class="comp-gallery__sub">上海灵犀科技 · 毛绒玩偶 · 供应商：乘云智能（上海）</span>
+            </span>
+          </button>
           <button type="button" class="comp-gallery__item" role="listitem" aria-label="放大查看芙崽产品图">
             <span class="comp-gallery__thumb-wrap">
               <img class="comp-gallery__img" src="assets/competitors/fuzai.png" alt="芙崽产品宣传图" width="320" height="320" loading="lazy" data-lightbox-group="competitors" data-caption="芙崽" />
@@ -3582,16 +3624,6 @@
             <span class="comp-gallery__meta">
               <span class="comp-gallery__name">雷鸟 Uni</span>
               <span class="comp-gallery__sub">雷鸟 · AI 陪伴挂件</span>
-            </span>
-          </button>
-          <button type="button" class="comp-gallery__item" role="listitem" aria-label="放大查看秒嗒产品图">
-            <span class="comp-gallery__thumb-wrap">
-              <img class="comp-gallery__img" src="assets/competitors/miaoda.png" alt="秒嗒 AiMOON 产品宣传图" width="320" height="320" loading="lazy" data-lightbox-group="competitors" data-caption="秒嗒" />
-              <span class="comp-gallery__zoom" aria-hidden="true">放大</span>
-            </span>
-            <span class="comp-gallery__meta">
-              <span class="comp-gallery__name">秒嗒</span>
-              <span class="comp-gallery__sub">上海灵犀科技 · 毛绒玩偶</span>
             </span>
           </button>
         </div>
@@ -3653,55 +3685,63 @@
             <thead>
               <tr>
                 <th scope="col">对比维度</th>
+                <th scope="col" class="col-product--momoo">MOMOO</th>
+                <th scope="col" class="col-product--miaoda">妙嗒</th>
                 <th scope="col" class="col-product--fuzai">芙崽</th>
                 <th scope="col" class="col-product--uu">萌 UU</th>
                 <th scope="col" class="col-product--uni">雷鸟 Uni</th>
-                <th scope="col" class="col-product--miaoda">秒嗒</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <th scope="row">形态</th>
+                <td>毛绒玩偶，可手持、可包挂</td>
+                <td>毛绒玩偶，可手持</td>
                 <td>毛球玩偶，可手持、可包挂</td>
                 <td>屏幕 + 毛绒外套，可手持、可包挂</td>
                 <td>屏幕 + 毛绒外套，可手持、可包挂</td>
-                <td>毛绒玩偶，可手持</td>
               </tr>
               <tr>
                 <th scope="row">重量</th>
+                <td>轻</td>
+                <td>重</td>
                 <td>适中</td>
                 <td>轻</td>
                 <td>轻</td>
-                <td>重</td>
               </tr>
               <tr>
                 <th scope="row">唤醒方式</th>
+                <td>按键 + 口令唤醒</td>
+                <td>按键</td>
                 <td>口令；切换至对话模式</td>
                 <td>按键</td>
                 <td>按键开机，无唤醒词，随时随地收音对话</td>
-                <td>按键</td>
               </tr>
               <tr>
                 <th scope="row">关闭方式</th>
+                <td>按键关闭</td>
+                <td>一分钟自动关闭对话模式</td>
                 <td>按键或静止 3 分钟后关闭对话，进入陪伴状态；10 分钟后自动关闭系统</td>
                 <td>按键</td>
                 <td>按键；无对话 3 分钟后进入待机，按键继续对话</td>
-                <td>一分钟自动关闭对话模式</td>
               </tr>
               <tr>
                 <th scope="row">对话方式</th>
                 <td>连续对话</td>
-                <td>长按收音进行连续对话</td>
-                <td>开机后持续对话</td>
                 <td>
                   <ol class="comp-cell-list">
                     <li>长按收音对话</li>
                     <li>双击后连续对话</li>
                   </ol>
                 </td>
+                <td>连续对话</td>
+                <td>长按收音进行连续对话</td>
+                <td>开机后持续对话</td>
               </tr>
               <tr>
                 <th scope="row">收音能力</th>
+                <td class="comp-cell-empty">—</td>
+                <td class="comp-cell-empty">—</td>
                 <td>
                   <ol class="comp-cell-list">
                     <li>嘈杂环境依然收音</li>
@@ -3715,10 +3755,11 @@
                     <li>收音能力强，但没做去噪处理</li>
                   </ol>
                 </td>
-                <td class="comp-cell-empty">—</td>
               </tr>
               <tr>
                 <th scope="row">连接方式</th>
+                <td>内置 4G 模组，开机即用</td>
+                <td>内置 4G 模组，购机享 3 年免费移动网络；支持 Wi-Fi；微信小程序 + 蓝牙连接</td>
                 <td>
                   <ol class="comp-cell-list">
                     <li><strong>Wi-Fi 版：</strong>硬件与软件蓝牙连接，依赖 App 配网</li>
@@ -3727,12 +3768,12 @@
                 </td>
                 <td>内置 4G 模组，无需 Wi-Fi</td>
                 <td>内置 4G 模组，开机联网使用</td>
-                <td>内置 4G 模组，购机享 3 年免费移动网络；支持 Wi-Fi；微信小程序 + 蓝牙连接</td>
               </tr>
               <tr>
                 <th scope="row">蓝牙</th>
-                <td>蓝牙 5.4，连接距离约 10 m</td>
                 <td>无</td>
+                <td>无</td>
+                <td>蓝牙 5.4，连接距离约 10 m</td>
                 <td>无</td>
                 <td>无</td>
               </tr>
@@ -3742,44 +3783,52 @@
                 <td>无</td>
                 <td>无</td>
                 <td>无</td>
+                <td>无</td>
               </tr>
               <tr>
                 <th scope="row">定位能力</th>
                 <td>无</td>
-                <td>无（规划中）</td>
                 <td>无</td>
+                <td>无</td>
+                <td>无（规划中）</td>
                 <td>无</td>
               </tr>
               <tr>
                 <th scope="row">麦克风</th>
-                <td>疑似单麦</td>
                 <td>单麦</td>
                 <td>疑似单麦</td>
+                <td>疑似单麦</td>
+                <td>单麦</td>
                 <td>疑似单麦</td>
               </tr>
               <tr>
                 <th scope="row">电池</th>
                 <td>3C 认证</td>
-                <td>无 3C 认证</td>
                 <td>3C 认证</td>
+                <td>3C 认证</td>
+                <td>无 3C 认证</td>
                 <td>3C 认证</td>
               </tr>
               <tr>
                 <th scope="row">其他能力</th>
-                <td>六轴感应器，支持触摸反应</td>
                 <td>无</td>
+                <td>无</td>
+                <td>六轴感应器，支持触摸反应</td>
                 <td>无</td>
                 <td>无</td>
               </tr>
               <tr>
                 <th scope="row">软件载体</th>
+                <td>小程序</td>
+                <td>App / 小程序</td>
                 <td>App</td>
                 <td>App</td>
                 <td>小程序</td>
-                <td>App / 小程序</td>
               </tr>
               <tr>
                 <th scope="row">价格</th>
+                <td>盲盒销售 99 元</td>
+                <td>499 元（默认 Wi-Fi + 4G）</td>
                 <td>
                   <ol class="comp-cell-list">
                     <li>Wi-Fi 版：399 元</li>
@@ -3788,26 +3837,27 @@
                 </td>
                 <td>399 元</td>
                 <td>299 元</td>
-                <td>499 元（默认 Wi-Fi + 4G）</td>
               </tr>
               <tr>
                 <th scope="row">厂商</th>
+                <td>二元魂（供应商：奥远云创（深圳））</td>
+                <td>上海灵犀科技（供应商：乘云智能（上海））</td>
                 <td>珞博智能</td>
                 <td>优必选</td>
                 <td>雷鸟</td>
-                <td>上海灵犀科技</td>
               </tr>
               <tr>
                 <th scope="row">大模型</th>
+                <td>国产通用大模型</td>
+                <td>国产通用大模型</td>
                 <td>自研 MEM 多模态情感大模型</td>
                 <td>通义千问 + 优必选自研「点灵」Agent</td>
-                <td>国产通用大模型</td>
                 <td>国产通用大模型</td>
               </tr>
             </tbody>
           </table>
         </div>
-        <p class="comp-matrix-note">表格可横向、纵向滚动；首行与首列固定，便于对照四项基础能力。空白项表示调研资料未注明。</p>
+        <p class="comp-matrix-note">表格可横向、纵向滚动；首行与首列固定，便于对照五款产品的基础能力。空白项表示调研资料未注明。</p>
       </section>
 
       <section class="comp-block reveal" id="comp-dialog-matrix">
@@ -3817,103 +3867,109 @@
             <thead>
               <tr>
                 <th scope="col">对比维度</th>
+                <th scope="col" class="col-product--momoo">MOMOO</th>
+                <th scope="col" class="col-product--miaoda">妙嗒</th>
                 <th scope="col" class="col-product--fuzai">芙崽</th>
                 <th scope="col" class="col-product--uu">萌 UU</th>
                 <th scope="col" class="col-product--uni">雷鸟 Uni</th>
-                <th scope="col" class="col-product--miaoda">秒嗒</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <th scope="row">情感交互</th>
+                <td>一般</td>
+                <td>一般</td>
                 <td>强（被动触发）</td>
                 <td>一般</td>
                 <td>强</td>
-                <td>一般</td>
               </tr>
               <tr>
                 <th scope="row">对话流畅度</th>
-                <td>强</td>
-                <td>强</td>
-                <td>强</td>
                 <td>流畅</td>
+                <td>流畅</td>
+                <td>强</td>
+                <td>强</td>
+                <td>强</td>
               </tr>
               <tr>
                 <th scope="row">意图识别能力</th>
-                <td class="comp-cell-empty">—</td>
-                <td class="comp-cell-empty">—</td>
-                <td class="comp-cell-empty">—</td>
                 <td>强</td>
+                <td>强</td>
+                <td class="comp-cell-empty">—</td>
+                <td class="comp-cell-empty">—</td>
+                <td class="comp-cell-empty">—</td>
               </tr>
               <tr>
                 <th scope="row">响应速度</th>
+                <td>普通常识约 3s；复杂问题响应时间会增大</td>
+                <td>普通常识约 3s；复杂问题响应时间会增大</td>
                 <td>约 3s</td>
                 <td>3–5s</td>
                 <td>3–5s</td>
-                <td>普通常识约 3s；复杂问题响应时间会增大</td>
               </tr>
               <tr>
                 <th scope="row">记忆能力</th>
+                <td>有（按 Token 限制截取最近轮次对话）</td>
+                <td>有（按 Token 限制截取最近轮次对话）</td>
                 <td>有；但会记错</td>
                 <td>有；但会记错</td>
                 <td>无</td>
-                <td>有（按 Token 限制截取最近轮次对话）</td>
               </tr>
               <tr>
                 <th scope="row">多轮对话能力</th>
                 <td>有</td>
                 <td>有</td>
-                <td>无</td>
                 <td>有</td>
+                <td>有</td>
+                <td>无</td>
               </tr>
               <tr>
                 <th scope="row">是否支持打断</th>
-                <td>不支持</td>
-                <td>不支持</td>
-                <td>不支持</td>
                 <td><strong>支持</strong></td>
+                <td><strong>支持</strong></td>
+                <td>不支持</td>
+                <td>不支持</td>
+                <td>不支持</td>
               </tr>
               <tr>
                 <th scope="row">知识覆盖度</th>
+                <td>覆盖较全（支持联网检索补充回答）</td>
+                <td>覆盖较全（支持联网检索补充回答）</td>
                 <td>覆盖不全，整体智力偏低</td>
                 <td>覆盖较全</td>
                 <td>很低，仅能回答基础问题；未知问题易「瞎说」</td>
-                <td>覆盖较全（支持联网检索补充回答）</td>
               </tr>
               <tr>
                 <th scope="row">多语言能力</th>
+                <td>英语、中文、日语</td>
+                <td>英语、中文、日语</td>
                 <td>无</td>
                 <td>英语</td>
                 <td>英语、日语、德语、韩语等多国语言</td>
-                <td>英语、中文、日语</td>
               </tr>
               <tr>
                 <th scope="row">个性化服务</th>
+                <td>无</td>
+                <td>无</td>
                 <td>六轴感应，可触摸感应</td>
                 <td>无</td>
                 <td>可修改角色与屏幕展示形象</td>
-                <td>无</td>
               </tr>
               <tr>
                 <th scope="row">主动服务</th>
+                <td>主动服务目前未启用</td>
+                <td>主动服务目前未启用</td>
                 <td>主动发出声音进行互动</td>
                 <td>无</td>
                 <td>结束对话后会进行一次对话询问</td>
-                <td>主动服务目前未启用</td>
               </tr>
               <tr>
                 <th scope="row">Token / 用量</th>
+                <td>默认 2000 Token，后续可充值</td>
+                <td class="comp-cell-empty">—</td>
                 <td>每日 120 点精力值，自动恢复，亦可购买</td>
                 <td class="comp-cell-empty">—</td>
                 <td>每日限制聊天轮数</td>
-                <td class="comp-cell-empty">—</td>
-              </tr>
-              <tr>
-                <th scope="row">备注</th>
-                <td class="comp-cell-empty">—</td>
-                <td class="comp-cell-empty">—</td>
-                <td class="comp-cell-empty">—</td>
-                <td class="comp-cell-note">「说 200 遍你好」场景下可能无即时响应，但服务仍可用；进入第二、三轮问答时，首轮「你好」会延迟播报，并与后续答案夹杂串播。<strong>需避免此类交互：即使答不了也应给用户明确反馈，且不可串对话。</strong></td>
               </tr>
             </tbody>
           </table>
@@ -3934,6 +3990,31 @@
               </tr>
             </thead>
             <tbody>
+              <tr>
+                <th scope="row">MOMOO</th>
+                <td>
+                  <ol>
+                    <li>知识覆盖高，支持联网检索补充信息</li>
+                    <li>多轮对话表现好</li>
+                    <li>当前交互可打断，进入下一轮</li>
+                  </ol>
+                </td>
+                <td>—</td>
+                <td>出厂默认提供 2000 Tokens，用完后用户可在小程序进行充值，充值金额作为收益与供应商分润。</td>
+              </tr>
+              <tr>
+                <th scope="row">妙嗒</th>
+                <td>
+                  <ol>
+                    <li>知识覆盖高，联网检索补充；检索时播放「让我思考/查一下」等过渡语，体验较好</li>
+                    <li>多轮对话表现好</li>
+                    <li>当前交互可打断，进入下一轮</li>
+                    <li>双模式：免唤醒；双击多轮对话；长按单轮（松手结束录音）；静音 30–60s 自动退出</li>
+                  </ol>
+                </td>
+                <td>—</td>
+                <td>暂无</td>
+              </tr>
               <tr>
                 <th scope="row">芙崽</th>
                 <td>
@@ -3993,19 +4074,6 @@
                 </td>
                 <td>角色需购买</td>
               </tr>
-              <tr>
-                <th scope="row">秒嗒</th>
-                <td>
-                  <ol>
-                    <li>知识覆盖高，联网检索补充；检索时播放「让我思考/查一下」等过渡语，体验较好</li>
-                    <li>多轮对话表现好</li>
-                    <li>当前交互可打断，进入下一轮</li>
-                    <li>双模式：免唤醒；双击多轮对话；长按单轮（松手结束录音）；静音 30–60s 自动退出</li>
-                  </ol>
-                </td>
-                <td>—</td>
-                <td>暂无</td>
-              </tr>
             </tbody>
           </table>
         </div>
@@ -4028,8 +4096,24 @@
                 <div class="comp-vote__field">
                   <span class="comp-vote__panel-title" style="margin-bottom:10px;display:block;">选择产品 <span style="color:#dc2626">*</span></span>
                   <div class="comp-vote__products" role="radiogroup" aria-label="选择竞品">
+                    <label class="comp-vote__product" style="--product-color:#ec4899">
+                      <input type="radio" name="product" value="momoo" required />
+                      <span class="comp-vote__product-card">
+                        <span class="comp-vote__product-dot"></span>
+                        <span class="comp-vote__product-name">MOMOO</span>
+                        <span class="comp-vote__product-price">99 元</span>
+                      </span>
+                    </label>
+                    <label class="comp-vote__product" style="--product-color:#10b981">
+                      <input type="radio" name="product" value="miaoda" />
+                      <span class="comp-vote__product-card">
+                        <span class="comp-vote__product-dot"></span>
+                        <span class="comp-vote__product-name">妙嗒</span>
+                        <span class="comp-vote__product-price">499 元</span>
+                      </span>
+                    </label>
                     <label class="comp-vote__product" style="--product-color:#0ea5e9">
-                      <input type="radio" name="product" value="fuzai" required />
+                      <input type="radio" name="product" value="fuzai" />
                       <span class="comp-vote__product-card">
                         <span class="comp-vote__product-dot"></span>
                         <span class="comp-vote__product-name">芙崽</span>
@@ -4050,14 +4134,6 @@
                         <span class="comp-vote__product-dot"></span>
                         <span class="comp-vote__product-name">雷鸟 Uni</span>
                         <span class="comp-vote__product-price">299 元</span>
-                      </span>
-                    </label>
-                    <label class="comp-vote__product" style="--product-color:#10b981">
-                      <input type="radio" name="product" value="miaoda" />
-                      <span class="comp-vote__product-card">
-                        <span class="comp-vote__product-dot"></span>
-                        <span class="comp-vote__product-name">秒嗒</span>
-                        <span class="comp-vote__product-price">499 元</span>
                       </span>
                     </label>
                   </div>
@@ -4443,10 +4519,11 @@
         var adminToken = cfg.adminToken || "hx-vote-admin";
 
         var PRODUCTS = {
+          momoo: { name: "MOMOO", color: "#ec4899", price: "99 元" },
+          miaoda: { name: "妙嗒", color: "#10b981", price: "499 元" },
           fuzai: { name: "芙崽", color: "#0ea5e9", price: "399–499 元" },
           uu: { name: "萌 UU", color: "#8b5cf6", price: "399 元" },
-          uni: { name: "雷鸟 Uni", color: "#f59e0b", price: "299 元" },
-          miaoda: { name: "秒嗒", color: "#10b981", price: "499 元" }
+          uni: { name: "雷鸟 Uni", color: "#f59e0b", price: "299 元" }
         };
         var REASONS = [
           { id: "carry", cat: "hardware", label: "轻便随身，挂包/手持都合适" },
@@ -4743,7 +4820,7 @@
           var allVotes = votesCache;
           var votes = allVotes.filter(matchFilter);
           var statSource = activeFilter === "all" ? allVotes : votes;
-          var counts = { fuzai: 0, uu: 0, uni: 0, miaoda: 0 };
+          var counts = { momoo: 0, miaoda: 0, fuzai: 0, uu: 0, uni: 0 };
           statSource.forEach(function (v) {
             if (counts[v.product] !== undefined) counts[v.product]++;
           });
@@ -4752,7 +4829,7 @@
 
           if (statsEl) {
             statsEl.innerHTML = "";
-            ["fuzai", "uu", "uni", "miaoda"].forEach(function (key) {
+            ["momoo", "miaoda", "fuzai", "uu", "uni"].forEach(function (key) {
               var p = PRODUCTS[key];
               var c = counts[key];
               var pct = statSource.length ? Math.round((c / statSource.length) * 100) : 0;
