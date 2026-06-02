@@ -1,0 +1,13 @@
+{
+  "name": "huang-xiaoxi-hardware-program",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server/vote-server.mjs",
+    "vote-server": "node server/vote-server.mjs"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  }
+}

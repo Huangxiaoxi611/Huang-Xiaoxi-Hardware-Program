@@ -6,9 +6,9 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <meta name="description" content="黄小西文旅智能陪伴玩偶 — 贵州文旅官方专属 AI 智能陪伴 IP 玩偶完整商业落地方案" />
+  <meta name="description" content="黄小西家族文旅智能体陪伴玩偶 — 贵州官方专属 AI 智能陪伴 IP 家族完整商业落地方案" />
   <!-- nav-layout-v4: 顶栏 Tab 方案/竞品 + 侧栏目录 | build: 20260520-tabs -->
-  <title>黄小西文旅智能陪伴玩偶 · 商业落地方案汇报</title>
+  <title>黄小西家族文旅智能体陪伴玩偶 · 商业落地方案汇报</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -1044,9 +1044,38 @@
       color: var(--blue-primary);
     }
 
+    .section__head--minor {
+      margin: 28px 0 16px;
+    }
+
+    .section__head--minor:first-of-type {
+      margin-top: 20px;
+    }
+
+    .section__head--minor .section__title {
+      font-size: 17px;
+      line-height: 1.4;
+    }
+
+    .positioning-family-note {
+      margin: 16px 0 0;
+      padding: 14px 18px;
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--ink);
+      background: linear-gradient(135deg, var(--accent-pale) 0%, #fff 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .positioning-family-note strong {
+      color: var(--blue-primary);
+    }
+
     .product-face-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
       margin-bottom: 22px;
     }
@@ -1890,171 +1919,6 @@
     .placeholder-note::before {
       content: "待补充 · ";
       font-weight: 700;
-    }
-
-    /* 困难与待办 */
-    .difficulty-grid {
-      display: grid;
-      gap: 20px;
-    }
-
-    .difficulty-card {
-      padding: 24px 28px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      border-left: 4px solid #f59e0b;
-    }
-
-    .difficulty-card--critical {
-      border-left-color: #dc2626;
-      background: linear-gradient(135deg, #fffbeb 0%, #fff 48%);
-    }
-
-    .difficulty-card__head {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: flex-start;
-      gap: 10px 16px;
-      margin-bottom: 14px;
-    }
-
-    .difficulty-card__title {
-      margin: 0;
-      font-size: 17px;
-      font-family: "Noto Serif SC", serif;
-      color: var(--blue-primary);
-      flex: 1 1 200px;
-    }
-
-    .difficulty-card__tag {
-      display: inline-block;
-      padding: 4px 10px;
-      font-size: 12px;
-      font-weight: 600;
-      color: #b45309;
-      background: #fef3c7;
-      border-radius: 999px;
-    }
-
-    .difficulty-card__tag--risk {
-      color: #b91c1c;
-      background: #fee2e2;
-    }
-
-    .difficulty-card__lead {
-      margin: 0 0 14px;
-      font-size: 14px;
-      color: var(--ink-muted);
-      line-height: 1.75;
-    }
-
-    .difficulty-card__lead strong {
-      color: var(--ink);
-      font-weight: 600;
-    }
-
-    .difficulty-card ul {
-      margin: 0;
-      padding-left: 1.25em;
-      font-size: 14px;
-      color: var(--ink-muted);
-      line-height: 1.8;
-    }
-
-    .difficulty-card li + li {
-      margin-top: 6px;
-    }
-
-    .vendor-compare {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 14px;
-      margin-top: 16px;
-    }
-
-    .vendor-compare__item {
-      padding: 16px 18px;
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-    }
-
-    .vendor-compare__item h5 {
-      margin: 0 0 8px;
-      font-size: 14px;
-      color: var(--accent-deep);
-    }
-
-    .vendor-compare__item p {
-      margin: 0;
-      font-size: 13px;
-      color: var(--ink-muted);
-      line-height: 1.7;
-    }
-
-    .vendor-compare__status {
-      display: inline-block;
-      margin-top: 10px;
-      font-size: 12px;
-      font-weight: 600;
-      color: #0369a1;
-    }
-
-    .todo-table-wrap {
-      margin-top: 24px;
-      overflow-x: auto;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-    }
-
-    .todo-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 14px;
-    }
-
-    .todo-table th,
-    .todo-table td {
-      padding: 12px 16px;
-      text-align: left;
-      border-bottom: 1px solid var(--border);
-      vertical-align: top;
-    }
-
-    .todo-table th {
-      background: #f0f9ff;
-      color: var(--blue-primary);
-      font-weight: 600;
-      white-space: nowrap;
-    }
-
-    .todo-table tr:last-child td {
-      border-bottom: none;
-    }
-
-    .todo-table td:first-child {
-      font-weight: 600;
-      color: var(--accent-deep);
-      white-space: nowrap;
-    }
-
-    .todo-priority {
-      display: inline-block;
-      padding: 2px 8px;
-      font-size: 12px;
-      font-weight: 600;
-      border-radius: 4px;
-    }
-
-    .todo-priority--p0 {
-      color: #b91c1c;
-      background: #fee2e2;
-    }
-
-    .todo-priority--p1 {
-      color: #b45309;
-      background: #fef3c7;
     }
 
     footer {
@@ -2955,6 +2819,10 @@
       color: var(--ink);
     }
 
+    .comp-vote__sync--online { color: #047857; }
+    .comp-vote__sync--offline { color: #b45309; }
+    .comp-vote__sync--connecting { color: #64748b; }
+
     @media (max-width: 900px) {
       .comp-vote__products { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .comp-vote__stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -2986,6 +2854,7 @@
       .cap-matrix thead th { position: static; }
     }
   </style>
+  <script src="comp-vote-config.js"></script>
 </head>
 <body data-active-view="proposal">
   <header class="site-header" role="banner">
@@ -2993,7 +2862,7 @@
       <div class="site-header__aside">
         <a href="#top" class="site-header__brand">
           <div class="site-header__emblem" aria-hidden="true">黄</div>
-          <span class="site-header__title">黄小西文旅智能陪伴玩偶</span>
+          <span class="site-header__title">黄小西家族文旅智能体陪伴玩偶</span>
         </a>
       </div>
       <div class="site-header__main">
@@ -3033,7 +2902,6 @@
         <a href="#admin" class="nav-sub" data-target="admin"><span class="nav-index">3.4</span><span class="nav-label">运营后台</span></a>
         <a href="#marketing" data-target="marketing"><span class="nav-index">四</span><span class="nav-label">营销推广</span></a>
         <a href="#profit" data-target="profit"><span class="nav-index">五</span><span class="nav-label">盈利模式</span></a>
-        <a href="#blockers" data-target="blockers"><span class="nav-index">六</span><span class="nav-label">困难与待办</span></a>
     </div>
   </nav>
 
@@ -3042,8 +2910,8 @@
       <!-- 封面 -->
       <section class="hero reveal" id="top">
         <div class="hero__inner">
-          <p class="hero__kicker">贵州文旅官方专属 IP</p>
-          <h1 class="hero__title">黄小西文旅智能陪伴玩偶</h1>
+          <p class="hero__kicker">贵州官方专属 AI 智能陪伴 IP 家族</p>
+          <h1 class="hero__title">黄小西家族文旅智能体陪伴玩偶</h1>
           <p class="hero__lead">
             依托 <strong>4G LBS + 景区蓝牙信标</strong>融合定位、<strong>Wi-Fi / 4G 双联网</strong>与离线 AI 语音交互、情感化震动灯光反馈，打造「<strong>景区智能导览 + 民族文化沉浸 + 情感陪伴</strong>」三位一体文旅消费产品。
           </p>
@@ -3056,72 +2924,100 @@
           <span class="section__num" aria-hidden="true">一</span>
           <div>
             <h2 class="section__title">项目核心产品定位</h2>
-            <p class="section__lead">贵州文旅官方专属 AI 智能陪伴 IP · 苗族少女潮玩形象，实现旅游消费向长期品牌曝光转化</p>
+            <p class="section__lead">贵州官方专属 AI 智能陪伴 IP 家族 · 黄小西、小晚、小饭、黔多多四位一体，将旅游消费转化为长期品牌曝光</p>
           </div>
         </header>
 
         <div class="product-identity reveal">
           <p class="product-identity__lead">
-            <strong>黄小西是什么？</strong>贵州文旅官方专属 AI 智能陪伴 IP 玩偶，形态为「<strong>潮玩外壳 + 苗族服饰外观 + 内置 AI 机芯</strong>」，既可<strong>吊挂随身</strong>，也可<strong>桌面摆放</strong>——能听、能说、有灯光与震动反馈，不是静态文创摆件。区别于普通文创与普通智能玩具，<strong>景区内是实用导游，旅行后是情感纪念品与居家陪伴好物</strong>，将一次性旅游消费转化为长期文旅品牌曝光，构建可商业化、可复制、可持续运营的贵州文旅 IP 落地载体。
+            <strong>黄小西家族是什么？</strong>由<strong>黄小西、小晚、小饭和黔多多</strong>组成的贵州官方专属 AI 智能陪伴 IP 家族，形态为「<strong>潮玩外壳 + 贵州特色外形和服饰 + 内置 AI 机芯</strong>」，既可<strong>吊挂随身</strong>，也可<strong>桌面摆放</strong>——能听、能说、有灯光与震动反馈，不是静态文创摆件。区别于普通文创与普通智能玩具，<strong>景区内是实用导游，旅行后是情感纪念品与居家陪伴好物</strong>，将一次性旅游消费转化为长期文旅品牌曝光，构建可商业化、可复制、可持续运营的贵州文旅 IP 落地载体。
           </p>
 
-          <h3 class="product-identity__sub">长什么样 · 脸版形象（三选一方向）</h3>
-          <p style="margin:0 0 12px; font-size:13px; color:var(--ink-muted);">脸版设计共三个候选方向，均围绕苗族少女潮玩气质，情绪反馈各有侧重（<strong style="color:var(--accent-deep);font-weight:600;">点击图片可放大查看</strong>）：</p>
+          <header class="section__head section__head--minor">
+            <span class="section__num section__num--sub">1.1</span>
+            <div>
+              <h3 class="section__title">长什么样 玩偶形象</h3>
+            </div>
+          </header>
+          <p style="margin:0 0 12px; font-size:13px; color:var(--ink-muted);">围绕黄小西家族，有大头吊卡、玩偶等形态（<strong style="color:var(--accent-deep);font-weight:600;">点击图片可放大查看</strong>）；</p>
           <div class="product-face-grid">
             <div class="product-face-card">
               <div class="product-face-card__inner">
-                <img class="product-face-card__img" src="assets/face-warm.png" alt="温暖少女脸版形象" width="136" height="176" loading="lazy" />
+                <img class="product-face-card__img" src="assets/face-huangxiaoxi.png" alt="黄小西毛绒头套形象" width="136" height="176" loading="lazy" />
                 <div class="product-face-card__text">
-                  <h4>温暖少女</h4>
-                  <p>安静注视、轻轻回应，让人觉得舒服；情绪是<strong>轻轻的善意</strong>，主打安全亲和。</p>
+                  <h4>黄小西</h4>
+                  <p><strong>外型</strong>：黄小西脸 + 毛绒头套。<strong>元素</strong>：苗绣挂带、额头小银扣、短款银铃耳饰、耳朵内侧少量绣纹。<strong>气质</strong>：可爱、软萌、好卖，适合车挂。</p>
                 </div>
               </div>
             </div>
             <div class="product-face-card">
               <div class="product-face-card__inner">
-                <img class="product-face-card__img" src="assets/face-lively.png" alt="灵动少女脸版形象" width="136" height="176" loading="lazy" />
+                <img class="product-face-card__img" src="assets/face-qianduoduo.png" alt="黔多多毛绒小猴形象" width="136" height="176" loading="lazy" />
                 <div class="product-face-card__text">
-                  <h4>灵动少女</h4>
-                  <p>好奇机灵、有反应感；情绪是<strong>接住用户的话、有回应</strong>，适合导览互动。</p>
+                  <h4>黔多多</h4>
+                  <p><strong>外形</strong>：小猴子黔多多 + 毛绒外壳。<strong>元素</strong>：彩色动物毛、贵州山水元素挂饰。<strong>气质</strong>：可爱、活泼、机灵，适合包挂和手持。</p>
                 </div>
               </div>
             </div>
             <div class="product-face-card">
               <div class="product-face-card__inner">
-                <img class="product-face-card__img" src="assets/face-tsundere.png" alt="元气傲娇少女脸版形象" width="136" height="176" loading="lazy" />
+                <img class="product-face-card__img" src="assets/face-xiaowan.png" alt="小晚苗族小姑娘形象" width="136" height="176" loading="lazy" />
                 <div class="product-face-card__text">
-                  <h4>元气傲娇少女</h4>
-                  <p>带苗族生命力的古怪灵动；傲娇是<strong>可爱地不服气</strong>，不是冷淡或生气。</p>
+                  <h4>小晚</h4>
+                  <p><strong>外形</strong>：苗族小姑娘 + 毛绒苗族服饰。<strong>元素</strong>：长头发苗族小姑娘，扎双马尾辫，身穿苗族服饰。<strong>气质</strong>：活泼、可爱，适合手持、作为摆件。</p>
+                </div>
+              </div>
+            </div>
+            <div class="product-face-card">
+              <div class="product-face-card__inner">
+                <img class="product-face-card__img" src="assets/face-xiaofan.png" alt="小饭手捧肠旺面形象" width="136" height="176" loading="lazy" />
+                <div class="product-face-card__text">
+                  <h4>小饭</h4>
+                  <p><strong>外形</strong>：苗族小男孩 + 毛绒外壳。<strong>元素</strong>：坐着手捧肠旺面。<strong>气质</strong>：乖巧可爱，是小晚的弟弟。</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <h3 class="product-identity__sub">长什么样 · 外观与结构要点</h3>
+          <header class="section__head section__head--minor">
+            <span class="section__num section__num--sub">1.2</span>
+            <div>
+              <h3 class="section__title">外观与结构要点</h3>
+            </div>
+          </header>
           <ul class="product-spec-grid">
-            <li><strong>整体造型</strong>：苗族少女潮玩风，头脸搪胶 + 刺绣服装 + 银饰头饰</li>
-            <li><strong>头脸材质</strong>：搪胶 PVC / 软质 PVC，五官立体、适合潮玩陈列</li>
-            <li><strong>身体结构</strong>：ABS/PC 硬壳躯干，内置 AI 机芯空腔（主板、电池、喇叭、麦克风等）</li>
-            <li><strong>民族服饰</strong>：布料刺绣或印花，银饰头饰为电镀 ABS 轻量化</li>
-            <li><strong>交互隐藏</strong>：麦克风可藏于头饰/耳饰/胸前银饰纹理；出声孔可于胸前或背部</li>
-            <li><strong>使用形态</strong>：顶部隐藏承重吊环（骨架承重）；背部检修盖与 Type-C 充电口</li>
+            <li><strong>IP 家族</strong>：黄小西、小晚、小饭、黔多多四位，贵州官方专属 AI 智能陪伴 IP</li>
+            <li><strong>整体造型</strong>：潮玩外壳 + 贵州特色外形和服饰，含大头吊卡、玩偶等多种形态</li>
+            <li><strong>内置机芯</strong>：内置 AI 机芯（主板、电池、喇叭、麦克风等），能听、能说</li>
+            <li><strong>交互反馈</strong>：灯光与震动等多模态反馈，非静态文创摆件</li>
+            <li><strong>使用形态</strong>：可吊挂随身，也可桌面摆放；背部检修盖与 Type-C 充电口</li>
+            <li><strong>产品价值</strong>：景区内实用导游，旅行后情感纪念品与居家陪伴好物</li>
           </ul>
         </div>
 
+        <header class="section__head section__head--minor reveal" id="positioning-capabilities">
+          <span class="section__num section__num--sub">1.3</span>
+          <div>
+            <h3 class="section__title">核心能力及设计要点</h3>
+          </div>
+        </header>
         <div class="value-trio reveal">
           <div class="value-trio__item">
-            <h4>景区智能导览</h4>
-            <p>实用导游，解决找路难、踩坑多、游玩低效</p>
+            <h4>开机即用，不依赖手机</h4>
+            <p>自带 4G，开机即用；支持多语言，境外游客也可简单使用</p>
           </div>
           <div class="value-trio__item">
-            <h4>民族文化沉浸</h4>
-            <p>非遗民俗深度体验，从观光打卡升级文化记忆</p>
+            <h4>自带定位，沉浸式体验</h4>
+            <p>根据用户位置给出伴游提醒，应对导览及安全定位等场景</p>
           </div>
           <div class="value-trio__item">
-            <h4>居家长效陪伴</h4>
-            <p>离园后旅行记忆复盘，情感纪念品持续传播</p>
+            <h4>长效陪伴，形成长期收益</h4>
+            <p>离开贵州后依然可以使用，充分发挥价值，提升体验并增加收益</p>
           </div>
         </div>
+        <p class="positioning-family-note reveal">
+          <strong>家族模式 · 销售设计：</strong>以黄小西、小晚、小饭、黔多多四位角色构成 IP 家族矩阵，既可单款选购，也可盲盒组合售卖；契合潮玩盲盒消费趋势，便于景区与渠道铺货，增强动销能力与用户复购空间。
+        </p>
       </section>
 
       <!-- 二、用户故事 -->
@@ -3638,73 +3534,8 @@
         </p>
       </section>
 
-      <!-- 六、困难与待办 -->
-      <section class="section reveal" id="blockers">
-        <header class="section__head">
-          <span class="section__num">六</span>
-          <div>
-            <h2 class="section__title">目前遇到的困难和待办项</h2>
-            <p class="section__lead">推进黄小西玩偶落地前的关键阻塞项与近期需闭环事项，供汇报决策与资源协调</p>
-          </div>
-        </header>
-
-        <div class="difficulty-grid">
-          <article class="difficulty-card difficulty-card--critical reveal">
-            <div class="difficulty-card__head">
-              <h3 class="difficulty-card__title">1. 外观设计与供应商未确定</h3>
-              <span class="difficulty-card__tag difficulty-card__tag--risk">阻塞项 · 高优先级</span>
-            </div>
-            <p class="difficulty-card__lead">
-              <strong>外观是吸引用户的「敲门砖」</strong>：在情感陪伴类 AI 玩偶赛道，用户往往先为「可爱、好看、可挂、可送礼」买单，再因 AI 能力形成复用。黄小西需在苗族少女 IP 与潮玩审美之间找到市场可接受的平衡点，否则后续硬件与 AI 投入难以转化为购买转化。
-            </p>
-            <ul>
-              <li><strong>现状：</strong>已调研的多款<strong>人形玩偶方案外观反馈较差</strong>（与芙崽、萌 UU、雷鸟 Uni 等成熟竞品相比缺乏「第一眼吸引力」），尚未锁定可量产、可承载 AI 机芯且 IP 表达到位的工业设计与毛绒/搪胶供应链。</li>
-              <li><strong>方案文档内脸版方向</strong>（温暖少女 / 灵动少女 / 元气傲娇）仍处概念阶段，<strong>未进入打样与成本测算</strong>。</li>
-              <li><strong>关联厂商：</strong>其其格等 IP 毛绒厂可做工偶本体，但<strong>不含硬件固件能力</strong>，需另寻机芯与结构方案；定制 IP 设计费、打样周期（约 2–3 个月）与起订量需在商务侧一并确认。</li>
-            </ul>
-          </article>
-
-          <article class="difficulty-card difficulty-card--critical reveal">
-            <div class="difficulty-card__head">
-              <h3 class="difficulty-card__title">2. 硬件厂商未确定</h3>
-              <span class="difficulty-card__tag difficulty-card__tag--risk">阻塞项 · 影响交期与 BOM</span>
-            </div>
-            <p class="difficulty-card__lead">
-              产品方案已明确 <strong>4G + Wi-Fi 双联网、GPS/北斗 定位、设备端独立使用</strong> 等能力边界，但<strong>尚无一家厂商同时满足外观载体、音频体验、联网定位与可对接我方 AI 云端</strong>的完整交付路径。各候选方差异大，需尽快收敛选型或明确「降配验证版」与「目标量产版」两条路线。
-            </p>
-
-            <div class="vendor-compare">
-              <div class="vendor-compare__item">
-                <h5>复数时空</h5>
-                <p><strong>合作意向大</strong>，愿意配合景区伴游/玩偶方向推进。若按当前需求<strong>不削减 4G 与定位能力</strong>，对方反馈需约 <strong>3 个月开模</strong>，且<strong>单机成本预计增加 100 元以上</strong>（具体 BOM 与模具费待书面报价）。</p>
-                <span class="vendor-compare__status">待办：索要正式方案书、阶梯报价、样机演示时间</span>
-              </div>
-              <div class="vendor-compare__item">
-                <h5>道格拉斯（熊猫方案）</h5>
-                <p>由道格拉斯推荐的硬件方案（内部称「熊猫」），<strong>实机体验与音频/交互效果一般</strong>，尚不足以支撑「景区噪声下稳定对话 + 陪伴感」的验收标准；毛绒载体与语音硬件是否一体交付仍待确认。</p>
-                <span class="vendor-compare__status">待办：是否继续深度评估或仅作结构/渠道参考</span>
-              </div>
-              <div class="vendor-compare__item">
-                <h5>球宠（硅基生命）</h5>
-                <p>曾沟通 NFC+硬件 / 软件 / AI 能力分包报价（合计约 40 万量级），<strong>NFC 方案出景区不可用</strong>，与「离园后持续陪伴」故事冲突；Wi-Fi/4G 内嵌方案需小程序或 App 配合，与当前「P0 硬件独立使用」方向需再对齐。ASR/TTS 可对接阿里，<strong>接口与量产周期、是否支持我方 AI 直连</strong>仍待书面确认。</p>
-                <span class="vendor-compare__status">待决策：是否继续跟进 · 建议 1 周内拍板</span>
-              </div>
-            </div>
-
-            <ul style="margin-top:16px;">
-              <li><strong>核心矛盾：</strong>保留 4G + GPS → 成本与开模周期上升；砍配置 → 与已确认产品决策及竞品对标能力不一致。</li>
-              <li><strong>建议决策点：</strong>是否接受「3 个月开模 + 单机 +100」换完整能力；或是否先做<strong>无 4G/无 GPS 的验证样机</strong>验证外观与对话闭环，再迭代量产版。</li>
-            </ul>
-          </article>
-        </div>
-
-        <p class="placeholder-note" style="margin-top:20px;">
-          本节内容随厂商沟通与打样进展动态更新；决策结果（外观定稿、厂商选定、是否降配）确定后，建议回写至 PRD 与硬件厂商选型跟进总表。
-        </p>
-      </section>
-
       <footer>
-        <p>黄小西文旅智能陪伴玩偶 · 完整商业落地方案（终版）</p>
+        <p>黄小西家族文旅智能体陪伴玩偶 · 完整商业落地方案（终版）</p>
         <p style="margin-top:8px; opacity:0.7;">本页面依据方案终版文档生成，仅供内部汇报使用</p>
       </footer>
     </main>
@@ -4183,7 +4014,7 @@
       <section class="comp-block reveal" id="comp-vote">
         <h2 class="comp-block__title">5. 竞品偏好投票</h2>
         <div class="comp-vote" id="compVoteRoot">
-          <p class="comp-vote__intro">请从用户视角选出最倾向的 AI 玩偶，并勾选投票原因（选项来自上方基础能力、对话能力与亮点功能调研）。提交后立即显示汇总结果；同一浏览器可修改自己的投票，多标签页会自动同步刷新。</p>
+          <p class="comp-vote__intro">请从用户视角选出最倾向的 AI 玩偶，并勾选投票原因。主持人先在电脑上运行投票服务（<code>npm run vote-server</code>），其他同事通过局域网地址（如 <code>http://192.168.x.x:3456</code>）访问同一页面即可投票；服务端会自动记录每台电脑的 IP，所有人可实时查看汇总结果。</p>
 
           <div class="comp-vote__grid">
             <div class="comp-vote__panel" id="compVoteFormPanel">
@@ -4247,6 +4078,7 @@
                   <span class="comp-vote__hint">至少选择 1 项原因；提交后可再次修改</span>
                 </div>
                 <div class="comp-vote__status" id="compVoteStatus" role="status" aria-live="polite"></div>
+                <p class="comp-vote__hint" style="margin-top:10px">本机 IP：<strong id="compVoteClientIp">检测中…</strong> · 同一 IP / 同一浏览器重复提交会更新原投票</p>
               </form>
             </div>
 
@@ -4254,7 +4086,9 @@
               <h3 class="comp-vote__panel-title">实时投票结果</h3>
               <div class="comp-vote__meta" id="compVoteMeta">
                 <span>总票数：<strong id="compVoteTotal">0</strong></span>
+                <span>参与 IP 数：<strong id="compVoteUniqueIp">0</strong></span>
                 <span>最近更新：<strong id="compVoteUpdated">—</strong></span>
+                <span>同步状态：<strong id="compVoteSync" class="comp-vote__sync comp-vote__sync--connecting">连接中…</strong></span>
               </div>
               <div class="comp-vote__stats" id="compVoteStats" aria-live="polite"></div>
 
@@ -4272,6 +4106,7 @@
                     <tr>
                       <th scope="col">#</th>
                       <th scope="col">昵称</th>
+                      <th scope="col">IP 地址</th>
                       <th scope="col">选择产品</th>
                       <th scope="col">选择原因</th>
                       <th scope="col">备注</th>
@@ -4279,7 +4114,7 @@
                     </tr>
                   </thead>
                   <tbody id="compVoteTableBody">
-                    <tr><td colspan="6" class="comp-vote__empty">暂无投票，成为第一个投票的人吧</td></tr>
+                    <tr><td colspan="7" class="comp-vote__empty">暂无投票，成为第一个投票的人吧</td></tr>
                   </tbody>
                 </table>
               </div>
@@ -4597,10 +4432,16 @@
         }
       });
 
-      /* 竞品投票工具 */
+      /* 竞品投票工具（云端同步） */
       (function initCompVote() {
         var STORAGE_KEY = "hx-comp-vote-v1";
         var VOTER_KEY = "hx-comp-voter-id-v1";
+        var MIGRATE_KEY = "hx-comp-vote-migrated-v1";
+        var cfg = window.HX_VOTE_CONFIG || {};
+        var apiBase = cfg.apiBase || "";
+        var pollMs = cfg.pollIntervalMs || 2000;
+        var adminToken = cfg.adminToken || "hx-vote-admin";
+
         var PRODUCTS = {
           fuzai: { name: "芙崽", color: "#0ea5e9", price: "399–499 元" },
           uu: { name: "萌 UU", color: "#8b5cf6", price: "399 元" },
@@ -4642,15 +4483,26 @@
         var statsEl = document.getElementById("compVoteStats");
         var tableBody = document.getElementById("compVoteTableBody");
         var totalEl = document.getElementById("compVoteTotal");
+        var uniqueIpEl = document.getElementById("compVoteUniqueIp");
         var updatedEl = document.getElementById("compVoteUpdated");
+        var syncEl = document.getElementById("compVoteSync");
+        var clientIpEl = document.getElementById("compVoteClientIp");
         var filtersEl = document.getElementById("compVoteFilters");
         var nameInput = document.getElementById("compVoteName");
         var remarkInput = document.getElementById("compVoteRemark");
+        var submitBtn = document.getElementById("compVoteSubmit");
 
         if (!form || !reasonGroups) return;
 
         var activeFilter = "all";
         var reasonMap = {};
+        var votesCache = [];
+        var serverUpdatedAt = 0;
+        var syncState = "connecting";
+        var pollTimer = null;
+        var refreshInFlight = false;
+        var myClientIp = "";
+
         REASONS.forEach(function (r) { reasonMap[r.id] = r; });
 
         function uid() {
@@ -4670,7 +4522,7 @@
           }
         }
 
-        function loadVotes() {
+        function loadLocalVotes() {
           try {
             var raw = localStorage.getItem(STORAGE_KEY);
             if (!raw) return [];
@@ -4681,10 +4533,33 @@
           }
         }
 
-        function saveVotes(votes) {
+        function saveLocalVotes(votes) {
           try {
             localStorage.setItem(STORAGE_KEY, JSON.stringify({ votes: votes, updatedAt: Date.now() }));
           } catch (err) {}
+        }
+
+        function resolveApiBase() {
+          var configured = (apiBase || "").replace(/\/$/, "");
+          if (location.protocol === "http:" || location.protocol === "https:") {
+            if (configured && configured.indexOf(location.origin) !== 0) {
+              return configured;
+            }
+            return location.origin + "/api";
+          }
+          return configured || "http://localhost:3456/api";
+        }
+
+        function apiUrl(path) {
+          var base = resolveApiBase();
+          return base ? base + path : "";
+        }
+
+        function setSyncState(state, label) {
+          syncState = state;
+          if (!syncEl) return;
+          syncEl.textContent = label;
+          syncEl.className = "comp-vote__sync comp-vote__sync--" + state;
         }
 
         function formatTime(ts) {
@@ -4698,6 +4573,121 @@
           if (!statusEl) return;
           statusEl.textContent = msg;
           statusEl.className = "comp-vote__status is-visible comp-vote__status--" + (type || "success");
+        }
+
+        function applyVotes(data) {
+          votesCache = Array.isArray(data.votes) ? data.votes : [];
+          serverUpdatedAt = data.updatedAt || 0;
+          saveLocalVotes(votesCache);
+          renderResults();
+          restoreMyVote();
+        }
+
+        function fetchJson(url, options) {
+          return fetch(url, Object.assign({ cache: "no-store" }, options || {})).then(function (res) {
+            if (!res.ok) throw new Error("http_" + res.status);
+            return res.json();
+          });
+        }
+
+        function migrateLocalVotesOnce() {
+          var url = apiUrl("/votes/merge");
+          if (!url) return Promise.resolve();
+          try {
+            if (sessionStorage.getItem(MIGRATE_KEY) === "1") return Promise.resolve();
+          } catch (err) {}
+          var local = loadLocalVotes();
+          if (!local.length) {
+            try { sessionStorage.setItem(MIGRATE_KEY, "1"); } catch (e) {}
+            return Promise.resolve();
+          }
+          return fetchJson(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ votes: local })
+          }).then(function (data) {
+            try { sessionStorage.setItem(MIGRATE_KEY, "1"); } catch (e) {}
+            applyVotes(data);
+          }).catch(function () {});
+        }
+
+        function fetchClientIp() {
+          var url = apiUrl("/client-info");
+          if (!url) {
+            if (clientIpEl) clientIpEl.textContent = "未连接服务";
+            return Promise.resolve();
+          }
+          return fetchJson(url).then(function (data) {
+            myClientIp = data.clientIp || "";
+            if (clientIpEl) clientIpEl.textContent = myClientIp || "—";
+          }).catch(function () {
+            if (clientIpEl) clientIpEl.textContent = "—";
+          });
+        }
+
+        function countUniqueIps(votes) {
+          var set = {};
+          votes.forEach(function (v) {
+            if (v.clientIp) set[v.clientIp] = true;
+          });
+          return Object.keys(set).length;
+        }
+
+        function refreshVotes() {
+          var url = apiUrl("/votes");
+          if (!url) {
+            votesCache = loadLocalVotes();
+            setSyncState("offline", "未配置服务（本地缓存）");
+            renderResults();
+            restoreMyVote();
+            return Promise.resolve(false);
+          }
+          if (refreshInFlight) return Promise.resolve(false);
+          refreshInFlight = true;
+          return fetchJson(url)
+            .then(function (data) {
+              applyVotes(data);
+              setSyncState("online", "已连接 · 实时同步");
+              return fetchClientIp().then(function () { return true; });
+            })
+            .catch(function () {
+              votesCache = loadLocalVotes();
+              setSyncState("offline", "连接失败（显示本地缓存）");
+              renderResults();
+              restoreMyVote();
+              return false;
+            })
+            .finally(function () {
+              refreshInFlight = false;
+            });
+        }
+
+        function postVote(vote) {
+          var url = apiUrl("/votes");
+          if (!url) {
+            var votes = votesCache.slice();
+            var replaced = false;
+            for (var i = 0; i < votes.length; i++) {
+              if (votes[i].voterId === vote.voterId || (myClientIp && votes[i].clientIp === myClientIp)) {
+                vote.id = votes[i].id;
+                vote.clientIp = myClientIp || votes[i].clientIp || "";
+                votes[i] = vote;
+                replaced = true;
+                break;
+              }
+            }
+            if (!replaced) votes.push(vote);
+            applyVotes({ votes: votes, updatedAt: Date.now() });
+            return Promise.resolve({ replaced: replaced, offline: true });
+          }
+          return fetchJson(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(vote)
+          }).then(function (data) {
+            applyVotes(data);
+            return { replaced: true, offline: false };
+          });
         }
 
         function buildReasonGroups() {
@@ -4723,8 +4713,7 @@
 
         function buildFilterButtons() {
           if (!filtersEl) return;
-          var existing = filtersEl.querySelectorAll("[data-filter^='reason:']");
-          existing.forEach(function (el) { el.remove(); });
+          filtersEl.querySelectorAll("[data-filter^='reason:']").forEach(function (el) { el.remove(); });
           REASONS.forEach(function (r) {
             var btn = document.createElement("button");
             btn.type = "button";
@@ -4745,14 +4734,13 @@
             });
           }
           if (activeFilter.indexOf("reason:") === 0) {
-            var rid = activeFilter.slice(7);
-            return vote.reasons.indexOf(rid) >= 0;
+            return vote.reasons.indexOf(activeFilter.slice(7)) >= 0;
           }
           return true;
         }
 
         function renderResults() {
-          var allVotes = loadVotes();
+          var allVotes = votesCache;
           var votes = allVotes.filter(matchFilter);
           var statSource = activeFilter === "all" ? allVotes : votes;
           var counts = { fuzai: 0, uu: 0, uni: 0, miaoda: 0 };
@@ -4782,8 +4770,9 @@
           }
 
           if (totalEl) totalEl.textContent = String(allVotes.length);
+          if (uniqueIpEl) uniqueIpEl.textContent = String(countUniqueIps(allVotes));
           if (updatedEl) {
-            var latest = 0;
+            var latest = serverUpdatedAt;
             allVotes.forEach(function (v) { if (v.timestamp > latest) latest = v.timestamp; });
             updatedEl.textContent = latest ? formatTime(latest) : "—";
           }
@@ -4792,7 +4781,7 @@
           tableBody.innerHTML = "";
           if (!votes.length) {
             var emptyRow = document.createElement("tr");
-            emptyRow.innerHTML = '<td colspan="6" class="comp-vote__empty">' +
+            emptyRow.innerHTML = '<td colspan="7" class="comp-vote__empty">' +
               (allVotes.length ? "当前筛选条件下暂无匹配投票" : "暂无投票，成为第一个投票的人吧") +
               "</td>";
             tableBody.appendChild(emptyRow);
@@ -4809,6 +4798,7 @@
             tr.innerHTML =
               "<td>" + (i + 1) + "</td>" +
               "<td>" + escapeHtml(v.voterName) + "</td>" +
+              "<td><code style=\"font-size:12px\">" + escapeHtml(v.clientIp || "—") + "</code></td>" +
               '<td><span class="comp-vote__tag comp-vote__tag--' + v.product + '">' + p.name + "</span></td>" +
               "<td>" + (reasonTags || "—") + "</td>" +
               "<td>" + (v.remark ? escapeHtml(v.remark) : '<span style="color:var(--ink-soft)">—</span>') + "</td>" +
@@ -4836,18 +4826,17 @@
           });
         }
 
-        function getMyVote(votes) {
+        function getMyVote() {
           var voterId = getVoterId();
-          var name = nameInput ? nameInput.value.trim() : "";
-          for (var i = votes.length - 1; i >= 0; i--) {
-            if (votes[i].voterId === voterId) return votes[i];
-            if (name && votes[i].voterName === name) return votes[i];
+          for (var i = votesCache.length - 1; i >= 0; i--) {
+            if (votesCache[i].voterId === voterId) return votesCache[i];
+            if (myClientIp && votesCache[i].clientIp === myClientIp) return votesCache[i];
           }
           return null;
         }
 
         function restoreMyVote() {
-          var mine = getMyVote(loadVotes());
+          var mine = getMyVote();
           if (mine) fillFormFromVote(mine);
         }
 
@@ -4873,10 +4862,10 @@
           }
 
           var reasons = Array.prototype.map.call(reasonEls, function (el) { return el.value; });
-          var votes = loadVotes();
           var voterId = getVoterId();
+          var existing = getMyVote();
           var vote = {
-            id: uid(),
+            id: existing ? existing.id : uid(),
             voterId: voterId,
             voterName: voterName,
             product: productEl.value,
@@ -4885,30 +4874,27 @@
             timestamp: Date.now()
           };
 
-          var replaced = false;
-          for (var i = 0; i < votes.length; i++) {
-            if (votes[i].voterId === voterId || votes[i].voterName === voterName) {
-              vote.id = votes[i].id;
-              votes[i] = vote;
-              replaced = true;
-              break;
-            }
-          }
-          if (!replaced) votes.push(vote);
-
-          saveVotes(votes);
-          renderResults();
-          showStatus(
-            (replaced ? "投票已更新！" : "投票成功！") +
-            " 您选择了「" + PRODUCTS[vote.product].name + "」，共 " + reasons.length + " 项原因。",
-            "success"
-          );
-
-          var resultsPanel = document.getElementById("compVoteResultsPanel");
-          if (resultsPanel) {
-            var top = resultsPanel.getBoundingClientRect().top + window.scrollY - chromeOffset() - 16;
-            window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
-          }
+          if (submitBtn) submitBtn.disabled = true;
+          postVote(vote)
+            .then(function (result) {
+              showStatus(
+                (existing ? "投票已更新！" : "投票成功！") +
+                " 您选择了「" + PRODUCTS[vote.product].name + "」，共 " + reasons.length + " 项原因。" +
+                (result.offline ? "（当前为离线缓存，请检查投票服务连接）" : ""),
+                result.offline ? "error" : "success"
+              );
+              var resultsPanel = document.getElementById("compVoteResultsPanel");
+              if (resultsPanel) {
+                var top = resultsPanel.getBoundingClientRect().top + window.scrollY - chromeOffset() - 16;
+                window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+              }
+            })
+            .catch(function () {
+              showStatus("提交失败，请确认投票服务已启动且网络可达", "error");
+            })
+            .finally(function () {
+              if (submitBtn) submitBtn.disabled = false;
+            });
         });
 
         if (filtersEl) {
@@ -4926,7 +4912,7 @@
         var exportBtn = document.getElementById("compVoteExport");
         if (exportBtn) {
           exportBtn.addEventListener("click", function () {
-            var data = JSON.stringify({ votes: loadVotes() }, null, 2);
+            var data = JSON.stringify({ votes: votesCache, updatedAt: serverUpdatedAt || Date.now() }, null, 2);
             var blob = new Blob([data], { type: "application/json" });
             var a = document.createElement("a");
             a.href = URL.createObjectURL(blob);
@@ -4950,23 +4936,32 @@
                 try {
                   var parsed = JSON.parse(reader.result);
                   var incoming = Array.isArray(parsed) ? parsed : (parsed.votes || []);
-                  var current = loadVotes();
-                  var merged = current.slice();
-                  incoming.forEach(function (v) {
-                    if (!v || !v.voterName || !v.product) return;
-                    var idx = -1;
-                    for (var i = 0; i < merged.length; i++) {
-                      if (merged[i].voterId === v.voterId || merged[i].voterName === v.voterName) {
-                        idx = i;
-                        break;
-                      }
-                    }
-                    if (idx >= 0) merged[idx] = v;
-                    else merged.push(v);
-                  });
-                  saveVotes(merged);
-                  renderResults();
-                  showStatus("已合并 " + incoming.length + " 条投票记录", "success");
+                  var url = apiUrl("/votes/merge");
+                  if (url) {
+                    fetchJson(url, {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ votes: incoming })
+                    }).then(function (data) {
+                      applyVotes(data);
+                      showStatus("已合并 " + incoming.length + " 条投票到云端", "success");
+                    }).catch(function () {
+                      showStatus("导入失败，请检查投票服务连接", "error");
+                    });
+                  } else {
+                    var merged = votesCache.slice();
+                    incoming.forEach(function (v) {
+                      if (!v || !v.voterName || !v.product) return;
+                      var idx = merged.findIndex(function (m) {
+                        return (v.voterId && m.voterId === v.voterId) ||
+                          (v.clientIp && m.clientIp === v.clientIp);
+                      });
+                      if (idx >= 0) merged[idx] = v;
+                      else merged.push(v);
+                    });
+                    applyVotes({ votes: merged, updatedAt: Date.now() });
+                    showStatus("已合并 " + incoming.length + " 条投票（本地）", "success");
+                  }
                 } catch (err) {
                   showStatus("导入失败：文件格式不正确", "error");
                 }
@@ -4981,28 +4976,47 @@
         if (resetBtn) {
           resetBtn.addEventListener("click", function () {
             if (!confirm("确定清空全部投票记录？此操作不可恢复。")) return;
-            saveVotes([]);
-            renderResults();
-            form.reset();
-            showStatus("全部投票已清空", "success");
+            var url = apiUrl("/votes");
+            if (url) {
+              var token = prompt("请输入管理员口令以清空云端投票：", adminToken);
+              if (token === null) return;
+              fetch(url, {
+                method: "DELETE",
+                headers: { Authorization: "Bearer " + token },
+                cache: "no-store"
+              }).then(function (res) {
+                if (!res.ok) throw new Error("forbidden");
+                return res.json();
+              }).then(function (data) {
+                applyVotes(data);
+                form.reset();
+                showStatus("云端投票已全部清空", "success");
+              }).catch(function () {
+                showStatus("清空失败：口令错误或无法连接服务", "error");
+              });
+            } else {
+              applyVotes({ votes: [], updatedAt: Date.now() });
+              form.reset();
+              showStatus("本地投票已清空", "success");
+            }
           });
         }
 
-        window.addEventListener("storage", function (e) {
-          if (e.key === STORAGE_KEY) {
-            renderResults();
-            restoreMyVote();
-          }
-        });
-
         buildReasonGroups();
         buildFilterButtons();
-        restoreMyVote();
-        renderResults();
+        setSyncState("connecting", "连接中…");
 
-        setInterval(function () {
-          renderResults();
-        }, 2000);
+        migrateLocalVotesOnce()
+          .then(function () { return refreshVotes(); })
+          .finally(function () {
+            pollTimer = setInterval(function () {
+              refreshVotes();
+            }, pollMs);
+          });
+
+        document.addEventListener("visibilitychange", function () {
+          if (!document.hidden) refreshVotes();
+        });
       })();
 
       (function initImageLightbox() {
