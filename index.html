@@ -4674,7 +4674,6 @@
       (function initCompVote() {
         var STORAGE_KEY = "hx-comp-vote-v1";
         var VOTER_KEY = "hx-comp-voter-id-v1";
-        var REVOTE_KEY = "hx-comp-vote-revote-v1";
         var MIGRATE_KEY = "hx-comp-vote-migrated-v1";
         var API_STORAGE_KEY = "hx-vote-api-base-v1";
         var cfg = window.HX_VOTE_CONFIG || {};
@@ -4752,15 +4751,26 @@
         var pollTimer = null;
         var refreshInFlight = false;
         var revoteFormPrefilled = false;
+        var revoteModeActive = false;
 
         REASONS.forEach(function (r) { reasonMap[r.id] = r; });
 
         function isRevoteMode() {
-          try { return sessionStorage.getItem(REVOTE_KEY) === "1"; } catch (err) { return false; }
+          return revoteModeActive;
+        }
+
+        function enterRevoteMode() {
+          revoteModeActive = true;
+          revoteFormPrefilled = false;
+          if (statusEl) {
+            statusEl.textContent = "";
+            statusEl.className = "comp-vote__status";
+          }
+          updateVoteFormUI();
         }
 
         function clearRevoteMode() {
-          try { sessionStorage.removeItem(REVOTE_KEY); } catch (err) {}
+          revoteModeActive = false;
         }
 
         function showVotedState() {
@@ -5415,8 +5425,7 @@
 
         if (revoteBtn) {
           revoteBtn.addEventListener("click", function () {
-            try { sessionStorage.setItem(REVOTE_KEY, "1"); } catch (err) {}
-            location.reload();
+            enterRevoteMode();
           });
         }
 
