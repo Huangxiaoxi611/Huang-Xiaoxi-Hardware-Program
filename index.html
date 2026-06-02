@@ -4751,6 +4751,7 @@
         var syncState = "connecting";
         var pollTimer = null;
         var refreshInFlight = false;
+        var revoteFormPrefilled = false;
 
         REASONS.forEach(function (r) { reasonMap[r.id] = r; });
 
@@ -4775,10 +4776,14 @@
         function updateVoteFormUI() {
           if (isRevoteMode()) {
             showVoteForm();
-            var mine = getMyVote();
-            if (mine) fillFormFromVote(mine);
+            if (!revoteFormPrefilled) {
+              var mine = getMyVote();
+              if (mine) fillFormFromVote(mine);
+              revoteFormPrefilled = true;
+            }
             return;
           }
+          revoteFormPrefilled = false;
           if (getMyVote()) {
             showVotedState();
           } else {
@@ -5392,6 +5397,7 @@
           if (submitBtn) submitBtn.disabled = true;
           postVote(vote)
             .then(function (result) {
+              revoteFormPrefilled = false;
               clearRevoteMode();
               showVotedState();
               if (statusEl) {
