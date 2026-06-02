@@ -17,14 +17,18 @@ app.use(cors());
 app.use(express.json({ limit: "256kb" }));
 
 function getLanAddresses() {
-  const addrs = [];
-  const nets = os.networkInterfaces();
-  for (const name of Object.keys(nets)) {
-    for (const net of nets[name] || []) {
-      if (net.family === "IPv4" && !net.internal) addrs.push(net.address);
+  try {
+    const addrs = [];
+    const nets = os.networkInterfaces();
+    for (const name of Object.keys(nets)) {
+      for (const net of nets[name] || []) {
+        if (net.family === "IPv4" && !net.internal) addrs.push(net.address);
+      }
     }
+    return addrs;
+  } catch {
+    return [];
   }
-  return addrs;
 }
 
 function getClientIp(req) {
@@ -87,6 +91,23 @@ function enrichVote(vote, req) {
 
 app.get("/api/health", (_req, res) => {
   res.json({ ok: true, service: "hx-comp-vote", time: Date.now() });
+});
+
+app.get("/api/info", (req, res) => {
+  const hostHeader = req.get("host") || `localhost:${PORT}`;
+  const proto = req.secure ? "https" : "http";
+  const pageOrigin = `${proto}://${hostHeader}`;
+  const localUrl = `http://localhost:${PORT}`;
+  const lanUrls = getLanAddresses().map((ip) => `http://${ip}:${PORT}`);
+  res.json({
+    ok: true,
+    port: PORT,
+    pageOrigin,
+    localUrl,
+    lanUrls,
+    shareUrls: [...new Set([localUrl, ...lanUrls])],
+    apiBase: `${pageOrigin}/api`,
+  });
 });
 
 app.get("/api/client-info", (req, res) => {

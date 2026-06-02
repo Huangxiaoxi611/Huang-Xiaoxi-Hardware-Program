@@ -1,0 +1,15 @@
+# Render 一键部署投票后端（可选）
+# https://dashboard.render.com → New → Blueprint → 连接本仓库
+services:
+  - type: web
+    name: hx-comp-vote
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node server/vote-server.mjs
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: VOTE_ADMIN_TOKEN
+        generateValue: true
+    healthCheckPath: /api/health

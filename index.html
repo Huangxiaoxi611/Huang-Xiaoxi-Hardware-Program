@@ -2855,6 +2855,132 @@
     .comp-vote__sync--offline { color: #b45309; }
     .comp-vote__sync--connecting { color: #64748b; }
 
+    .comp-vote__alert {
+      padding: 12px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      line-height: 1.55;
+      margin-bottom: 14px;
+      border: 1px solid #fcd34d;
+      background: #fffbeb;
+      color: #92400e;
+    }
+
+    .comp-vote__alert.is-error {
+      border-color: #fecaca;
+      background: #fef2f2;
+      color: #b91c1c;
+    }
+
+    .comp-vote__alert.is-success {
+      border-color: #a7f3d0;
+      background: #ecfdf5;
+      color: #047857;
+    }
+
+    .comp-vote__connect {
+      padding: 14px 16px;
+      border-radius: 10px;
+      border: 1px dashed #93c5fd;
+      background: #eff6ff;
+      margin-bottom: 16px;
+    }
+
+    .comp-vote__connect-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+      margin: 0 0 8px;
+    }
+
+    .comp-vote__connect-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .comp-vote__connect-row label {
+      font-size: 13px;
+      color: var(--ink-muted);
+      flex: 0 0 auto;
+    }
+
+    .comp-vote__connect-row input {
+      flex: 1 1 220px;
+      min-width: 0;
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      font-size: 13px;
+    }
+
+    .comp-vote__connect-save {
+      padding: 8px 14px;
+      border-radius: 6px;
+      border: none;
+      background: #2563eb;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .comp-vote__connect-save:hover { opacity: 0.92; }
+
+    .comp-vote__share-links {
+      margin: 10px 0 0;
+      padding: 0;
+      list-style: none;
+      font-size: 13px;
+    }
+
+    .comp-vote__share-links li { margin: 4px 0; }
+    .comp-vote__share-links a {
+      color: #1d4ed8;
+      word-break: break-all;
+    }
+
+    .comp-vote__summary {
+      margin-bottom: 18px;
+    }
+
+    .comp-vote__summary-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+      margin: 0 0 8px;
+    }
+
+    .comp-vote__summary-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin-bottom: 14px;
+    }
+
+    .comp-vote__summary-table th,
+    .comp-vote__summary-table td {
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      text-align: left;
+    }
+
+    .comp-vote__summary-table thead th {
+      background: #f1f5f9;
+      font-weight: 600;
+      color: var(--ink-muted);
+    }
+
+    .comp-vote__summary-table tbody tr:nth-child(even) { background: #fafcff; }
+
+    .comp-vote__results-full {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 2px solid var(--border);
+    }
+
     @media (max-width: 900px) {
       .comp-vote__products { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .comp-vote__stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -2887,6 +3013,7 @@
     }
   </style>
   <script src="comp-vote-config.js"></script>
+  <script src="comp-vote-store.js"></script>
 </head>
 <body data-active-view="proposal">
   <header class="site-header" role="banner">
@@ -4082,7 +4209,25 @@
       <section class="comp-block reveal" id="comp-vote">
         <h2 class="comp-block__title">5. 竞品偏好投票</h2>
         <div class="comp-vote" id="compVoteRoot">
-          <p class="comp-vote__intro">请从用户视角选出最倾向的 AI 玩偶，并勾选投票原因。主持人先在电脑上运行投票服务（<code>npm run vote-server</code>），其他同事通过局域网地址（如 <code>http://192.168.x.x:3456</code>）访问同一页面即可投票；服务端会自动记录每台电脑的 IP，所有人可实时查看汇总结果。</p>
+          <p class="comp-vote__intro">请从用户视角选出最倾向的 AI 玩偶，并勾选投票原因。<strong>所有人必须在各自电脑上打开同一个投票地址</strong>（见下方「共享地址」），数据才会汇总到一处；右侧统计表与明细表会每 2 秒自动刷新，全员可见。</p>
+
+          <div class="comp-vote__alert" id="compVoteAlert" role="alert" hidden></div>
+
+          <div class="comp-vote__connect" id="compVoteConnect" hidden>
+            <p class="comp-vote__connect-title">连接投票服务（多人同步必做）</p>
+            <p class="comp-vote__hint" style="margin:0">请主持人在电脑终端运行 <code>npm run vote-server</code>，将下方地址填到输入框并点击「连接」，或让所有人直接打开终端里打印的局域网链接。</p>
+            <div class="comp-vote__connect-row">
+              <label for="compVoteApiInput">服务地址</label>
+              <input type="url" id="compVoteApiInput" placeholder="http://192.168.1.8:3456" autocomplete="off" />
+              <button type="button" class="comp-vote__connect-save" id="compVoteApiSave">连接</button>
+            </div>
+          </div>
+
+          <div class="comp-vote__connect is-success" id="compVoteShareBox" hidden>
+            <p class="comp-vote__connect-title">共享地址（请发给所有参会同事，各自电脑浏览器打开）</p>
+            <ul class="comp-vote__share-links" id="compVoteShareLinks"></ul>
+            <p class="comp-vote__hint" style="margin:8px 0 0">进入页面后打开左侧「竞品分析」→「5. 竞品偏好投票」。勿用 file:// 或仅 GitHub Pages 静态页投票（无法同步）。</p>
+          </div>
 
           <div class="comp-vote__grid">
             <div class="comp-vote__panel" id="compVoteFormPanel">
@@ -4159,7 +4304,7 @@
             </div>
 
             <div class="comp-vote__panel comp-vote__results" id="compVoteResultsPanel">
-              <h3 class="comp-vote__panel-title">实时投票结果</h3>
+              <h3 class="comp-vote__panel-title">实时投票结果（全员同步）</h3>
               <div class="comp-vote__meta" id="compVoteMeta">
                 <span>总票数：<strong id="compVoteTotal">0</strong></span>
                 <span>参与 IP 数：<strong id="compVoteUniqueIp">0</strong></span>
@@ -4167,6 +4312,45 @@
                 <span>同步状态：<strong id="compVoteSync" class="comp-vote__sync comp-vote__sync--connecting">连接中…</strong></span>
               </div>
               <div class="comp-vote__stats" id="compVoteStats" aria-live="polite"></div>
+
+              <div class="comp-vote__summary" id="compVoteSummary" aria-live="polite">
+                <p class="comp-vote__summary-title">一、产品得票统计表</p>
+                <div class="comp-vote__table-wrap">
+                  <table class="comp-vote__summary-table" id="compVoteSummaryProducts">
+                    <thead>
+                      <tr>
+                        <th scope="col">排名</th>
+                        <th scope="col">产品</th>
+                        <th scope="col">参考价</th>
+                        <th scope="col">得票数</th>
+                        <th scope="col">得票率</th>
+                      </tr>
+                    </thead>
+                    <tbody id="compVoteSummaryProductsBody">
+                      <tr><td colspan="5" class="comp-vote__empty">暂无数据</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p class="comp-vote__summary-title">二、投票原因热度统计（按勾选次数）</p>
+                <div class="comp-vote__table-wrap">
+                  <table class="comp-vote__summary-table" id="compVoteSummaryReasons">
+                    <thead>
+                      <tr>
+                        <th scope="col">排名</th>
+                        <th scope="col">类别</th>
+                        <th scope="col">原因</th>
+                        <th scope="col">勾选次数</th>
+                        <th scope="col">占全部原因勾选比例</th>
+                      </tr>
+                    </thead>
+                    <tbody id="compVoteSummaryReasonsBody">
+                      <tr><td colspan="5" class="comp-vote__empty">暂无数据</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <p class="comp-vote__summary-title" style="margin-top:4px">三、投票明细记录</p>
 
               <div class="comp-vote__filters" id="compVoteFilters">
                 <span class="comp-vote__filters-label">筛选原因：</span>
@@ -4513,10 +4697,13 @@
         var STORAGE_KEY = "hx-comp-vote-v1";
         var VOTER_KEY = "hx-comp-voter-id-v1";
         var MIGRATE_KEY = "hx-comp-vote-migrated-v1";
+        var API_STORAGE_KEY = "hx-vote-api-base-v1";
         var cfg = window.HX_VOTE_CONFIG || {};
-        var apiBase = cfg.apiBase || "";
+        var apiBaseConfigured = (cfg.apiBase || "").replace(/\/$/, "");
         var pollMs = cfg.pollIntervalMs || 2000;
         var adminToken = cfg.adminToken || "hx-vote-admin";
+        var staticHosts = cfg.staticHosts || ["github.io", "githubusercontent.com"];
+        var resolvedApiBase = "";
 
         var PRODUCTS = {
           momoo: { name: "MOMOO", color: "#ec4899", price: "99 元" },
@@ -4568,6 +4755,14 @@
         var nameInput = document.getElementById("compVoteName");
         var remarkInput = document.getElementById("compVoteRemark");
         var submitBtn = document.getElementById("compVoteSubmit");
+        var alertEl = document.getElementById("compVoteAlert");
+        var connectEl = document.getElementById("compVoteConnect");
+        var apiInput = document.getElementById("compVoteApiInput");
+        var apiSaveBtn = document.getElementById("compVoteApiSave");
+        var shareBox = document.getElementById("compVoteShareBox");
+        var shareLinksEl = document.getElementById("compVoteShareLinks");
+        var summaryProductsBody = document.getElementById("compVoteSummaryProductsBody");
+        var summaryReasonsBody = document.getElementById("compVoteSummaryReasonsBody");
 
         if (!form || !reasonGroups) return;
 
@@ -4581,6 +4776,16 @@
         var myClientIp = "";
 
         REASONS.forEach(function (r) { reasonMap[r.id] = r; });
+
+        function isSupabaseMode() {
+          return window.HX_VOTE_STORE && HX_VOTE_STORE.mode() === "supabase";
+        }
+
+        function hasVoteBackend() {
+          if (isSupabaseMode()) return true;
+          refreshResolvedApiBase();
+          return !!resolvedApiBase;
+        }
 
         function uid() {
           return "v-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 8);
@@ -4616,20 +4821,169 @@
           } catch (err) {}
         }
 
+        function normalizeApiBase(raw) {
+          var s = String(raw || "").trim().replace(/\/$/, "");
+          if (!s) return "";
+          if (s.indexOf("/api") === s.length - 4) return s;
+          return s + "/api";
+        }
+
+        function isStaticOnlyHost() {
+          if (location.protocol !== "http:" && location.protocol !== "https:") return false;
+          var host = location.hostname || "";
+          if (host === "localhost" || host === "127.0.0.1") return false;
+          for (var i = 0; i < staticHosts.length; i++) {
+            if (host.indexOf(staticHosts[i]) >= 0) return true;
+          }
+          return false;
+        }
+
+        function loadStoredApiBase() {
+          try {
+            return normalizeApiBase(localStorage.getItem(API_STORAGE_KEY) || "");
+          } catch (err) {
+            return "";
+          }
+        }
+
+        function saveStoredApiBase(base) {
+          try {
+            if (base) localStorage.setItem(API_STORAGE_KEY, base);
+            else localStorage.removeItem(API_STORAGE_KEY);
+          } catch (err) {}
+        }
+
+        function getApiBaseFromQuery() {
+          try {
+            var params = new URLSearchParams(location.search);
+            var q = params.get("voteApi") || params.get("api");
+            return normalizeApiBase(q || "");
+          } catch (err) {
+            return "";
+          }
+        }
+
         function resolveApiBase() {
-          var configured = (apiBase || "").replace(/\/$/, "");
+          var fromQuery = getApiBaseFromQuery();
+          if (fromQuery) {
+            saveStoredApiBase(fromQuery);
+            return fromQuery;
+          }
+          if (apiBaseConfigured) {
+            return normalizeApiBase(apiBaseConfigured);
+          }
+          var stored = loadStoredApiBase();
+          if (stored) return stored;
+          if (location.protocol === "file:") {
+            return "http://localhost:3456/api";
+          }
           if (location.protocol === "http:" || location.protocol === "https:") {
-            if (configured && configured.indexOf(location.origin) !== 0) {
-              return configured;
-            }
+            if (isStaticOnlyHost()) return "";
             return location.origin + "/api";
           }
-          return configured || "http://localhost:3456/api";
+          return "http://localhost:3456/api";
+        }
+
+        function refreshResolvedApiBase() {
+          resolvedApiBase = resolveApiBase();
         }
 
         function apiUrl(path) {
-          var base = resolveApiBase();
+          var base = resolvedApiBase || resolveApiBase();
           return base ? base + path : "";
+        }
+
+        function showAlert(msg, type) {
+          if (!alertEl) return;
+          if (!msg) {
+            alertEl.hidden = true;
+            alertEl.textContent = "";
+            return;
+          }
+          alertEl.hidden = false;
+          alertEl.textContent = msg;
+          alertEl.className = "comp-vote__alert" + (type === "error" ? " is-error" : type === "success" ? " is-success" : "");
+        }
+
+        function updateConnectUI() {
+          if (isSupabaseMode()) {
+            if (connectEl) connectEl.hidden = true;
+            if (shareBox) shareBox.hidden = true;
+            return;
+          }
+          var hasApi = !!resolvedApiBase;
+          var onVoteServer = hasApi && !isStaticOnlyHost() && resolvedApiBase.indexOf(location.origin) === 0;
+          if (connectEl) {
+            connectEl.hidden = hasApi && (onVoteServer || syncState === "online");
+          }
+          if (connectEl && !connectEl.hidden && apiInput && !apiInput.value) {
+            apiInput.value = loadStoredApiBase().replace(/\/api$/, "") || "http://localhost:3456";
+          }
+        }
+
+        function renderShareLinks(urls) {
+          if (!shareLinksEl || !shareBox) return;
+          var list = (urls || []).filter(Boolean);
+          if (!list.length) {
+            shareBox.hidden = true;
+            return;
+          }
+          shareLinksEl.innerHTML = "";
+          list.forEach(function (url, idx) {
+            var li = document.createElement("li");
+            var label = idx === 0 ? "本机" : "局域网（发给同事）";
+            li.innerHTML = "<strong>" + label + "：</strong><a href=\"" + escapeHtml(url) + "#comp-vote\" target=\"_blank\" rel=\"noopener\">" + escapeHtml(url) + "#comp-vote</a>";
+            shareLinksEl.appendChild(li);
+          });
+          shareBox.hidden = false;
+        }
+
+        function fetchServerInfo() {
+          var url = apiUrl("/info");
+          if (!url) return Promise.resolve();
+          return fetchJson(url).then(function (info) {
+            if (info.shareUrls && info.shareUrls.length) {
+              renderShareLinks(info.shareUrls);
+            } else if (info.pageOrigin) {
+              renderShareLinks([info.pageOrigin.replace(/\/$/, "")]);
+            }
+          }).catch(function () {});
+        }
+
+        function testApiConnection() {
+          if (isSupabaseMode()) {
+            return HX_VOTE_STORE.testConnection();
+          }
+          var url = apiUrl("/health");
+          if (!url) return Promise.resolve(false);
+          return fetchJson(url).then(function () { return true; }).catch(function () { return false; });
+        }
+
+        function connectToApiBase(raw) {
+          var base = normalizeApiBase(raw);
+          if (!base) {
+            showAlert("请填写投票服务地址，例如 http://192.168.1.8:3456", "error");
+            return Promise.resolve(false);
+          }
+          resolvedApiBase = base;
+          saveStoredApiBase(base);
+          setSyncState("connecting", "正在连接…");
+          return testApiConnection().then(function (ok) {
+            if (!ok) {
+              resolvedApiBase = "";
+              saveStoredApiBase("");
+              setSyncState("offline", "连接失败");
+              showAlert("无法连接投票服务，请确认主持人已运行 npm run vote-server，且地址、防火墙正确。", "error");
+              updateConnectUI();
+              return false;
+            }
+            showAlert("已连接投票服务，提交后所有人可见统计结果。", "success");
+            updateConnectUI();
+            return migrateLocalVotesOnce()
+              .then(function () { return refreshVotes(); })
+              .then(function () { return fetchServerInfo(); })
+              .then(function () { return true; });
+          });
         }
 
         function setSyncState(state, label) {
@@ -4668,8 +5022,6 @@
         }
 
         function migrateLocalVotesOnce() {
-          var url = apiUrl("/votes/merge");
-          if (!url) return Promise.resolve();
           try {
             if (sessionStorage.getItem(MIGRATE_KEY) === "1") return Promise.resolve();
           } catch (err) {}
@@ -4678,6 +5030,16 @@
             try { sessionStorage.setItem(MIGRATE_KEY, "1"); } catch (e) {}
             return Promise.resolve();
           }
+          if (isSupabaseMode()) {
+            return HX_VOTE_STORE.mergeVotes(local)
+              .then(function (data) {
+                try { sessionStorage.setItem(MIGRATE_KEY, "1"); } catch (e) {}
+                applyVotes(data);
+              })
+              .catch(function () {});
+          }
+          var url = apiUrl("/votes/merge");
+          if (!url) return Promise.resolve();
           return fetchJson(url, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -4711,10 +5073,43 @@
         }
 
         function refreshVotes() {
+          if (isSupabaseMode()) {
+            if (refreshInFlight) return Promise.resolve(false);
+            refreshInFlight = true;
+            return HX_VOTE_STORE.fetchVotes()
+              .then(function (data) {
+                applyVotes(data);
+                setSyncState("online", "已连接 · 云数据库全员同步");
+                showAlert("", "");
+                updateConnectUI();
+                if (clientIpEl) clientIpEl.textContent = "云同步";
+                return true;
+              })
+              .catch(function () {
+                votesCache = loadLocalVotes();
+                setSyncState("offline", "云数据库连接失败");
+                showAlert("无法连接 Supabase，请检查 comp-vote-config.js 中的 supabaseUrl / supabaseAnonKey 及 SQL 是否已执行。", "error");
+                renderResults();
+                restoreMyVote();
+                return false;
+              })
+              .finally(function () {
+                refreshInFlight = false;
+              });
+          }
+
+          refreshResolvedApiBase();
           var url = apiUrl("/votes");
           if (!url) {
             votesCache = loadLocalVotes();
-            setSyncState("offline", "未配置服务（本地缓存）");
+            setSyncState("offline", "未连接投票服务");
+            showAlert(
+              isStaticOnlyHost()
+                ? "当前为静态页面。请配置 Supabase 云表（见 docs/投票存储方案说明.md），或填写上方投票服务地址 / 使用 http://局域网IP:3456 。"
+                : "未连接投票服务。请运行 npm run vote-server，或填写投票服务地址。",
+              "error"
+            );
+            updateConnectUI();
             renderResults();
             restoreMyVote();
             return Promise.resolve(false);
@@ -4724,12 +5119,16 @@
           return fetchJson(url)
             .then(function (data) {
               applyVotes(data);
-              setSyncState("online", "已连接 · 实时同步");
+              setSyncState("online", "已连接 · 全员实时同步");
+              showAlert("", "");
+              updateConnectUI();
               return fetchClientIp().then(function () { return true; });
             })
             .catch(function () {
               votesCache = loadLocalVotes();
-              setSyncState("offline", "连接失败（显示本地缓存）");
+              setSyncState("offline", "连接失败（仅本机缓存）");
+              showAlert("无法从投票服务拉取数据，请检查网络或服务是否已启动。", "error");
+              updateConnectUI();
               renderResults();
               restoreMyVote();
               return false;
@@ -4740,6 +5139,13 @@
         }
 
         function postVote(vote) {
+          if (isSupabaseMode()) {
+            var existingSb = getMyVote();
+            return HX_VOTE_STORE.saveVote(vote).then(function (data) {
+              applyVotes(data);
+              return { replaced: !!existingSb, offline: false };
+            });
+          }
           var url = apiUrl("/votes");
           if (!url) {
             var votes = votesCache.slice();
@@ -4816,10 +5222,77 @@
           return true;
         }
 
+        function renderSummaryTables(allVotes) {
+          var total = allVotes.length;
+          var productKeys = ["momoo", "miaoda", "fuzai", "uu", "uni"];
+          var counts = { momoo: 0, miaoda: 0, fuzai: 0, uu: 0, uni: 0 };
+          allVotes.forEach(function (v) {
+            if (counts[v.product] !== undefined) counts[v.product]++;
+          });
+          var ranked = productKeys.map(function (key) {
+            return { key: key, count: counts[key], product: PRODUCTS[key] };
+          }).sort(function (a, b) { return b.count - a.count || a.product.name.localeCompare(b.product.name, "zh"); });
+
+          if (summaryProductsBody) {
+            summaryProductsBody.innerHTML = "";
+            if (!total) {
+              summaryProductsBody.innerHTML = '<tr><td colspan="5" class="comp-vote__empty">暂无投票</td></tr>';
+            } else {
+              ranked.forEach(function (row, i) {
+                var pct = total ? Math.round((row.count / total) * 100) : 0;
+                var tr = document.createElement("tr");
+                tr.innerHTML =
+                  "<td>" + (i + 1) + "</td>" +
+                  '<td><span class="comp-vote__tag comp-vote__tag--' + row.key + '">' + row.product.name + "</span></td>" +
+                  "<td>" + escapeHtml(row.product.price) + "</td>" +
+                  "<td><strong>" + row.count + "</strong></td>" +
+                  "<td>" + pct + "%</td>";
+                summaryProductsBody.appendChild(tr);
+              });
+            }
+          }
+
+          var reasonCounts = {};
+          var reasonTotal = 0;
+          REASONS.forEach(function (r) { reasonCounts[r.id] = 0; });
+          allVotes.forEach(function (v) {
+            (v.reasons || []).forEach(function (id) {
+              if (reasonCounts[id] !== undefined) {
+                reasonCounts[id]++;
+                reasonTotal++;
+              }
+            });
+          });
+          var reasonRanked = REASONS.map(function (r) {
+            return { reason: r, count: reasonCounts[r.id] || 0 };
+          }).filter(function (x) { return x.count > 0; })
+            .sort(function (a, b) { return b.count - a.count; });
+
+          if (summaryReasonsBody) {
+            summaryReasonsBody.innerHTML = "";
+            if (!reasonTotal) {
+              summaryReasonsBody.innerHTML = '<tr><td colspan="5" class="comp-vote__empty">暂无投票</td></tr>';
+            } else {
+              reasonRanked.forEach(function (row, i) {
+                var pct = Math.round((row.count / reasonTotal) * 100);
+                var tr = document.createElement("tr");
+                tr.innerHTML =
+                  "<td>" + (i + 1) + "</td>" +
+                  "<td>" + CAT_LABELS[row.reason.cat] + "</td>" +
+                  "<td>" + escapeHtml(row.reason.label) + "</td>" +
+                  "<td><strong>" + row.count + "</strong></td>" +
+                  "<td>" + pct + "%</td>";
+                summaryReasonsBody.appendChild(tr);
+              });
+            }
+          }
+        }
+
         function renderResults() {
           var allVotes = votesCache;
           var votes = allVotes.filter(matchFilter);
           var statSource = activeFilter === "all" ? allVotes : votes;
+          renderSummaryTables(allVotes);
           var counts = { momoo: 0, miaoda: 0, fuzai: 0, uu: 0, uni: 0 };
           statSource.forEach(function (v) {
             if (counts[v.product] !== undefined) counts[v.product]++;
@@ -4919,6 +5392,12 @@
 
         form.addEventListener("submit", function (e) {
           e.preventDefault();
+          if (!hasVoteBackend()) {
+            showStatus("请先连接投票服务或配置 Supabase 云表（见 docs/投票存储方案说明.md）", "error");
+            if (connectEl && !connectEl.hidden) connectEl.scrollIntoView({ behavior: "smooth", block: "center" });
+            return;
+          }
+          refreshResolvedApiBase();
           var voterName = nameInput ? nameInput.value.trim() : "";
           var productEl = form.querySelector('input[name="product"]:checked');
           var reasonEls = form.querySelectorAll('input[name="reasons"]:checked');
@@ -5013,6 +5492,14 @@
                 try {
                   var parsed = JSON.parse(reader.result);
                   var incoming = Array.isArray(parsed) ? parsed : (parsed.votes || []);
+                  if (isSupabaseMode()) {
+                    HX_VOTE_STORE.mergeVotes(incoming).then(function (data) {
+                      applyVotes(data);
+                      showStatus("已合并 " + incoming.length + " 条投票到云数据库", "success");
+                    }).catch(function () {
+                      showStatus("导入失败，请检查 Supabase 配置", "error");
+                    });
+                  } else {
                   var url = apiUrl("/votes/merge");
                   if (url) {
                     fetchJson(url, {
@@ -5039,6 +5526,7 @@
                     applyVotes({ votes: merged, updatedAt: Date.now() });
                     showStatus("已合并 " + incoming.length + " 条投票（本地）", "success");
                   }
+                  }
                 } catch (err) {
                   showStatus("导入失败：文件格式不正确", "error");
                 }
@@ -5053,6 +5541,19 @@
         if (resetBtn) {
           resetBtn.addEventListener("click", function () {
             if (!confirm("确定清空全部投票记录？此操作不可恢复。")) return;
+            if (isSupabaseMode()) {
+              if (!confirm("将清空 Supabase 云表中的全部投票，确定继续？")) return;
+              HX_VOTE_STORE.clearVotes()
+                .then(function (data) {
+                  applyVotes(data);
+                  form.reset();
+                  showStatus("云数据库投票已全部清空", "success");
+                })
+                .catch(function () {
+                  showStatus("清空失败，请检查 Supabase 权限配置", "error");
+                });
+              return;
+            }
             var url = apiUrl("/votes");
             if (url) {
               var token = prompt("请输入管理员口令以清空云端投票：", adminToken);
@@ -5079,17 +5580,50 @@
           });
         }
 
+        if (apiSaveBtn && apiInput) {
+          apiSaveBtn.addEventListener("click", function () {
+            connectToApiBase(apiInput.value);
+          });
+          apiInput.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              connectToApiBase(apiInput.value);
+            }
+          });
+        }
+
         buildReasonGroups();
         buildFilterButtons();
+        refreshResolvedApiBase();
         setSyncState("connecting", "连接中…");
+        updateConnectUI();
 
-        migrateLocalVotesOnce()
-          .then(function () { return refreshVotes(); })
-          .finally(function () {
-            pollTimer = setInterval(function () {
-              refreshVotes();
-            }, pollMs);
+        var bootPromise;
+        if (isSupabaseMode()) {
+          bootPromise = testApiConnection().then(function (ok) {
+            if (!ok) return refreshVotes();
+            return migrateLocalVotesOnce().then(function () { return refreshVotes(); });
           });
+        } else {
+          bootPromise = testApiConnection().then(function (ok) {
+            if (!ok && !resolvedApiBase) {
+              updateConnectUI();
+              return refreshVotes();
+            }
+            if (ok) {
+              return migrateLocalVotesOnce()
+                .then(function () { return refreshVotes(); })
+                .then(function () { return fetchServerInfo(); });
+            }
+            return refreshVotes();
+          });
+        }
+
+        bootPromise.finally(function () {
+          pollTimer = setInterval(function () {
+            refreshVotes();
+          }, pollMs);
+        });
 
         document.addEventListener("visibilitychange", function () {
           if (!document.hidden) refreshVotes();

@@ -4,7 +4,9 @@
   "type": "module",
   "scripts": {
     "start": "node server/vote-server.mjs",
-    "vote-server": "node server/vote-server.mjs"
+    "vote-server": "node server/vote-server.mjs",
+    "vote": "node server/vote-server.mjs",
+    "vote-config": "node scripts/generate-vote-config.mjs"
   },
   "dependencies": {
     "cors": "^2.8.5",

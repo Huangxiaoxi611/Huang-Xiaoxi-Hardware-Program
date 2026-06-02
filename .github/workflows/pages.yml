@@ -29,6 +29,12 @@ jobs:
         with:
           enablement: true
 
+      - name: Generate Supabase vote config
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: node scripts/generate-vote-config.mjs
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
