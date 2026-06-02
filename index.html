@@ -2449,21 +2449,274 @@
       box-shadow: var(--shadow);
     }
 
-    .comp-vote__done {
-      padding: 28px 20px;
-      text-align: center;
+    .comp-vote__top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border);
     }
 
-    .comp-vote__done-msg {
-      margin: 0 0 18px;
-      font-size: 15px;
+    .comp-vote__top-copy {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .comp-vote__top-copy .comp-vote__panel-title {
+      margin-bottom: 6px;
+    }
+
+    .comp-vote__top-desc {
+      margin: 0;
+      font-size: 13px;
       line-height: 1.6;
+      color: var(--ink-muted);
+    }
+
+    .comp-vote__top-actions {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .comp-vote__action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 28px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.2;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, color 0.15s, filter 0.15s;
+    }
+
+    .comp-vote__action-btn--primary {
+      border: none;
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%);
+    }
+
+    .comp-vote__action-btn--primary:hover {
+      filter: brightness(1.06);
+    }
+
+    .comp-vote__action-btn--secondary {
+      border: 2px solid var(--accent);
+      color: var(--accent-deep);
+      background: #fff;
+    }
+
+    .comp-vote__action-btn--secondary:hover {
+      background: var(--accent-pale);
+    }
+
+    .comp-vote__my-vote {
+      margin-bottom: 20px;
+      padding: 18px 20px;
+      border-radius: var(--radius);
+      border: 1px solid #bae6fd;
+      background: linear-gradient(135deg, #f0f9ff 0%, #fff 100%);
+    }
+
+    .comp-vote__my-vote-title {
+      margin: 0 0 12px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--blue-primary);
+    }
+
+    .comp-vote__my-vote-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .comp-vote__my-vote-row {
+      display: grid;
+      grid-template-columns: 72px minmax(0, 1fr);
+      gap: 8px 12px;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .comp-vote__my-vote-label {
+      color: var(--ink-muted);
+      font-weight: 600;
+    }
+
+    .comp-vote__my-vote-value {
       color: var(--ink);
     }
 
-    .comp-vote__grid {
+    .comp-vote__my-vote-reasons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .comp-vote__action-bar {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 4px 0 24px;
+      padding: 16px;
+      border-radius: var(--radius);
+      border: 1px dashed #cbd5e1;
+      background: #f8fafc;
+    }
+
+    .comp-vote__action-hint {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--ink-muted);
+      text-align: center;
+      max-width: 520px;
+    }
+
+    .comp-vote-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1200;
+      box-sizing: border-box;
+      padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
       display: grid;
-      gap: 24px;
+      place-items: center;
+      overflow: auto;
+      overscroll-behavior: contain;
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+    }
+
+    .comp-vote-modal.is-open {
+      pointer-events: auto;
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .comp-vote-modal[hidden] {
+      display: none !important;
+    }
+
+    body.comp-vote-modal-open {
+      overflow: hidden;
+    }
+
+    .comp-vote-modal__backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background: rgba(15, 23, 42, 0.45);
+      backdrop-filter: blur(4px);
+      pointer-events: none;
+    }
+
+    .comp-vote-modal__dialog {
+      position: relative;
+      z-index: 1;
+      width: min(720px, calc(100vw - 32px));
+      max-height: min(90dvh, 90vh, 900px);
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      background: #fff;
+      box-shadow: 0 24px 48px rgba(15, 23, 42, 0.18);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .comp-vote-modal__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, #f8fafc 0%, #fff 100%);
+      flex-shrink: 0;
+    }
+
+    .comp-vote-modal__header h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--blue-primary);
+    }
+
+    .comp-vote-modal__close {
+      width: 36px;
+      height: 36px;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--ink-muted);
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .comp-vote-modal__close:hover {
+      background: #f1f5f9;
+      color: var(--ink);
+    }
+
+    .comp-vote-modal__body {
+      padding: 20px;
+      overflow-y: auto;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .comp-vote-modal__body .comp-vote__field:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .comp-vote-modal__footer {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .comp-vote-modal__footer-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-left: auto;
+    }
+
+    .comp-vote-modal__cancel {
+      padding: 10px 18px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink-muted);
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .comp-vote-modal__cancel:hover {
+      border-color: #cbd5e1;
+      background: #f8fafc;
+      color: var(--ink);
     }
 
     .comp-vote__panel {
@@ -2966,6 +3219,14 @@
     @media (max-width: 900px) {
       .comp-vote__products { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .comp-vote__stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .comp-vote-modal__dialog {
+        width: min(720px, calc(100vw - 24px));
+        max-height: min(88dvh, 88vh);
+      }
+      .comp-vote__action-bar .comp-vote__action-btn {
+        width: 100%;
+        max-width: 280px;
+      }
     }
 
     @media (max-width: 720px) {
@@ -4207,91 +4468,31 @@
             <p class="comp-vote__hint" style="margin:8px 0 0">进入页面后打开左侧「竞品分析」→「5. 竞品偏好投票」。勿用 file:// 或仅 GitHub Pages 静态页投票（无法同步）。</p>
           </div>
 
-          <div class="comp-vote__grid">
-            <div class="comp-vote__panel" id="compVoteFormPanel">
-              <h3 class="comp-vote__panel-title">提交投票</h3>
-              <div class="comp-vote__done" id="compVoteDone" hidden>
-                <p class="comp-vote__done-msg">您已投票，刷新后查看全部投票记录</p>
-                <button type="button" class="comp-vote__submit" id="compVoteRevote">重新投票</button>
+          <div class="comp-vote__panel comp-vote__results" id="compVoteResultsPanel">
+            <div class="comp-vote__top" id="compVoteTop">
+              <div class="comp-vote__top-copy">
+                <h3 class="comp-vote__panel-title">参与投票</h3>
+                <p class="comp-vote__top-desc">从用户视角选出最倾向的 AI 玩偶，并勾选投票原因。投票后可在此查看个人选择与全员统计。</p>
               </div>
-              <form id="compVoteForm" novalidate>
-                <div class="comp-vote__field">
-                  <label for="compVoteName">您的昵称 <span style="color:#dc2626">*</span></label>
-                  <input type="text" id="compVoteName" name="voterName" placeholder="便于识别是谁投的票" maxlength="20" required autocomplete="nickname" />
-                </div>
-
-                <div class="comp-vote__field">
-                  <span class="comp-vote__panel-title" style="margin-bottom:10px;display:block;">选择产品 <span style="color:#dc2626">*</span></span>
-                  <div class="comp-vote__products" role="radiogroup" aria-label="选择竞品">
-                    <label class="comp-vote__product" style="--product-color:#ec4899">
-                      <input type="radio" name="product" value="momoo" required />
-                      <span class="comp-vote__product-card">
-                        <span class="comp-vote__product-dot"></span>
-                        <span class="comp-vote__product-name">MOMOO</span>
-                        <span class="comp-vote__product-price">99 元</span>
-                      </span>
-                    </label>
-                    <label class="comp-vote__product" style="--product-color:#10b981">
-                      <input type="radio" name="product" value="miaoda" />
-                      <span class="comp-vote__product-card">
-                        <span class="comp-vote__product-dot"></span>
-                        <span class="comp-vote__product-name">妙嗒</span>
-                        <span class="comp-vote__product-price">499 元</span>
-                      </span>
-                    </label>
-                    <label class="comp-vote__product" style="--product-color:#0ea5e9">
-                      <input type="radio" name="product" value="fuzai" />
-                      <span class="comp-vote__product-card">
-                        <span class="comp-vote__product-dot"></span>
-                        <span class="comp-vote__product-name">芙崽</span>
-                        <span class="comp-vote__product-price">399–499 元</span>
-                      </span>
-                    </label>
-                    <label class="comp-vote__product" style="--product-color:#8b5cf6">
-                      <input type="radio" name="product" value="uu" />
-                      <span class="comp-vote__product-card">
-                        <span class="comp-vote__product-dot"></span>
-                        <span class="comp-vote__product-name">萌 UU</span>
-                        <span class="comp-vote__product-price">399 元</span>
-                      </span>
-                    </label>
-                    <label class="comp-vote__product" style="--product-color:#f59e0b">
-                      <input type="radio" name="product" value="uni" />
-                      <span class="comp-vote__product-card">
-                        <span class="comp-vote__product-dot"></span>
-                        <span class="comp-vote__product-name">雷鸟 Uni</span>
-                        <span class="comp-vote__product-price">299 元</span>
-                      </span>
-                    </label>
-                  </div>
-                </div>
-
-                <div class="comp-vote__field">
-                  <span class="comp-vote__panel-title" style="margin-bottom:10px;display:block;">选择原因 <span style="color:#dc2626">*</span> <span style="font-weight:400;font-size:12px;color:var(--ink-muted)">（可多选）</span></span>
-                  <div class="comp-vote__reason-groups" id="compVoteReasonGroups"></div>
-                </div>
-
-                <div class="comp-vote__field">
-                  <label for="compVoteRemark">备注 <span style="font-weight:400;color:var(--ink-muted)">（选填，自由发挥）</span></label>
-                  <textarea id="compVoteRemark" name="remark" placeholder="例如：我还希望有景区导览能力、更在意价格、担心误触问题……" maxlength="300"></textarea>
-                </div>
-
-                <div class="comp-vote__actions">
-                  <button type="submit" class="comp-vote__submit" id="compVoteSubmit">提交投票</button>
-                  <span class="comp-vote__hint">至少选择 1 项原因</span>
-                </div>
-                <div class="comp-vote__status" id="compVoteStatus" role="status" aria-live="polite"></div>
-              </form>
             </div>
 
-            <div class="comp-vote__panel comp-vote__results" id="compVoteResultsPanel">
-              <h3 class="comp-vote__panel-title">实时投票结果（全员同步）</h3>
+            <div class="comp-vote__my-vote" id="compVoteMyVote" hidden>
+              <p class="comp-vote__my-vote-title">我的投票</p>
+              <div class="comp-vote__my-vote-grid" id="compVoteMyVoteBody"></div>
+            </div>
+
+            <h3 class="comp-vote__panel-title">实时投票结果（全员同步）</h3>
               <div class="comp-vote__meta" id="compVoteMeta">
                 <span>总票数：<strong id="compVoteTotal">0</strong></span>
                 <span>参与 IP 数：<strong id="compVoteUniqueIp">0</strong></span>
                 <span>最近更新：<strong id="compVoteUpdated">—</strong></span>
               </div>
               <div class="comp-vote__stats" id="compVoteStats" aria-live="polite"></div>
+
+              <div class="comp-vote__action-bar" id="compVoteActionBar">
+                <p class="comp-vote__action-hint" id="compVoteActionHint" hidden>如需修改选择，可重新提交投票（将覆盖您此前的记录）</p>
+                <button type="button" class="comp-vote__action-btn comp-vote__action-btn--primary" id="compVoteActionBtn">投票</button>
+              </div>
 
               <div class="comp-vote__summary" id="compVoteSummary" aria-live="polite">
                 <p class="comp-vote__summary-title">一、产品得票统计表</p>
@@ -4362,7 +4563,6 @@
               <div class="comp-vote__toolbar">
                 <button type="button" class="comp-vote__tool-btn" id="compVoteExport">导出投票 JSON</button>
               </div>
-            </div>
           </div>
         </div>
       </section>
@@ -4371,6 +4571,89 @@
         <p>竞品分析 · 黄小西项目内部参考</p>
         <p style="margin-top:8px; opacity:0.7;">与「商业落地方案」Tab 独立展示，不影响原方案阅读与汇报结构</p>
       </footer>
+    </div>
+  </div>
+
+  <div class="comp-vote-modal" id="compVoteModal" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="compVoteModalTitle">
+    <div class="comp-vote-modal__backdrop" aria-hidden="true"></div>
+    <div class="comp-vote-modal__dialog">
+      <div class="comp-vote-modal__header">
+        <h3 id="compVoteModalTitle">提交投票</h3>
+        <button type="button" class="comp-vote-modal__close" id="compVoteModalClose" aria-label="关闭投票">×</button>
+      </div>
+      <div class="comp-vote-modal__body">
+        <form id="compVoteForm" novalidate>
+          <div class="comp-vote__field">
+            <label for="compVoteName">您的昵称 <span style="color:#dc2626">*</span></label>
+            <input type="text" id="compVoteName" name="voterName" placeholder="便于识别是谁投的票" maxlength="20" required autocomplete="nickname" />
+          </div>
+
+          <div class="comp-vote__field">
+            <span class="comp-vote__panel-title" style="margin-bottom:10px;display:block;">选择产品 <span style="color:#dc2626">*</span></span>
+            <div class="comp-vote__products" role="radiogroup" aria-label="选择竞品">
+              <label class="comp-vote__product" style="--product-color:#ec4899">
+                <input type="radio" name="product" value="momoo" required />
+                <span class="comp-vote__product-card">
+                  <span class="comp-vote__product-dot"></span>
+                  <span class="comp-vote__product-name">MOMOO</span>
+                  <span class="comp-vote__product-price">99 元</span>
+                </span>
+              </label>
+              <label class="comp-vote__product" style="--product-color:#10b981">
+                <input type="radio" name="product" value="miaoda" />
+                <span class="comp-vote__product-card">
+                  <span class="comp-vote__product-dot"></span>
+                  <span class="comp-vote__product-name">妙嗒</span>
+                  <span class="comp-vote__product-price">499 元</span>
+                </span>
+              </label>
+              <label class="comp-vote__product" style="--product-color:#0ea5e9">
+                <input type="radio" name="product" value="fuzai" />
+                <span class="comp-vote__product-card">
+                  <span class="comp-vote__product-dot"></span>
+                  <span class="comp-vote__product-name">芙崽</span>
+                  <span class="comp-vote__product-price">399–499 元</span>
+                </span>
+              </label>
+              <label class="comp-vote__product" style="--product-color:#8b5cf6">
+                <input type="radio" name="product" value="uu" />
+                <span class="comp-vote__product-card">
+                  <span class="comp-vote__product-dot"></span>
+                  <span class="comp-vote__product-name">萌 UU</span>
+                  <span class="comp-vote__product-price">399 元</span>
+                </span>
+              </label>
+              <label class="comp-vote__product" style="--product-color:#f59e0b">
+                <input type="radio" name="product" value="uni" />
+                <span class="comp-vote__product-card">
+                  <span class="comp-vote__product-dot"></span>
+                  <span class="comp-vote__product-name">雷鸟 Uni</span>
+                  <span class="comp-vote__product-price">299 元</span>
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <div class="comp-vote__field">
+            <span class="comp-vote__panel-title" style="margin-bottom:10px;display:block;">选择原因 <span style="color:#dc2626">*</span> <span style="font-weight:400;font-size:12px;color:var(--ink-muted)">（可多选）</span></span>
+            <div class="comp-vote__reason-groups" id="compVoteReasonGroups"></div>
+          </div>
+
+          <div class="comp-vote__field">
+            <label for="compVoteRemark">备注 <span style="font-weight:400;color:var(--ink-muted)">（选填）</span></label>
+            <textarea id="compVoteRemark" name="remark" placeholder="例如：我还希望有景区导览能力、更在意价格……" maxlength="300"></textarea>
+          </div>
+
+          <div class="comp-vote__status" id="compVoteStatus" role="status" aria-live="polite"></div>
+
+          <div class="comp-vote-modal__footer">
+            <span class="comp-vote__hint">至少选择 1 项原因</span>
+            <div class="comp-vote-modal__footer-actions">
+              <button type="submit" class="comp-vote__submit" id="compVoteSubmit">提交投票</button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 
@@ -4674,6 +4957,7 @@
       (function initCompVote() {
         var STORAGE_KEY = "hx-comp-vote-v1";
         var VOTER_KEY = "hx-comp-voter-id-v1";
+        var MY_VOTE_KEY = "hx-comp-my-vote-v1";
         var MIGRATE_KEY = "hx-comp-vote-migrated-v1";
         var API_STORAGE_KEY = "hx-vote-api-base-v1";
         var cfg = window.HX_VOTE_CONFIG || {};
@@ -4720,8 +5004,12 @@
         var CAT_LABELS = { hardware: "基础能力", dialogue: "对话能力", highlight: "亮点功能" };
 
         var form = document.getElementById("compVoteForm");
-        var doneEl = document.getElementById("compVoteDone");
-        var revoteBtn = document.getElementById("compVoteRevote");
+        var modal = document.getElementById("compVoteModal");
+        var myVoteEl = document.getElementById("compVoteMyVote");
+        var myVoteBody = document.getElementById("compVoteMyVoteBody");
+        var actionHint = document.getElementById("compVoteActionHint");
+        var actionBtn = document.getElementById("compVoteActionBtn");
+        var modalCloseBtn = document.getElementById("compVoteModalClose");
         var reasonGroups = document.getElementById("compVoteReasonGroups");
         var statusEl = document.getElementById("compVoteStatus");
         var statsEl = document.getElementById("compVoteStats");
@@ -4759,6 +5047,33 @@
           return revoteModeActive;
         }
 
+        function openVoteModal() {
+          if (!modal) return;
+          modal.hidden = false;
+          modal.setAttribute("aria-hidden", "false");
+          modal.classList.add("is-open");
+          document.body.classList.add("comp-vote-modal-open");
+          if (nameInput) {
+            try { nameInput.focus({ preventScroll: true }); } catch (err) { nameInput.focus(); }
+          }
+        }
+
+        function isVoteModalOpen() {
+          return !!(modal && modal.classList.contains("is-open") && !modal.hidden);
+        }
+
+        function closeVoteModal(cancelRevote) {
+          if (!modal) return;
+          modal.classList.remove("is-open");
+          modal.hidden = true;
+          modal.setAttribute("aria-hidden", "true");
+          document.body.classList.remove("comp-vote-modal-open");
+          if (cancelRevote !== false && revoteModeActive) {
+            clearRevoteMode();
+            revoteFormPrefilled = false;
+          }
+        }
+
         function enterRevoteMode() {
           revoteModeActive = true;
           revoteFormPrefilled = false;
@@ -4773,32 +5088,84 @@
           revoteModeActive = false;
         }
 
-        function showVotedState() {
-          if (form) form.hidden = true;
-          if (doneEl) doneEl.hidden = false;
+        function renderMyVote() {
+          if (!myVoteBody || !myVoteEl) return;
+          var mine = getMyVote();
+          if (!mine) {
+            myVoteEl.hidden = true;
+            myVoteBody.innerHTML = "";
+            return;
+          }
+          var p = PRODUCTS[mine.product] || { name: mine.product, price: "" };
+          var reasonTags = (mine.reasons || []).map(function (id) {
+            var r = reasonMap[id];
+            return r ? '<span class="comp-vote__tag">' + escapeHtml(r.label) + "</span>" : "";
+          }).join("");
+          myVoteBody.innerHTML =
+            '<div class="comp-vote__my-vote-row"><span class="comp-vote__my-vote-label">昵称</span><span class="comp-vote__my-vote-value">' + escapeHtml(mine.voterName) + "</span></div>" +
+            '<div class="comp-vote__my-vote-row"><span class="comp-vote__my-vote-label">产品</span><span class="comp-vote__my-vote-value"><span class="comp-vote__tag comp-vote__tag--' + mine.product + '">' + escapeHtml(p.name) + "</span>" + (p.price ? " · " + escapeHtml(p.price) : "") + "</span></div>" +
+            '<div class="comp-vote__my-vote-row"><span class="comp-vote__my-vote-label">原因</span><span class="comp-vote__my-vote-value"><span class="comp-vote__my-vote-reasons">' + (reasonTags || "—") + "</span></span></div>" +
+            '<div class="comp-vote__my-vote-row"><span class="comp-vote__my-vote-label">备注</span><span class="comp-vote__my-vote-value">' + (mine.remark ? escapeHtml(mine.remark) : '<span style="color:var(--ink-soft)">—</span>') + "</span></div>" +
+            '<div class="comp-vote__my-vote-row"><span class="comp-vote__my-vote-label">时间</span><span class="comp-vote__my-vote-value">' + formatTime(mine.timestamp) + "</span></div>";
+          myVoteEl.hidden = false;
         }
 
-        function showVoteForm() {
-          if (form) form.hidden = false;
-          if (doneEl) doneEl.hidden = true;
+        function saveMyVoteSnapshot(vote) {
+          if (!vote || !vote.voterId) return;
+          try {
+            localStorage.setItem(MY_VOTE_KEY, JSON.stringify(vote));
+          } catch (err) {}
+        }
+
+        function loadMyVoteSnapshot() {
+          try {
+            var raw = localStorage.getItem(MY_VOTE_KEY);
+            if (!raw) return null;
+            var vote = JSON.parse(raw);
+            return vote && vote.voterId === getVoterId() ? vote : null;
+          } catch (err) {
+            return null;
+          }
+        }
+
+        function clearMyVoteSnapshot() {
+          try {
+            localStorage.removeItem(MY_VOTE_KEY);
+          } catch (err) {}
+        }
+
+        function updateVoteActionUI() {
+          var hasMine = !!getMyVote();
+          if (actionHint) actionHint.hidden = !hasMine;
+          if (actionBtn) {
+            if (hasMine) {
+              actionBtn.textContent = "重新投票";
+              actionBtn.className = "comp-vote__action-btn comp-vote__action-btn--secondary";
+              renderMyVote();
+            } else {
+              actionBtn.textContent = "投票";
+              actionBtn.className = "comp-vote__action-btn comp-vote__action-btn--primary";
+              if (myVoteEl) myVoteEl.hidden = true;
+              if (myVoteBody) myVoteBody.innerHTML = "";
+            }
+          }
         }
 
         function updateVoteFormUI() {
           if (isRevoteMode()) {
-            showVoteForm();
             if (!revoteFormPrefilled) {
               var mine = getMyVote();
               if (mine) fillFormFromVote(mine);
               revoteFormPrefilled = true;
             }
+            openVoteModal();
             return;
           }
           revoteFormPrefilled = false;
-          if (getMyVote()) {
-            showVotedState();
-          } else {
-            showVoteForm();
+          if (!isVoteModalOpen()) {
+            closeVoteModal(false);
           }
+          updateVoteActionUI();
         }
 
         function isSupabaseMode() {
@@ -5016,6 +5383,13 @@
           votesCache = Array.isArray(data.votes) ? data.votes : [];
           serverUpdatedAt = data.updatedAt || 0;
           saveLocalVotes(votesCache);
+          var voterId = getVoterId();
+          for (var vi = 0; vi < votesCache.length; vi++) {
+            if (votesCache[vi].voterId === voterId) {
+              saveMyVoteSnapshot(votesCache[vi]);
+              break;
+            }
+          }
           renderResults();
           updateVoteFormUI();
         }
@@ -5361,7 +5735,7 @@
           for (var i = votesCache.length - 1; i >= 0; i--) {
             if (votesCache[i].voterId === voterId) return votesCache[i];
           }
-          return null;
+          return loadMyVoteSnapshot();
         }
 
         form.addEventListener("submit", function (e) {
@@ -5407,9 +5781,11 @@
           if (submitBtn) submitBtn.disabled = true;
           postVote(vote)
             .then(function (result) {
+              saveMyVoteSnapshot(vote);
               revoteFormPrefilled = false;
               clearRevoteMode();
-              showVotedState();
+              closeVoteModal(false);
+              updateVoteActionUI();
               if (statusEl) {
                 statusEl.textContent = "";
                 statusEl.className = "comp-vote__status";
@@ -5423,9 +5799,31 @@
             });
         });
 
-        if (revoteBtn) {
-          revoteBtn.addEventListener("click", function () {
-            enterRevoteMode();
+        if (actionBtn) {
+          actionBtn.addEventListener("click", function () {
+            if (statusEl) {
+              statusEl.textContent = "";
+              statusEl.className = "comp-vote__status";
+            }
+            if (getMyVote()) {
+              enterRevoteMode();
+            } else {
+              clearRevoteMode();
+              revoteFormPrefilled = false;
+              openVoteModal();
+            }
+          });
+        }
+
+        if (modalCloseBtn) {
+          modalCloseBtn.addEventListener("click", function () {
+            closeVoteModal(true);
+          });
+        }
+
+        if (modal) {
+          modal.addEventListener("click", function (e) {
+            e.stopPropagation();
           });
         }
 
